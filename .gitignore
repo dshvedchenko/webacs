@@ -30,3 +30,6 @@ generated
 .bundle
 
 node_modules
+
+flyway.properties
+
