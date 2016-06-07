@@ -31,7 +31,8 @@ CREATE TABLE app.resource
   kind          CHARACTER VARYING(64),
   detail        CHARACTER VARYING(256),
   owner_role_id BIGINT,
-  CONSTRAINT resource_pkey PRIMARY KEY (id)
+  CONSTRAINT resource_pkey PRIMARY KEY (id),
+  CONSTRAINT resource_name_key UNIQUE (name)
 )
 WITH (
 OIDS = FALSE
@@ -52,7 +53,8 @@ CREATE TABLE app.resource_role
   CONSTRAINT resource_role_pkey PRIMARY KEY (id),
   CONSTRAINT resource_role_resource_id_fkey FOREIGN KEY (resource_id)
   REFERENCES app.appuser (id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE RESTRICT
+  ON UPDATE NO ACTION ON DELETE RESTRICT,
+  CONSTRAINT resource_role_resource_id_title_key UNIQUE (resource_id, title)
 )
 WITH (
 OIDS = FALSE
@@ -119,7 +121,8 @@ CREATE TABLE app.role_claim
   ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT granted_by_fk FOREIGN KEY (granter_id)
   REFERENCES app.appuser (id) MATCH SIMPLE
-  ON UPDATE CASCADE ON DELETE RESTRICT
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT role_claim_user_id_resource_role_id_granted_at_key UNIQUE (user_id, resource_role_id, granted_at)
 )
 WITH (
 OIDS = FALSE
