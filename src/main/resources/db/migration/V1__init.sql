@@ -76,13 +76,15 @@ CREATE TABLE app.user_resource_role
   start_at         TIMESTAMP WITH TIME ZONE,
   end_at           TIMESTAMP WITH TIME ZONE,
   claim_id         BIGINT,
+  deleted          BOOLEAN,
   CONSTRAINT user_resource_role_pkey PRIMARY KEY (id),
   CONSTRAINT user_resource_role_resource_role_id_fkey FOREIGN KEY (resource_role_id)
   REFERENCES app.resource_role (id) MATCH SIMPLE
   ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT user_resource_role_user_id_fkey FOREIGN KEY (user_id)
   REFERENCES app.appuser (id) MATCH SIMPLE
-  ON UPDATE RESTRICT ON DELETE RESTRICT
+  ON UPDATE RESTRICT ON DELETE RESTRICT,
+  CONSTRAINT unique_claim UNIQUE (claim_id)
 )
 WITH (
 OIDS = FALSE
@@ -125,3 +127,7 @@ OIDS = FALSE
 ALTER TABLE app.role_claim
   OWNER TO acs_app;
 
+ALTER TABLE app.user_resource_role
+  ADD CONSTRAINT controlled_by_claim FOREIGN KEY (claim_id)
+REFERENCES app.role_claim (id) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE RESTRICT;
