@@ -14,9 +14,9 @@ import java.util.Date;
 @Table(name = "permission_claim", schema = "app")
 public class PermissionClaim {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -70,7 +70,7 @@ public class PermissionClaim {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = result * prime + getId();
+        result = result * prime + getId().hashCode();
         result = result * prime + getUser().hashCode();
         result = result * prime + getPermission().hashCode();
 

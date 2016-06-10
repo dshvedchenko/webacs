@@ -16,8 +16,9 @@ public class AppUser {
     @OneToMany(mappedBy = "user")
     List<UserPermission> permissions;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -51,7 +52,7 @@ public class AppUser {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = result * prime + getId();
+        result = result * prime + getId().hashCode();
 
         return result;
     }

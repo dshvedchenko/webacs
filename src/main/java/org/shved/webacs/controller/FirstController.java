@@ -1,8 +1,10 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class FirstController {
 
     Logger logger = LoggerFactory.getLogger(FirstController.class);
+
+    @Autowired
+    private AppUserDAO appUserDAO;
 
     // /first/hello
     @RequestMapping(method = RequestMethod.GET, value = "hello/{valueP}")

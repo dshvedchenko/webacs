@@ -17,8 +17,9 @@ public class Permission {
     Set<UserPermission> appUsers;
     //resource_id
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
@@ -45,7 +46,7 @@ public class Permission {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = result * prime + getId();
+        result = result * prime + getId().hashCode();
 
         return result;
     }

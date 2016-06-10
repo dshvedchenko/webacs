@@ -13,8 +13,9 @@ import javax.persistence.*;
 @Table(name = "resource", schema = "app")
 public class Resource {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "kind")
     private String kind;
@@ -47,7 +48,7 @@ public class Resource {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = result * prime + getId();
+        result = result * prime + getId().hashCode();
 
         return result;
     }
