@@ -18,4 +18,8 @@
     </beans:bean>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:annotation-driven/>
+    <context:annotation-config/>
+    <!-- Load Hibernate related configuration -->
+    <beans:import resource="hibernate-context.cfg.xml"/>
+
 </beans:beans>

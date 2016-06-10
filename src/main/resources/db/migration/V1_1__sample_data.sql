@@ -1,3 +1,5 @@
+BEGIN;
+
 INSERT INTO app.appuser (
   username
   , password
@@ -19,14 +21,14 @@ INSERT INTO app.resource (
   name
   , kind
   , detail
-  , owner_role_id
+  , owner_permission_id
 )
 VALUES
   ('xDep Calendar', 'Calendar', 'xDep shared calendar', NULL),
   ('xDep wiki space', 'wiki', 'xDep wiki ', NULL),
   ('Large RestRoom', 'room', 'company shared rest room', NULL);
 
-INSERT INTO app.resource_role (
+INSERT INTO app.permission (
   resource_id
   , title
   , description
@@ -58,14 +60,14 @@ VALUES
     WHERE name = 'Large RestRoom'), 'Owner', 'owners');
 
 UPDATE app.resource res
-SET owner_role_id = rr.id
-FROM app.resource_role rr
+SET owner_permission_id = rr.id
+FROM app.permission rr
 WHERE res.id = rr.resource_id AND rr.title = 'Owner';
 
-INSERT INTO app.role_claim
+INSERT INTO app.permission_claim
 (
   user_id
-  , resource_role_id
+  , permission_id
   , state_id
   , approver_id
   , approved_at
@@ -99,13 +101,13 @@ INSERT INTO app.role_claim
        ) demo
     JOIN app.appuser au ON demo.column1 = au.username
     JOIN app.resource r ON r.name = demo.column2 AND r.kind = demo.column3
-    JOIN app.resource_role rr ON r.id = rr.resource_id AND rr.title = demo.column4
+    JOIN app.permission rr ON r.id = rr.resource_id AND rr.title = demo.column4
     JOIN app.appuser appr ON appr.username = demo.column5
     JOIN app.appuser gr ON gr.username = demo.column6;
 
-INSERT INTO app.user_resource_role
+INSERT INTO app.user_permission
 (
-  resource_role_id
+  permission_id
   , user_id
   , start_at
   , end_at
@@ -113,10 +115,12 @@ INSERT INTO app.user_resource_role
   , deleted
 )
   SELECT
-    resource_role_id,
+    permission_id,
     user_id,
     now(),
     'infinity',
     id,
     FALSE
-  FROM app.role_claim;
+  FROM app.permission_claim;
+
+COMMIT;
