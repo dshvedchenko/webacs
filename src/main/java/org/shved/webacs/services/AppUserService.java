@@ -19,7 +19,7 @@ public class AppUserService {
 
     public List<AppUserDTO> getAll() {
         List<AppUserDTO> appUserDTOs = new LinkedList<>();
-        List<AppUser> appUsers = appUserDAO.list();
+        List<AppUser> appUsers = appUserDAO.findAllAppUsers();
 
         for (AppUser u : appUsers) {
             AppUserDTO a = new AppUserDTO();

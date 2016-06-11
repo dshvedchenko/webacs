@@ -117,7 +117,7 @@ INSERT INTO app.user_permission
   SELECT
     permission_id,
     user_id,
-    now(),
+    now() - INTERVAL '1 day',
     'infinity',
     id,
     FALSE

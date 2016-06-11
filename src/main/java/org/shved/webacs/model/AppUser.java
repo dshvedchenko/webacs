@@ -56,4 +56,14 @@ public class AppUser {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb
+                .append("ID : " + id + "\r\n")
+                .append("USERNAME : " + username + "\r\n")
+                .append("EMAIL : " + email + "\r\n");
+        return sb.toString();
+    }
 }

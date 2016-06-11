@@ -1,6 +1,7 @@
 package org.shved.webacs.dao.impl;
 
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
+import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/10/16.
  */
-public class AppUserDAOImpl implements AppUserDAO {
+public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUserDAO {
 
     @Autowired
     public SessionFactory sessionFactory;
@@ -20,12 +21,33 @@ public class AppUserDAOImpl implements AppUserDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
+
+    @SuppressWarnings("unchecked")
+//    @Transactional
+    public List<AppUser> findAllAppUsers() {
+        Criteria criteria = createEntityCriteria(AppUser.class);
+        return (List<AppUser>) criteria.setFetchMode("permissions", FetchMode.JOIN).list();
+    }
+
+    @SuppressWarnings("unchecked")
+//    @Transactional
+    public AppUser findById(Long id) {
+        return getByKey(id, AppUser.class);
+    }
+
+    @SuppressWarnings("unchecked")
     @Transactional
-    public List<AppUser> list() {
-        List<AppUser> listUser = (List<AppUser>) sessionFactory.getCurrentSession()
-                .createCriteria(AppUser.class)
-                .list();
-        return listUser;
+    public void saveAppUser(AppUser user) {
+        persist(user);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        Session sess = getSession();
+        Query query = sess.createSQLQuery("DELETE FROM app.appuser WHERE id = :id");
+        query.setLong("id", id);
+        query.executeUpdate();
     }
 }
