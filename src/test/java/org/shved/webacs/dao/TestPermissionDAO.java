@@ -61,6 +61,22 @@ public class TestPermissionDAO extends AbstractRepositoryTest {
     }
 
     @Test
+    public void deleteById() {
+        Resource resource = resourceDAO.findAllResources().get(0);
+        Permission permission = new Permission();
+        permission.setResource(resource);
+        permission.setDescription("some description");
+        permission.setTitle("Any Kind of Rights");
+
+        permissionDAO.savePermission(permission);
+
+        permissionDAO.deleteById(permission.getId());
+
+        Permission pr = permissionDAO.findById(permission.getId());
+        Assert.assertNull(pr);
+    }
+
+    @Test
     public void findByResource() {
         Resource resource = resourceDAO.findAllResources().get(0);
         List<Permission> permissions = permissionDAO.findAllByResource(resource);
