@@ -74,6 +74,8 @@ INSERT INTO app.permission_claim
   , claimed_at
   , granted_at
   , granter_id
+  , start_at
+  , end_at
 ) SELECT
     au.id,
     rr.id,
@@ -82,7 +84,9 @@ INSERT INTO app.permission_claim
     now() AS approved_at,
     now() AS claimed_at,
     now() AS granted_at,
-    gr.id
+    gr.id,
+    now() - INTERVAL '1 day',
+    'infinity'
   FROM (VALUES
     ('billk', 'xDep Calendar', 'Calendar', 'Owner', 'admin', 'admin'),
     ('johns', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin'),
@@ -109,18 +113,12 @@ INSERT INTO app.user_permission
 (
   permission_id
   , user_id
-  , start_at
-  , end_at
   , claim_id
-  , disabled
 )
   SELECT
     permission_id,
     user_id,
-    now() - INTERVAL '1 day',
-    'infinity',
-    id,
-    FALSE
+    id
   FROM app.permission_claim;
 
 COMMIT;

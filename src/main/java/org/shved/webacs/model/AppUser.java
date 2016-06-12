@@ -1,6 +1,7 @@
 package org.shved.webacs.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,12 +14,19 @@ import java.util.List;
 @Table(name = "appuser", schema = "app")
 //appuser
 public class AppUser {
-    @OneToMany(mappedBy = "user")
-    List<UserPermission> permissions;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @ManyToMany
+    @JoinTable(schema = "app", name = "user_permission"
+            , joinColumns = @JoinColumn(name = "user_id")
+            , inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private List<Permission> permissions;
+
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -33,6 +41,10 @@ public class AppUser {
     private Boolean enabled;
     @Column(name = "sysrole")
     private Integer sysrole;
+
+    @OneToMany(mappedBy = "user")
+    @Getter
+    private List<PermissionClaim> permissionClaims;
 
     @Override
     public boolean equals(Object obj) {

@@ -75,10 +75,7 @@ CREATE TABLE app.user_permission
   id            BIGSERIAL NOT NULL,
   permission_id BIGINT,
   user_id       BIGINT,
-  start_at      TIMESTAMP WITH TIME ZONE,
-  end_at        TIMESTAMP WITH TIME ZONE,
   claim_id      BIGINT,
-  disabled      BOOLEAN,
   CONSTRAINT user_permission_pkey PRIMARY KEY (id),
   CONSTRAINT user_permission_permission_id_fkey FOREIGN KEY (permission_id)
   REFERENCES app.permission (id) MATCH SIMPLE

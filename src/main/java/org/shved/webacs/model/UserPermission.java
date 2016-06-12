@@ -27,17 +27,6 @@ public class UserPermission {
     @JoinColumn(name = "permission_id", referencedColumnName = "id")
     private Permission permission;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_at")
-    private Date startAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_at")
-    private Date endAt;
-
-    @Column(name = "disabled")
-    private Boolean disabled;
-
     @OneToOne
     @JoinColumn(name = "claim_id", referencedColumnName = "id")
     private PermissionClaim claim;
@@ -57,13 +46,7 @@ public class UserPermission {
 
         if (this.getPermission() != inputObj.getPermission()) return false;
 
-        if (this.getStartAt() == null && inputObj.getStartAt() != null) return false;
-        if (inputObj.getStartAt() == null && this.getStartAt() != null) return false;
-        if (this.getStartAt() != inputObj.getStartAt()) return false;
 
-        if (this.getEndAt() == null && inputObj.getEndAt() != null) return false;
-        if (inputObj.getEndAt() == null && this.getEndAt() != null) return false;
-        if (this.getEndAt() != inputObj.getEndAt()) return false;
 
         return true;
     }

@@ -17,7 +17,7 @@ public interface UserPermissionDAO {
 
     List<UserPermission> findAllByPermission(Long id);
 
-    void disable(UserPermission userPermission);
+    void deleteByClaimId(Long claimId);
 
     void saveUserPermission(UserPermission userPermission);
 

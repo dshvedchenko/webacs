@@ -71,6 +71,14 @@ public class PermissionClaim {
 
         if (this.getClaimedAt() != inputObj.getClaimedAt()) return false;
 
+        if (this.getStartAt() == null && inputObj.getStartAt() != null) return false;
+        if (inputObj.getStartAt() == null && this.getStartAt() != null) return false;
+        if (this.getStartAt() != inputObj.getStartAt()) return false;
+
+        if (this.getEndAt() == null && inputObj.getEndAt() != null) return false;
+        if (inputObj.getEndAt() == null && this.getEndAt() != null) return false;
+        if (this.getEndAt() != inputObj.getEndAt()) return false;
+
         return true;
     }
 
