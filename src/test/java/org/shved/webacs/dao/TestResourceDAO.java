@@ -32,4 +32,52 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         Assert.assertNotNull(resourceList);
         Assert.assertTrue(resourceList.size() > 0);
     }
+
+    @Test
+    public void findById() {
+        Resource resource = new Resource();
+        resource.setKind("Software Instance");
+        resource.setName("Redhat Linux AS 32");
+        resource.setDetail("some description");
+        resourceDAO.saveResource(resource);
+        Resource foundRes = resourceDAO.findById(resource.getId());
+        Assert.assertNotNull(foundRes);
+    }
+
+    @Test
+    public void delete() {
+        Resource resource = new Resource();
+        resource.setKind("Software Instance");
+        resource.setName("Redhat Linux AS 32");
+        resource.setDetail("some description");
+        resourceDAO.saveResource(resource);
+        resourceDAO.delete(resource);
+        Assert.assertNotNull(resource);
+    }
+
+
+    @Test
+    public void deleteById() {
+        Resource resource = new Resource();
+        resource.setKind("Software Instance");
+        resource.setName("Redhat Linux AS 32");
+        resource.setDetail("some description");
+        resourceDAO.saveResource(resource);
+        resourceDAO.deleteById(resource.getId());
+        Resource res = resourceDAO.findById(resource.getId());
+        Assert.assertNull(res);
+    }
+
+    @Test
+    public void findAllByKind() {
+        List<Resource> resources = resourceDAO.findAllByKind("room");
+        Assert.assertTrue(resources.size() > 0);
+    }
+
+    @Test
+    public void findByName() {
+        Resource resource = resourceDAO.findByName("xDep wiki space");
+        Assert.assertNotNull(resource);
+    }
+
 }

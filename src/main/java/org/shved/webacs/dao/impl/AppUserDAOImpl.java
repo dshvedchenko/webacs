@@ -46,10 +46,7 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUse
     @Transactional
     @Override
     public void deleteById(Long id) {
-        Session sess = getSession();
-        Query query = sess.createSQLQuery("DELETE FROM app.appuser WHERE id = :id");
-        query.setLong("id", id);
-        query.executeUpdate();
+        getSession().delete(getSession().get(AppUser.class, id));
     }
 
 

@@ -26,7 +26,7 @@ public class Resource {
     @Column(name = "detail")
     private String detail;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_permission_id")
     private Permission ownerPermission;
 
@@ -53,5 +53,11 @@ public class Resource {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("RESOURCE : ").append(getName()).append(" [").append(getId()).append("]");
+        return sb.toString();
+    }
 
 }

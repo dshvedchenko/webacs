@@ -1,8 +1,6 @@
 package org.shved.webacs.dao.impl;
 
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.ResourceDAO;
@@ -43,13 +41,14 @@ public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements Reso
     @Transactional
     public void saveResource(Resource resource) {
         persist(resource);
+        getSession().flush();
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     @Transactional
+    @Override
     public void deleteById(Long id) {
-
+        getSession().delete(getSession().get(Resource.class, id));
     }
 
     @Override

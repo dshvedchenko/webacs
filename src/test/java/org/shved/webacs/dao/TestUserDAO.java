@@ -71,7 +71,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
         Assert.assertNull(findDeleted);
     }
 
-    @Ignore(" not solved delete after create")
+
     @Test
     public void deleteUserById() throws Exception {
         AppUser user = initUser();

@@ -24,7 +24,7 @@ public class UserPermission {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AppUser user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "permission_id", referencedColumnName = "id")
     private Permission permission;
 

@@ -3,6 +3,7 @@ package org.shved.webacs.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,20 +14,27 @@ import java.util.Set;
 @Entity
 @Table(name = "permission", schema = "app")
 public class Permission {
-    @OneToMany(mappedBy = "permission")
-    Set<UserPermission> appUsers;
-    //resource_id
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @OneToMany(mappedBy = "permission")
+    private Set<UserPermission> appUsers;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "permission")
+    private List<UserPermission> userPermissions;
 
     @Override
     public boolean equals(Object obj) {

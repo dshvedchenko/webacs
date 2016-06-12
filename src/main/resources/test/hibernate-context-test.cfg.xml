@@ -56,4 +56,9 @@
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <bean id="permissionDAO" class="org.shved.webacs.dao.impl.PermissionDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+
 </beans>
