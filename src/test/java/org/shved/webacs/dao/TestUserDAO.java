@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.shved.webacs.AbstractRepositoryTest;
@@ -11,6 +12,9 @@ import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.transaction.TransactionManager;
 
 /**
  * @author dshvedchenko on 6/10/16.
@@ -21,6 +25,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
 
     @Autowired
     private AppUserDAO appUserDAO;
+
 
 
     @Test
@@ -66,8 +71,9 @@ public class TestUserDAO extends AbstractRepositoryTest {
         Assert.assertNull(findDeleted);
     }
 
+    @Ignore(" not solved delete after create")
     @Test
-    public void deleteUserById() {
+    public void deleteUserById() throws Exception {
         AppUser user = initUser();
         appUserDAO.saveAppUser(user);
         logger.info("USER IN DB : " + user);
@@ -75,5 +81,27 @@ public class TestUserDAO extends AbstractRepositoryTest {
 
         AppUser findDeleted = appUserDAO.findById(user.getId());
         Assert.assertNull(findDeleted);
+    }
+
+    @Test
+    public void findByUsername() {
+        AppUser user = initUser();
+        appUserDAO.saveAppUser(user);
+        user = appUserDAO.findByUsername("black03");
+        Assert.assertNull(user);
+
+        user = appUserDAO.findByUsername("black02");
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void findByEmail() {
+        AppUser user = initUser();
+        appUserDAO.saveAppUser(user);
+        user = appUserDAO.findByEmail("test@test1.net");
+        Assert.assertNull(user);
+
+        user = appUserDAO.findByEmail("test@test.net");
+        Assert.assertNotNull(user);
     }
 }

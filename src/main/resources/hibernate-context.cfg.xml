@@ -46,4 +46,8 @@
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <bean id="resourceDAO" class="org.shved.webacs.dao.impl.ResourceDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
 </beans>

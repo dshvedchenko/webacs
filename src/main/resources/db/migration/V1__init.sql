@@ -78,7 +78,7 @@ CREATE TABLE app.user_permission
   start_at      TIMESTAMP WITH TIME ZONE,
   end_at        TIMESTAMP WITH TIME ZONE,
   claim_id      BIGINT,
-  deleted       BOOLEAN,
+  disabled      BOOLEAN,
   CONSTRAINT user_permission_pkey PRIMARY KEY (id),
   CONSTRAINT user_permission_permission_id_fkey FOREIGN KEY (permission_id)
   REFERENCES app.permission (id) MATCH SIMPLE
@@ -109,6 +109,8 @@ CREATE TABLE app.permission_claim
   claimed_at    TIMESTAMP(6) WITH TIME ZONE,
   granted_at    TIMESTAMP(6) WITH TIME ZONE,
   granter_id    BIGINT,
+  start_at      TIMESTAMP WITH TIME ZONE,
+  end_at        TIMESTAMP WITH TIME ZONE,
   CONSTRAINT permission_claim_pkey PRIMARY KEY (id),
   CONSTRAINT approved_by_fk FOREIGN KEY (approver_id)
   REFERENCES app.appuser (id) MATCH SIMPLE

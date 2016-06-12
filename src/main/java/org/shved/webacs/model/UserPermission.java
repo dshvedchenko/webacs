@@ -36,8 +36,8 @@ public class UserPermission {
     @Column(name = "end_at")
     private Date endAt;
 
-    @Column(name = "deleted")
-    private Boolean deleted;
+    @Column(name = "disabled")
+    private Boolean disabled;
 
     @OneToOne
     @JoinColumn(name = "claim_id", referencedColumnName = "id")

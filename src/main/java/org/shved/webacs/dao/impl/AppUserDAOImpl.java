@@ -1,6 +1,7 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.model.AppUser;
@@ -49,5 +50,27 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUse
         Query query = sess.createSQLQuery("DELETE FROM app.appuser WHERE id = :id");
         query.setLong("id", id);
         query.executeUpdate();
+    }
+
+
+    protected AppUser findByStringProperty(String propName, String value) {
+        Criteria criteria = getSession().createCriteria(AppUser.class);
+        criteria.add(Restrictions.eq(propName, value).ignoreCase());
+        Object userObj = criteria.uniqueResult();
+        AppUser appUser = null;
+        if (userObj != null) {
+            appUser = (AppUser) userObj;
+        }
+        return appUser;
+    }
+
+    @Override
+    public AppUser findByUsername(String username) {
+        return findByStringProperty("username", username);
+    }
+
+    @Override
+    public AppUser findByEmail(String email) {
+        return findByStringProperty("email", email);
     }
 }

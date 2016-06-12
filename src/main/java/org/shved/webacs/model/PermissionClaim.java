@@ -46,6 +46,14 @@ public class PermissionClaim {
     @Column(name = "granted_at")
     private Date grantedAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_at")
+    private Date startAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_at")
+    private Date endAt;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

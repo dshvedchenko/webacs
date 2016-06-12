@@ -20,4 +20,8 @@ public interface AppUserDAO {
     void delete(AppUser user);
 
     void deleteById(Long id);
+
+    AppUser findByUsername(String username);
+
+    AppUser findByEmail(String email);
 }

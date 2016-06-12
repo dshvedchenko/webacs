@@ -112,7 +112,7 @@ INSERT INTO app.user_permission
   , start_at
   , end_at
   , claim_id
-  , deleted
+  , disabled
 )
   SELECT
     permission_id,
