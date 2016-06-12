@@ -1,6 +1,5 @@
 package org.shved.webacs.model;
 
-import com.sun.istack.internal.Nullable;
 import lombok.Data;
 
 import javax.persistence.*;

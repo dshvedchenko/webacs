@@ -20,7 +20,7 @@ public interface PermissionDAO {
 
     void deleteById(Long id);
 
-    Permission findByTitle(String title);
+    List<Permission> findAllByTitle(String title);
 
     List<Permission> findAllByAppUser(AppUser appUser);
 

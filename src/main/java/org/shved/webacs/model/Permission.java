@@ -1,6 +1,7 @@
 package org.shved.webacs.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Permission {
     private String description;
 
     @OneToMany(mappedBy = "permission")
+    @Getter
     private List<UserPermission> userPermissions;
 
     @Override

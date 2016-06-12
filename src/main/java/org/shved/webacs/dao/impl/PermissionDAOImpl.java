@@ -48,10 +48,10 @@ public class PermissionDAOImpl extends AbstractDao<Long, Permission> implements 
     }
 
     @Override
-    public Permission findByTitle(String title) {
+    public List<Permission> findAllByTitle(String title) {
         Criteria criteria = getSession().createCriteria(Permission.class)
                 .add(Restrictions.eq("title", title).ignoreCase());
-        return (Permission) criteria.uniqueResult();
+        return criteria.list();
     }
 
     @Override
