@@ -7,9 +7,11 @@ import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Permission;
+import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +29,9 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
 
     @Autowired
     AppUserDAO appUserDAO;
+
+    @Autowired
+    PermissionClaimDAO permissionClaimDAO;
 
     @Test
     public void testDao() {
@@ -49,7 +54,13 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
     public void deleteAllToBeRevoked() {
         List<UserPermission> userPermissionList = userPermissionDAO.findAllToBeRevoked();
         for (UserPermission userPermission : userPermissionList) {
+            PermissionClaim permissionClaim = userPermission.getClaim();
+            permissionClaim.setRevokedAt(new Date());
+            permissionClaim.setRevoker(appUserDAO.findByUsername("admin"));
+            permissionClaimDAO.savePermissionClaim(permissionClaim);
             userPermissionDAO.deleteByClaim(userPermission.getClaim());
+            UserPermission upDeleted = userPermissionDAO.findById(userPermission.getId());
+            Assert.assertNull(upDeleted);
         }
     }
 }

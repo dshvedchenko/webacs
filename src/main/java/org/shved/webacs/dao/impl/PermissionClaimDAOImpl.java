@@ -33,6 +33,11 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     }
 
     @Override
+    public void savePermissionClaim(PermissionClaim permissionClaim) {
+        persist(permissionClaim);
+    }
+
+    @Override
     public List<PermissionClaim> findAllPermissionClaimByClaimState(ClaimState claimState) {
         Criteria criteria = getSession().createCriteria(PermissionClaim.class)
                 .add(Restrictions.eq("claimState", claimState));

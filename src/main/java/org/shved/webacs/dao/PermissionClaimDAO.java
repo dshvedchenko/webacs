@@ -12,5 +12,6 @@ import java.util.List;
 public interface PermissionClaimDAO {
     List<PermissionClaim> findAllPermissionClaim();
 
+    void savePermissionClaim(PermissionClaim permissionClaim);
     List<PermissionClaim> findAllPermissionClaimByClaimState(ClaimState claimState);
 }
