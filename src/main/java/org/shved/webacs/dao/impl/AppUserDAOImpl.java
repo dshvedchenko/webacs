@@ -24,14 +24,14 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUse
 
 
     @SuppressWarnings("unchecked")
-//    @Transactional
+    @Transactional
     public List<AppUser> findAllAppUsers() {
         Criteria criteria = createEntityCriteria(AppUser.class);
         return (List<AppUser>) criteria.setFetchMode("permissions", FetchMode.JOIN).list();
     }
 
     @SuppressWarnings("unchecked")
-//    @Transactional
+    @Transactional
     public AppUser findById(Long id) {
         return getByKey(id, AppUser.class);
     }
