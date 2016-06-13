@@ -37,8 +37,19 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
     public void findAllUserPermission() {
         List<UserPermission> userPermissionList = userPermissionDAO.findAllUserPermissions();
         Assert.assertTrue(userPermissionList.size() > 0);
-
-
     }
 
+    @Test
+    public void findAllToBeRevoked() {
+        List<UserPermission> userPermissionList = userPermissionDAO.findAllToBeRevoked();
+        Assert.assertTrue(userPermissionList.size() == 1);
+    }
+
+    @Test
+    public void deleteAllToBeRevoked() {
+        List<UserPermission> userPermissionList = userPermissionDAO.findAllToBeRevoked();
+        for (UserPermission userPermission : userPermissionList) {
+            userPermissionDAO.deleteByClaim(userPermission.getClaim());
+        }
+    }
 }

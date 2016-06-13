@@ -30,7 +30,7 @@ public class PermissionClaim {
     @Column(name = "claimed_at")
     private Date claimedAt;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approver_id", referencedColumnName = "id")
     private AppUser approver;
 
@@ -38,13 +38,22 @@ public class PermissionClaim {
     @Column(name = "approved_at")
     private Date approvedAt;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "granter_id", referencedColumnName = "id")
     private AppUser granter;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "granted_at")
     private Date grantedAt;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "revoker_id", referencedColumnName = "id")
+    private AppUser revoker;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "revoked_at")
+    private Date revokedAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_at")
@@ -53,6 +62,10 @@ public class PermissionClaim {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_at")
     private Date endAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "state_id")
+    private ClaimState claimState;
 
     @Override
     public boolean equals(Object obj) {

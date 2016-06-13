@@ -95,17 +95,32 @@ ALTER TABLE app.user_permission
 
 -- DROP TABLE app.permission_claim;
 
+CREATE TABLE app.claim_state
+(
+  id   INTEGER NOT NULL,
+  name VARCHAR(16),
+  CONSTRAINT claim_state_pkey PRIMARY KEY (id),
+  CONSTRAINT unique_name UNIQUE (name)
+)
+WITH (
+OIDS = FALSE
+);
+ALTER TABLE app.claim_state
+  OWNER TO acs_app;
+
 CREATE TABLE app.permission_claim
 (
-  id            BIGSERIAL NOT NULL,
+  id            BIGSERIAL                                 NOT NULL,
   user_id       BIGINT,
   permission_id BIGINT,
-  state_id      INTEGER,
+  state_id      INTEGER DEFAULT 0,
   approver_id   BIGINT,
   approved_at   TIMESTAMP WITH TIME ZONE,
-  claimed_at    TIMESTAMP(6) WITH TIME ZONE,
+  claimed_at    TIMESTAMP(6) WITH TIME ZONE DEFAULT NOW() NOT NULL,
   granted_at    TIMESTAMP(6) WITH TIME ZONE,
   granter_id    BIGINT,
+  revoked_at    TIMESTAMP(6) WITH TIME ZONE,
+  revoker_id    BIGINT,
   start_at      TIMESTAMP WITH TIME ZONE,
   end_at        TIMESTAMP WITH TIME ZONE,
   CONSTRAINT permission_claim_pkey PRIMARY KEY (id),
@@ -121,7 +136,12 @@ CREATE TABLE app.permission_claim
   CONSTRAINT granted_by_fk FOREIGN KEY (granter_id)
   REFERENCES app.appuser (id) MATCH SIMPLE
   ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT permission_claim_user_id_permission_id_granted_at_key UNIQUE (user_id, permission_id, granted_at)
+  CONSTRAINT revoked_by_fk FOREIGN KEY (revoker_id)
+  REFERENCES app.appuser (id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT claim_state_fk FOREIGN KEY (state_id)
+  REFERENCES app.claim_state (id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE RESTRICT
 )
 WITH (
 OIDS = FALSE
@@ -133,3 +153,9 @@ ALTER TABLE app.user_permission
   ADD CONSTRAINT controlled_by_claim FOREIGN KEY (claim_id)
 REFERENCES app.permission_claim (id) MATCH SIMPLE
 ON UPDATE CASCADE ON DELETE RESTRICT;
+
+CREATE UNIQUE INDEX permission_claim_user_id_permission_id_initial ON app.permission_claim (user_id, permission_id)
+  WHERE state_id = 0;
+
+CREATE UNIQUE INDEX permission_claim_user_id_permission_id_claimed_at_key ON app.permission_claim (user_id, permission_id, claimed_at);
+

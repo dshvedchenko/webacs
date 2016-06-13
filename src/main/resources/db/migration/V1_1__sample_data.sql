@@ -1,4 +1,3 @@
-BEGIN;
 
 INSERT INTO app.appuser (
   username
@@ -64,6 +63,12 @@ SET owner_permission_id = rr.id
 FROM app.permission rr
 WHERE res.id = rr.resource_id AND rr.title = 'Owner';
 
+INSERT INTO app.claim_state (
+  id
+  , name
+) VALUES (0, 'CLAIMED'), (1, 'APPROVED'), (2, 'GRANTED'), (3, 'REVOKED');
+
+
 INSERT INTO app.permission_claim
 (
   user_id
@@ -86,22 +91,22 @@ INSERT INTO app.permission_claim
     now() AS granted_at,
     gr.id,
     now() - INTERVAL '1 day',
-    'infinity'
+    demo.column7 :: TIMESTAMPTZ
   FROM (VALUES
-    ('billk', 'xDep Calendar', 'Calendar', 'Owner', 'admin', 'admin'),
-    ('johns', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin'),
-    ('maryl', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin'),
-    ('ninaa', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin'),
-    ('billk', 'xDep wiki space', 'wiki', 'Owner', 'admin', 'admin'),
-    ('ninaa', 'xDep wiki space', 'wiki', 'Owner', 'billk', 'admin'),
-    ('johns', 'xDep wiki space', 'wiki', 'Reader', 'ninaa', 'admin'),
-    ('maryl', 'xDep wiki space', 'wiki', 'Editor', 'ninaa', 'admin'),
-    ('ninaa', 'xDep wiki space', 'wiki', 'Editor', 'ninaa', 'admin'),
-    ('billk', 'xDep wiki space', 'room', 'Owner', 'admin', 'admin'),
-    ('ninaa', 'xDep wiki space', 'room', 'Coordinator', 'billk', 'admin'),
-    ('johns', 'xDep wiki space', 'room', 'Visitor', 'ninaa', 'admin'),
-    ('maryl', 'xDep wiki space', 'room', 'Visitor', 'ninaa', 'admin'),
-    ('ninaa', 'xDep wiki space', 'room', 'Visitor', 'ninaa', 'admin')
+    ('billk', 'xDep Calendar', 'Calendar', 'Owner', 'admin', 'admin', 'infinity'),
+    ('johns', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin', 'infinity'),
+    ('maryl', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin', 'infinity'),
+    ('ninaa', 'xDep Calendar', 'Calendar', 'Reader', 'billk', 'admin', 'infinity'),
+    ('billk', 'xDep wiki space', 'wiki', 'Owner', 'admin', 'admin', 'infinity'),
+    ('ninaa', 'xDep wiki space', 'wiki', 'Owner', 'billk', 'admin', 'infinity'),
+    ('johns', 'xDep wiki space', 'wiki', 'Reader', 'ninaa', 'admin', 'infinity'),
+    ('maryl', 'xDep wiki space', 'wiki', 'Editor', 'ninaa', 'admin', 'infinity'),
+    ('ninaa', 'xDep wiki space', 'wiki', 'Editor', 'ninaa', 'admin', 'infinity'),
+    ('billk', 'Large RestRoom', 'room', 'Owner', 'admin', 'admin', 'infinity'),
+    ('ninaa', 'Large RestRoom', 'room', 'Coordinator', 'billk', 'admin', 'infinity'),
+    ('johns', 'Large RestRoom', 'room', 'Visitor', 'ninaa', 'admin', 'infinity'),
+    ('maryl', 'Large RestRoom', 'room', 'Visitor', 'ninaa', 'admin', 'infinity'),
+    ('ninaa', 'Large RestRoom', 'room', 'Visitor', 'ninaa', 'admin', '20160515')
        ) demo
     JOIN app.appuser au ON demo.column1 = au.username
     JOIN app.resource r ON r.name = demo.column2 AND r.kind = demo.column3
@@ -121,4 +126,3 @@ INSERT INTO app.user_permission
     id
   FROM app.permission_claim;
 
-COMMIT;

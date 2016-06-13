@@ -1,5 +1,7 @@
 package org.shved.webacs.dao;
 
+import org.shved.webacs.model.Permission;
+import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
 
 import java.util.List;
@@ -17,10 +19,12 @@ public interface UserPermissionDAO {
 
     List<UserPermission> findAllByPermission(Long id);
 
-    void deleteByClaimId(Long claimId);
+    void deleteByClaim(PermissionClaim claim);
 
     void saveUserPermission(UserPermission userPermission);
 
-    UserPermission findByClaimId(Long claimId);
+    UserPermission findByClaim(PermissionClaim claim);
+
+    List<UserPermission> findAllToBeRevoked();
 
 }

@@ -5,11 +5,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.UserPermissionDAO;
+import org.shved.webacs.model.Permission;
+import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,10 +54,9 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void deleteByClaimId(Long claimId) {
-        getSession().delete(findByClaimId(claimId));
+    public void deleteByClaim(PermissionClaim claim) {
+        getSession().delete(findByClaim(claim));
     }
-
 
     @Override
     public void saveUserPermission(UserPermission userPermission) {
@@ -62,9 +64,21 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
     }
 
     @Override
-    public UserPermission findByClaimId(Long claimId) {
+    public UserPermission findByClaim(PermissionClaim claim) {
         Criteria criteria = getSession().createCriteria(UserPermission.class)
-                .add(Restrictions.eq("claim_id", claimId));
+                .add(Restrictions.eq("claim", claim));
         return (UserPermission) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<UserPermission> findAllToBeRevoked() {
+        Criteria criteria = getSession().createCriteria(UserPermission.class)
+                .createAlias("claim", "cl")
+                .add(Restrictions.and(
+                        Restrictions.lt("cl.endAt", new Date()),
+                        Restrictions.ne("cl.claimState.id", 3)
+                        )
+                );
+        return criteria.list();
     }
 }
