@@ -6,7 +6,7 @@ CREATE TABLE app.appuser
 (
   id        BIGSERIAL NOT NULL,
   username  CHARACTER VARYING(64),
-  password  CHARACTER VARYING(64), -- to store as md5/sha256 hash, and need to use Apache Shiro
+  password  CHARACTER VARYING(128), -- to store as md5/sha256 hash, and need to use Apache Shiro
   firstname CHARACTER VARYING(64),
   lastname  CHARACTER VARYING(64),
   email     CHARACTER VARYING(64),

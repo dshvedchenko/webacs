@@ -9,11 +9,16 @@ INSERT INTO app.appuser (
   , enabled
 )
 VALUES
-  ('admin', '1qaz2wsx', 'admin', 'admin', 'admin@example.com', 0, TRUE)
-  , ('johns', '1qaz2wsx', 'John', 'Salivan', 'johns@example.com', 1, TRUE)
-  , ('billk', '1qaz2wsx', 'Bill', 'Klark', 'billk@example.com', 1, TRUE)
-  , ('maryl', '1qaz2wsx', 'Mary', 'Linn', 'maryl@example.com', 1, TRUE)
-  , ('ninaa', '1qaz2wsx', 'Nina', 'Alessio', 'ninaa@example.com', 1, TRUE);
+  ('admin', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'admin', 'admin', 'admin@example.com', 0,
+   TRUE)
+  , ('johns', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'John', 'Salivan', 'johns@example.com', 1,
+     TRUE)
+  , ('billk', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Bill', 'Klark', 'billk@example.com', 1,
+     TRUE)
+  , ('maryl', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Mary', 'Linn', 'maryl@example.com', 1,
+     TRUE)
+  , ('ninaa', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
+     TRUE);
 
 
 INSERT INTO app.resource (

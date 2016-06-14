@@ -11,7 +11,12 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "permission_claim", schema = "app")
+@Table(name = "permission_claim", schema = "app"
+        , uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "permission_id", "claimed_at"})
+}
+)
+
 public class PermissionClaim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
