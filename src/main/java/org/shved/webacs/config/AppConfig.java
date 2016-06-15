@@ -1,6 +1,11 @@
-package org.shved.webacs;
+package org.shved.webacs.config;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -8,12 +13,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-@EnableWebMvc
+import java.util.List;
+
+import org.jboss.logging.Logger;
+
+@EnableWebMvc //<mvc:annotation-driven />
 @Configuration
 @ComponentScan({"org.shved.webacs.*"})
 @Import({SecurityConfig.class})
-@ImportResource(locations = "classpath:hibernate-context.cfg.xml")
+@ImportResource(locations =
+        {"classpath:hibernate-context.cfg.xml"
+                , "classpath:message-converters.xml"}
+)
 public class AppConfig extends WebMvcConfigurerAdapter {
+
+    Logger logger = LoggerFactory.logger(AppConfig.class);
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
@@ -34,6 +48,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/").setCachePeriod(31556926);
     }
 
     @Override

@@ -4,11 +4,9 @@ import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -23,12 +21,12 @@ public class AppUserController {
 
     @RequestMapping(
             method = RequestMethod.GET
-            , produces = {"application/json", "application/xml"}
+            , produces = {"application/xml", "application/json"}
     )
     public
     @ResponseBody
     ResponseData<List<AppUserDTO>>
-    getAll() {
+    getAll(@RequestHeader(name = "Accept") String accept) {
         List<AppUserDTO> appUserDTOs = appUserService.getAll();
         ResponseData<List<AppUserDTO>> rs = new ResponseData<>();
         if (appUserDTOs.size() == 0) {

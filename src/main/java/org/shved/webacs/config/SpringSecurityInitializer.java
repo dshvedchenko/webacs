@@ -1,4 +1,4 @@
-package org.shved.webacs;
+package org.shved.webacs.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
