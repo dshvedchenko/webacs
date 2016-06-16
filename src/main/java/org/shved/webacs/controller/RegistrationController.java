@@ -29,7 +29,7 @@ public class RegistrationController {
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
+        binder.addValidators(validator);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
