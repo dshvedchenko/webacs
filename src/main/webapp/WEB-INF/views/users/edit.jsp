@@ -13,29 +13,33 @@
 </head>
 <body>
 
-<sf:form method="post" modelAttribute="appuserDTO">
+<sf:form method="post" modelAttribute="appUserDTO">
     <fieldset>
         <table cellspacing="0">
             <tr>
                 <th><label for="user_username">Username : </label></th>
                 <td><sf:input path="username" size="15" id="user_username"/>
-                    <sf:errors path="username"/></td>
+                    <sf:errors path="username" cssClass="error"/></td>
             </tr>
             <tr>
                 <th><label for="user_password">Password : </label></th>
                 <td><sf:input path="password" size="30" id="user_password"/>
-                    <sf:errors path="password"/></td>
+                    <sf:errors path="password" cssClass="error"/></td>
             </tr>
             <tr>
                 <th><label for="user_password_confirm">Confirm password : </label></th>
-                <td><sf:input path="confirmPassword" size="30" id="user_password_confirm"/></td>
+                <td><sf:input path="confirmPassword" size="30" id="user_password_confirm"/><sf:errors
+                        path="confirmPassword" cssClass="error"/></td>
             </tr>
             <tr>
-                <th><label for="user_email">Username : </label></th>
+                <th><label for="user_email">Email: </label></th>
                 <td><sf:input path="email" size="64" id="user_email"/>
-                    <sf:errors path="email"/></td>
+                    <sf:errors path="email" cssClass="error"/></td>
             </tr>
-
+            <tr>
+                <th></th>
+                <td><input name="commit" type="submit" value="I accept. Create my account."/></td>
+            </tr>
         </table>
     </fieldset>
 </sf:form>

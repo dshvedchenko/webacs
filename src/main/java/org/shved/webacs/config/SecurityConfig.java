@@ -66,7 +66,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     , "/lib/**"
                     , "/assets/**"
                     , "/resources/**"
-                    , "/static/**");
+                    , "/static/**"
+                    , "/"
+                    , "/register");
         }
 
         @Override

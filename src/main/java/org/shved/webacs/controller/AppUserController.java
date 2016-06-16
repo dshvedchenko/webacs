@@ -40,19 +40,4 @@ public class AppUserController {
 
         return rs;
     }
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET, params = "new")
-    public String createNewUser(Model model) {
-        model.addAttribute(new AppUserDTO());
-        return "users/edit";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String addAppUserFromForm(@Valid AppUserDTO appUserDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "users/edit";
-        }
-        appUserService.registerUser(appUserDTO);
-        return "redirect:/users" + appUserDTO.getUsername();
-    }
 }

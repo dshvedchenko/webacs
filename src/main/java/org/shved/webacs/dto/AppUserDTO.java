@@ -15,8 +15,9 @@ public class AppUserDTO {
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters long.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Username must be alphanumeric with no spaces")
     private String username;
-    @Size(min = 6, max = 20, message = "The password must be at least 6 characters long.")
+    @Size(min = 6, message = "The password must be at least 6 characters long.")
     private String password;
+
     private String confirmPassword;
     private String firstname;
     private String lastname;
