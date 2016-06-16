@@ -18,15 +18,12 @@ public class AppUserService {
     AppUserDAO appUserDAO;
 
     public List<AppUserDTO> getAll() {
-        List<AppUserDTO> appUserDTOs = new LinkedList<>();
         List<AppUser> appUsers = appUserDAO.findAllAppUsers();
-
-        for (AppUser u : appUsers) {
-            AppUserDTO a = new AppUserDTO();
-            a.setUsername(u.getUsername());
-            appUserDTOs.add(a);
-        }
-
+        List<AppUserDTO> appUserDTOs = Transformer.getDTOList(appUsers);
         return appUserDTOs;
+    }
+
+    public void registerUser(AppUserDTO appUserDTO) {
+
     }
 }

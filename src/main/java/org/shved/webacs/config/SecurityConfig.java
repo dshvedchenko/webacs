@@ -24,30 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//
-//        http
-//                .antMatcher("/api/**")
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.GET ,"/api/**").authenticated()
-//                .antMatchers(HttpMethod.POST ,"/api/**").authenticated()
-//                .antMatchers(HttpMethod.DELETE ,"/api/**").authenticated()
-//                .and().httpBasic()
-//                .and()
-//
-//                .authorizeRequests()
-//                .antMatchers("/secured/**").access("hasAuthority('ADMIN')")
-//                .and().formLogin()
-//                        .loginPage("/login")
-//                        .passwordParameter("acs_password")
-//                        .usernameParameter("acs_username")
-//
-//                .and().csrf().disable()
-//                .exceptionHandling().accessDeniedPage("/Access_Denied")
-//;
-//    }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -84,16 +60,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
+            web.ignoring().antMatchers("/css/**"
+                    , "/js/**"
+                    , "/img/**"
+                    , "/lib/**"
+                    , "/assets/**"
+                    , "/resources/**"
+                    , "/static/**");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/connect/**").permitAll()
+                    //.antMatchers("/connect/**").permitAll()
                     .antMatchers("/", "/register").permitAll()
-                    .antMatchers("/secured/**").hasAuthority("ADMIN")
+                    .antMatchers("/admin/**").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                     .and() //Login Form configuration for all others
                     .formLogin()

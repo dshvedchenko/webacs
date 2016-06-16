@@ -18,12 +18,12 @@ public class DemoController {
         return model;
     }
 
-    @RequestMapping(value = "/secured", produces = {"application/json"})
+    @RequestMapping(value = "/admin", produces = {"application/json"})
     public ModelAndView helloSecured() {
         ModelAndView model = new ModelAndView();
         model.addObject("title", "Hello");
         model.addObject("message", "Secured content");
-        model.setViewName("secured");
+        model.setViewName("admin");
         return model;
     }
 }
