@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<sf:form method="post" modelAttribute="appUserDTO">
+<sf:form method="post" modelAttribute="user">
     <fieldset>
         <table cellspacing="0">
             <tr>
@@ -30,6 +30,15 @@
                 <th><label for="user_password_confirm">Confirm password : </label></th>
                 <td><sf:input path="confirmPassword" size="30" id="user_password_confirm"/><sf:errors
                         path="confirmPassword" cssClass="error"/></td>
+            </tr>
+
+            <tr>
+                <th><label for="user_firstName">Firstname: </label></th>
+                <td><sf:input path="firstName" size="64" id="user_firstName"/>
+            </tr>
+            <tr>
+                <th><label for="user_lastName">Lastname: </label></th>
+                <td><sf:input path="lastName" size="64" id="user_lastName"/>
             </tr>
             <tr>
                 <th><label for="user_email">Email: </label></th>

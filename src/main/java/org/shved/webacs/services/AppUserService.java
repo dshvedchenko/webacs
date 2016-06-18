@@ -1,29 +1,24 @@
 package org.shved.webacs.services;
 
-import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.dto.AppUserDTO;
+import org.shved.webacs.dto.UserLoginDTO;
+import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.shved.webacs.model.AuthToken;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author dshvedchenko on 6/10/16.
+ * @author dshvedchenko on 6/17/16.
  */
-@Service
-public class AppUserService {
-    @Autowired
-    AppUserDAO appUserDAO;
+public interface AppUserService {
+    List<AppUserDTO> getAll();
 
-    public List<AppUserDTO> getAll() {
-        List<AppUser> appUsers = appUserDAO.findAllAppUsers();
-        List<AppUserDTO> appUserDTOs = Transformer.getDTOList(appUsers);
-        return appUserDTOs;
-    }
+    @Transactional
+    AppUser registerUser(UserRegistrationDTO appUser);
 
-    public void registerUser(AppUserDTO appUserDTO) {
+    String restLogin(UserLoginDTO userLogin);
 
-    }
+    AuthToken isTokenValid(String token);
 }

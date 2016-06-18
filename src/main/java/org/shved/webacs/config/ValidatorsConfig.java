@@ -13,15 +13,13 @@ import org.springframework.validation.Validator;
 @Configuration
 public class ValidatorsConfig {
 
-    @Bean(name = "passwordValidator")
+
+    public static final String PASSWORD_VALIDATOR = "passwordValidator";
+
+    @Bean(name = PASSWORD_VALIDATOR)
     public Validator createPasswordValidaror() {
         return new PasswordValidator();
     }
 
-    @Bean(name = "messageSource")
-    public MessageSource createMessageSourceBean() {
-        ResourceBundleMessageSource msgSrc = new ResourceBundleMessageSource();
-        msgSrc.setBasename("validation");
-        return msgSrc;
-    }
+
 }

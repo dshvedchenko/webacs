@@ -15,7 +15,6 @@
 
 <div>
     <h2>Sign in to ACS</h2>
-    <!-- Путь к фильтру аутентификации -->
     <form method="post" class="signin" action="/login">
         <fieldset>
             <table cellspacing="0">
@@ -24,6 +23,7 @@
                     <td><input id="acs_username"
                                name="acs_username"
                                type="text"/>
+                        <small><a href="/user/registration"> Register now !</a></small>
                     </td>
                 </tr>
                 <tr>
@@ -31,7 +31,7 @@
                     <td><input id="acs_password"
                                name="acs_password"
                                type="password"/>
-                        <small><a href="/account/resend_password">Forgot?</a></small>
+                        <small><a href="/user/resend_password">Forgot?</a></small>
                     </td>
                 </tr>
                 <tr>

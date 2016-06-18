@@ -1,16 +1,16 @@
 package org.shved.webacs.controller;
 
+import org.modelmapper.ModelMapper;
 import org.shved.webacs.dto.AppUserDTO;
+import org.shved.webacs.model.AppUser;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.AppUserService;
+import org.shved.webacs.services.AppUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author dshvedchenko on 6/10/16.
@@ -21,6 +21,9 @@ public class AppUserController {
 
     @Autowired
     AppUserService appUserService;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @RequestMapping(
             method = RequestMethod.GET
@@ -40,4 +43,5 @@ public class AppUserController {
 
         return rs;
     }
+
 }

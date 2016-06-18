@@ -46,6 +46,10 @@ public class AppUser {
     @Getter
     private List<PermissionClaim> permissionClaims;
 
+    @OneToMany(mappedBy = "appUser")
+    @Getter
+    private List<AuthToken> authTokens;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

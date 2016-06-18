@@ -28,7 +28,9 @@ public class ACSUserDetailsService implements org.springframework.security.core.
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         AppUser user = appUserDAO.findByUsername(username);
+        if (!user.getEnabled()) user = null;
         List<GrantedAuthority> authorities = buildUserAuthority(user.getSysrole());
+
         return buildUserForAuthentication(user, authorities);
     }
 
