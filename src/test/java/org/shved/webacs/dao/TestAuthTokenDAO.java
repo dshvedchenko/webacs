@@ -53,4 +53,20 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
     }
 
 
+    @Test
+    public void deleteToken() {
+        AppUser user = appUserDAO.findByUsername("admin");
+        AuthToken token = new AuthToken();
+        String tokenStr = UUID.randomUUID().toString();
+        token.setAppUser(user);
+        token.setToken(tokenStr);
+        token.setLastUsed(new Date());
+        authTokenDAO.saveToken(token);
+        authTokenDAO.deleteTokenByVal(tokenStr);
+
+        AuthToken token2 = authTokenDAO.getAuthToken(tokenStr);
+        Assert.assertNull(token2);
+
+    }
+
 }

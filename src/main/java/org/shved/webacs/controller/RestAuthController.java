@@ -1,8 +1,6 @@
 package org.shved.webacs.controller;
 
-import org.shved.webacs.dto.UserLoginDTO;
-import org.shved.webacs.exception.TokenExpiredException;
-import org.shved.webacs.exception.TokenNotExistsException;
+import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.response.Error;
 import org.shved.webacs.response.ResponseData;
@@ -21,19 +19,33 @@ public class RestAuthController {
 
     @RequestMapping(value = "/api/login", consumes = "application/json", method = RequestMethod.POST)
     public ResponseData<AuthToken> login(
-            @RequestBody UserLoginDTO userLogin
+            @RequestBody UserAuthDTO userLogin
     ) {
         ResponseData rd = new ResponseData();
         String token = null;
-        try {
-            token = appUserService.restLogin(userLogin);
-        } catch (Exception tee) {
-            Error error = new Error();
-            error.setStatus(405);
-            error.setMessage(tee.getMessage());
-        }
+        token = appUserService.restLogin(userLogin);
 
         rd.setData(token);
+        return rd;
+    }
+
+    @RequestMapping(value = "/api/logout", method = RequestMethod.POST)
+    public ResponseData<AuthToken> logout(
+            @RequestHeader(name = "X-AUTHID") String token
+    ) {
+        ResponseData rd = new ResponseData();
+        appUserService.restLogout(token);
+
+        rd.setData("success");
+        return rd;
+    }
+
+    @RequestMapping(value = "/api/testdata", method = RequestMethod.POST)
+    public ResponseData<AuthToken> getTestData(
+            @RequestHeader(name = "X-AUTHID") String token
+    ) {
+        ResponseData rd = new ResponseData();
+        rd.setData(appUserService.getTestData(token));
         return rd;
     }
 }

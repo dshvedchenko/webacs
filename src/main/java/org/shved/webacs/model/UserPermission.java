@@ -31,6 +31,12 @@ public class UserPermission {
     @JoinColumn(name = "claim_id", referencedColumnName = "id")
     private PermissionClaim claim;
 
+    public void setClaim(PermissionClaim claim) {
+        this.claim = claim;
+        setUser(claim.getUser());
+        setPermission(claim.getPermission());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

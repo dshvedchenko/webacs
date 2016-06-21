@@ -17,7 +17,9 @@ public interface UserPermissionDAO {
 
     List<UserPermission> findAllByUserId(Long Id);
 
-    List<UserPermission> findAllByPermission(Long id);
+    List<UserPermission> findAllByPermissionId(Long id);
+
+    List<UserPermission> findAllByPermission(Permission permission);
 
     void deleteByClaim(PermissionClaim claim);
 

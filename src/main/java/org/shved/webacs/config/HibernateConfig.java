@@ -126,4 +126,10 @@ public class HibernateConfig {
     PermissionClaimDAO permissionClaimDAO(SessionFactory sessionFactory) {
         return new PermissionClaimDAOImpl(sessionFactory);
     }
+
+    @Bean(name = "claimStateDAO")
+    @Autowired
+    ClaimStateDAO claimStateDAO(SessionFactory sessionFactory) {
+        return new ClaimStateDAOImpl(sessionFactory);
+    }
 }

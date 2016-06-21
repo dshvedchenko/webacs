@@ -72,5 +72,8 @@
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <bean id="claimStateDAO" class="org.shved.webacs.dao.impl.ClaimStateDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
 
 </beans>

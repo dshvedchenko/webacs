@@ -8,6 +8,9 @@ import org.shved.webacs.model.AuthToken;
  */
 public interface AuthTokenDAO {
     AuthToken getAuthToken(String tokenVal);
-
     void saveToken(AuthToken token);
+
+    void deleteTokenByVal(String token);
+
+    void updateToken(String token);
 }

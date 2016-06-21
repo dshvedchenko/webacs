@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.dao.AuthTokenDAO;
 import org.shved.webacs.dto.AppUserDTO;
-import org.shved.webacs.dto.UserLoginDTO;
+import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.exception.*;
 import org.shved.webacs.model.AppUser;
@@ -66,7 +66,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public String restLogin(UserLoginDTO userLogin) {
+    public String restLogin(UserAuthDTO userLogin) {
         String result = null;
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
 
@@ -79,11 +79,28 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    @Transactional
+    public void restLogout(String token) {
+        try {
+            authTokenDAO.deleteTokenByVal(token);
+        } catch (Exception e) {
+            throw new TokenException("TOKEN DELETE");
+        }
+    }
+
+    @Override
+    public String getTestData(String token) {
+        isTokenValid(token);
+
+        return "TEST COMPLETED";
+    }
+
+    @Override
     public AuthToken isTokenValid(String tokenStr) {
         AuthToken token = authTokenDAO.getAuthToken(tokenStr);
 
         if (token == null) {
-            throw new TokenNotExistsException();
+            throw new TokenException("TOKEN NOT FOUND");
         }
 
         handleTokenExpired(token);
@@ -96,7 +113,7 @@ public class AppUserServiceImpl implements AppUserService {
         expirty.add(Calendar.HOUR, -2);
 
         if (expirty.before(token.getLastUsed())) {
-            throw new TokenExpiredException();
+            throw new TokenException("TOKEN EXPIRED");
         }
     }
 

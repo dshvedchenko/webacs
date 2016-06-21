@@ -43,15 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
-                    .antMatcher("/api/**")
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/**").authenticated()
-                    .antMatchers(HttpMethod.POST, "/api/**").authenticated()
-                    .antMatchers(HttpMethod.DELETE, "/api/**").authenticated()
-                    .anyRequest().hasAnyAuthority("ADMIN", "GENERIC")
-                    .and()
-                    .httpBasic();
+                    .antMatchers("/api/**").permitAll()
+
+//                    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+//                    .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/api/**").authenticated()
+//                    .antMatchers(HttpMethod.POST, "/api/**").authenticated()
+//                    .antMatchers(HttpMethod.DELETE, "/api/**").authenticated()
+//                    .anyRequest().hasAnyAuthority("ADMIN", "GENERIC")
+//                    .and()
+//                    .httpBasic()
+            ;
         }
     }
 
@@ -76,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
+                    //.antMatchers("/api/**").permitAll()
                     .antMatchers("/connect/**").permitAll()
                     .antMatchers("/", "/user/registration").permitAll()
                     .antMatchers("/admin/**").hasAuthority("ADMIN")

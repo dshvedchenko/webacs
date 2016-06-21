@@ -1,7 +1,7 @@
 package org.shved.webacs.services;
 
 import org.shved.webacs.dto.AppUserDTO;
-import org.shved.webacs.dto.UserLoginDTO;
+import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
@@ -18,7 +18,10 @@ public interface AppUserService {
     @Transactional
     AppUser registerUser(UserRegistrationDTO appUser);
 
-    String restLogin(UserLoginDTO userLogin);
-
+    String restLogin(UserAuthDTO userLogin);
     AuthToken isTokenValid(String token);
+
+    void restLogout(String token);
+
+    String getTestData(String token);
 }

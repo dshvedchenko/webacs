@@ -69,7 +69,7 @@ public class PermissionClaim {
     private Date endAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "state_id")
+    @JoinColumn(name = "state_id", nullable = false)
     private ClaimState claimState;
 
     @Override

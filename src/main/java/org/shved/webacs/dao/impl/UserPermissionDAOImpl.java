@@ -3,8 +3,10 @@ package org.shved.webacs.dao.impl;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.UserPermissionDAO;
+import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
@@ -41,17 +43,25 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
     @Override
     public List<UserPermission> findAllByUserId(Long Id) {
         Criteria criteria = getSession().createCriteria(UserPermission.class)
-                .add(Restrictions.eq("user_id", Id));
+                .createAlias("claim", "cl")
+                .add(Restrictions.eq("cl.user.id", Id));
         return criteria.list();
     }
 
     @Override
-    public List<UserPermission> findAllByPermission(Long id) {
+    public List<UserPermission> findAllByPermissionId(Long id) {
         Criteria criteria = getSession().createCriteria(UserPermission.class)
-                .add(Restrictions.eq("permission_id", id));
+                .createAlias("claim", "cl")
+                .add(Restrictions.eq("cl.permission.id", id));
         return criteria.list();
     }
 
+    @Override
+    public List<UserPermission> findAllByPermission(Permission permission) {
+        Criteria criteria = getSession().createCriteria(UserPermission.class)
+                .add(Restrictions.eq("permission", permission));
+        return criteria.list();
+    }
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deleteByClaim(PermissionClaim claim) {

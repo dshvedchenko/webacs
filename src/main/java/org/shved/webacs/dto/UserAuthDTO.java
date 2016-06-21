@@ -6,7 +6,8 @@ import lombok.Data;
  * @author dshvedchenko on 6/17/16.
  */
 @Data
-public class UserLoginDTO {
+public class UserAuthDTO {
     private String username;
     private String password;
+    private String token;
 }

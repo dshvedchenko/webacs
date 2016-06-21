@@ -1,14 +1,14 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.PermissionClaimDAO;
 import org.shved.webacs.dao.PermissionDAO;
-import org.shved.webacs.model.ClaimState;
-import org.shved.webacs.model.Permission;
-import org.shved.webacs.model.PermissionClaim;
+import org.shved.webacs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
@@ -38,9 +38,63 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     }
 
     @Override
-    public List<PermissionClaim> findAllPermissionClaimByClaimState(ClaimState claimState) {
+    public List<PermissionClaim> findAllByClaimState(ClaimState claimState) {
         Criteria criteria = getSession().createCriteria(PermissionClaim.class)
                 .add(Restrictions.eq("claimState", claimState));
+        return criteria.list();
+    }
+
+    @Override
+    public List<PermissionClaim> findAllByResource(Resource resource) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.eq("permission.resource", resource));
+        return criteria.list();
+    }
+
+    @Override
+    public List<PermissionClaim> findAllByPermission(Permission permission) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.eq("permission", permission));
+        return criteria.list();
+    }
+
+    @Override
+    public List<PermissionClaim> findAllClaimed() {
+        ClaimState cl = new ClaimState();
+        cl.setId(0);
+        return findAllByClaimState(cl);
+    }
+
+    @Override
+    public List<PermissionClaim> findAllApproved() {
+        ClaimState cl = new ClaimState();
+        cl.setId(1);
+        return findAllByClaimState(cl);
+    }
+
+    @Override
+    public List<PermissionClaim> findAllGranted() {
+        ClaimState cl = new ClaimState();
+        cl.setId(2);
+        return findAllByClaimState(cl);
+    }
+
+    @Override
+    public List<PermissionClaim> findAllRevoked() {
+        ClaimState cl = new ClaimState();
+        cl.setId(3);
+        return findAllByClaimState(cl);
+    }
+
+    @Override
+    public List<PermissionClaim> findAllToBeApprovedBy(AppUser appUser) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.eq("claimState.id", 0))
+                .createAlias("permission", "p")
+                .createAlias("p.resource", "r")
+                .createAlias("r.ownerPermission", "op")
+                .createAlias("op.appUsers", "aus")
+                .add(Restrictions.eq("aus.id", appUser.getId()));
         return criteria.list();
     }
 }
