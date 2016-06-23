@@ -22,10 +22,10 @@ public class RestAuthController {
             @RequestBody UserAuthDTO userLogin
     ) {
         ResponseData rd = new ResponseData();
-        String token = null;
-        token = appUserService.restLogin(userLogin);
+        UserAuthDTO authRes = null;
+        authRes = appUserService.restLogin(userLogin);
 
-        rd.setData(token);
+        rd.setData(authRes);
         return rd;
     }
 

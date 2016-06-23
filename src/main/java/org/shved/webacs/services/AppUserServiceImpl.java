@@ -66,14 +66,15 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public String restLogin(UserAuthDTO userLogin) {
-        String result = null;
+    public UserAuthDTO restLogin(UserAuthDTO userLogin) {
+        UserAuthDTO result = new UserAuthDTO();
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
 
         if (passwordEncoder.matches(userLogin.getPassword(), appUser.getPassword())) {
             AuthToken token = generateNewAuthToken(appUser);
             authTokenDAO.saveToken(token);
-            result = token.getToken();
+            result.setToken(token.getToken());
+            result.setUsername(userLogin.getUsername());
         }
         return result;
     }
