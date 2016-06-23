@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -59,6 +62,7 @@ public class TestRegistrationController extends AbstractAppTest {
 
     @Test
     //enabled to avoid : Could not obtain transaction-synchronized Session for current thread
+    //also it lead that all service+ dao method executed in this transaction and all DB changes rolledback
     @Transactional
     public void testRegisterUser() throws Exception {
         UserRegistrationDTO regInfo = new UserRegistrationDTO();
@@ -75,16 +79,15 @@ public class TestRegistrationController extends AbstractAppTest {
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
+                // .andExpect(jsonPath("$", hasSize(1))) ?? java.lang.NoSuchMethodError: org.hamcrest.Matcher.describeMismatch(Ljava/lang/Object;Lorg/hamcrest/Description;)V
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data").value(true));
+
 
         AppUser au = appUserDAO.findByUsername(username);
         Assert.assertNotNull(au);
         Assert.assertTrue(au.getUsername().equals(username));
-        appUserDAO.delete(au);
-
-//        AppUser appRes = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data");
-
+        // appUserDAO.delete(au);
     }
 
 
