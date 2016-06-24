@@ -71,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     , "/assets/**"
                     , "/resources/**"
                     , "/static/**"
+                    , "/client/**"
                     , "/"
                     , "/register");
         }

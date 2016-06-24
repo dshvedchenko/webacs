@@ -1,9 +1,12 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.AppUserService;
+import org.shved.webacs.services.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
@@ -19,32 +22,32 @@ import javax.validation.Valid;
  * @author dshvedchenko on 6/23/16.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/v1/user", consumes = "application/json", produces = "application/json")
 public class RestUserController {
     @Autowired
     AppUserService appUserService;
 
     @Autowired
-    @Qualifier("passwordValidator")
-    private Validator validator;
+    AuthTokenService authTokenService;
 
-    @InitBinder
-    private void initBinder(WebDataBinder binder) {
-        binder.addValidators(validator); //? only this validator fires
-    }
-
-    //TODO : http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-adding-validation-to-a-rest-api/
-
-    @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseData<Boolean> register(
-            @RequestBody @Valid UserRegistrationDTO regInfo,
-            BindingResult result, WebRequest request, Errors errors
+    //create
+    @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
+    public ResponseData<AuthToken> getTestData(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @PathVariable(value = "userId") Long userId
     ) {
+        authTokenService.isTokenValid(token);
+        AppUserDTO appUserDTO = appUserService.getAppUserById(userId);
         ResponseData rd = new ResponseData();
-        AppUser authRes = null;
-        authRes = appUserService.registerUser(regInfo);
-
-        rd.setData(true);
+        rd.setData(appUserDTO);
         return rd;
     }
+
+    //edit
+
+    //get
+
+    //delete
+
 }

@@ -18,4 +18,6 @@ public interface AppUserService {
     @Transactional
     AppUser registerUser(UserRegistrationDTO appUser);
     String getTestData(String token);
+
+    AppUserDTO getAppUserById(Long userId);
 }

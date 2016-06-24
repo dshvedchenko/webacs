@@ -2,13 +2,12 @@ package org.shved.webacs.services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.AppUserDAO;
-import org.shved.webacs.dao.AuthTokenDAO;
 import org.shved.webacs.dto.AppUserDTO;
-import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
-import org.shved.webacs.exception.*;
+import org.shved.webacs.exception.AppException;
+import org.shved.webacs.exception.EmailExistsException;
+import org.shved.webacs.exception.UserExistsException;
 import org.shved.webacs.model.AppUser;
-import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.services.AppUserService;
 import org.shved.webacs.services.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -71,6 +67,15 @@ public class AppUserServiceImpl implements AppUserService {
         authTokenService.isTokenValid(token);
 
         return "TEST COMPLETED";
+    }
+
+    @Override
+    public AppUserDTO getAppUserById(Long userId) {
+        AppUser appUser = appUserDAO.findById(userId);
+        if (appUser == null) throw new AppException();
+
+        AppUserDTO appUserDTO = modelMapper.map(appUser, AppUserDTO.class);
+        return appUserDTO;
     }
 
     private void isNewUserValid(UserRegistrationDTO newUser) {

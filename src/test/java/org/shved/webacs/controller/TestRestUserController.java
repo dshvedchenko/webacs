@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class TestRestUserController extends AbstractAppTest {
     private MockMvc mockMvc;
 
-    private String userName = "ad";
+    private String userName = "admin";
 
 
     @Autowired
@@ -48,38 +48,30 @@ public class TestRestUserController extends AbstractAppTest {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
-    @Test
-    //enabled to avoid : Could not obtain transaction-synchronized Session for current thread
-    //also it lead that all service+ dao method executed in this transaction and all DB changes rolledback
-    @Transactional
-    public void testRegisterUser() throws Exception {
-        UserRegistrationDTO regInfo = new UserRegistrationDTO();
-        String username = UUID.randomUUID().toString();
-        String email = username + "_test.com";
-        regInfo.setUsername(username);
-        regInfo.setPassword("1qaz2wsx");
-        regInfo.setEmail(email);
-        regInfo.setFirstName("UserJ");
-        regInfo.setLastName("UserF");
-        regInfo.setSysrole(0);
 
-        ResultActions res = mockMvc.perform(post("/api/v1/user/register")
-                .content(this.json(regInfo))
+    @Test
+    public void testGetUserById() throws Exception {
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword("1qaz2wsx");
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
-                // .andExpect(jsonPath("$", hasSize(1))) ?? java.lang.NoSuchMethodError: org.hamcrest.Matcher.describeMismatch(Ljava/lang/Object;Lorg/hamcrest/Description;)V
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data").value(true));
+                .andExpect(jsonPath("$.data.token").exists());
 
+        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
-        AppUser au = appUserDAO.findByUsername(username);
-        Assert.assertNotNull(au);
-        Assert.assertEquals(username, au.getUsername());
-        Assert.assertEquals(email, au.getEmail());
-        Assert.assertEquals("UserJ", au.getFirstname());
-        Assert.assertEquals("UserF", au.getLastname());
-        // appUserDAO.delete(au);
+        ResultActions resUserById = mockMvc.perform(post("/api/v1/user/1")
+                .content(this.json(loginInfo))
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.username").exists());
+
+        String useri = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data");
     }
 
 }
