@@ -21,7 +21,8 @@ import javax.validation.Valid;
  * @author dshvedchenko on 6/23/16.
  */
 @RestController
-public class RestRegistrationController {
+@RequestMapping(value = "/api/v1/user", consumes = "application/json", produces = "application/json")
+public class RestUserController {
     @Autowired
     AppUserService appUserService;
 
@@ -31,7 +32,7 @@ public class RestRegistrationController {
 
     //TODO : http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-adding-validation-to-a-rest-api/
 
-    @RequestMapping(value = "/api/register", consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "register", method = RequestMethod.POST)
     public ResponseData<Boolean> register(
             @Valid @RequestBody UserRegistrationDTO regInfo,
             BindingResult result, WebRequest request, Errors errors

@@ -17,11 +17,5 @@ public interface AppUserService {
 
     @Transactional
     AppUser registerUser(UserRegistrationDTO appUser);
-
-    UserAuthDTO restLogin(UserAuthDTO userLogin);
-    AuthToken isTokenValid(String token);
-
-    void restLogout(String token);
-
     String getTestData(String token);
 }

@@ -8,6 +8,7 @@ import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -32,28 +33,15 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 /**
  * @author dshvedchenko on 6/21/16.
  */
-public class TestRegistrationController extends AbstractAppTest {
+public class TestRestUserController extends AbstractAppTest {
     private MockMvc mockMvc;
 
     private String userName = "admin";
 
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private AppUserDAO appUserDAO;
 
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
-
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
-                hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
-
-        Assert.assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
 
     @Before
     public void setup() throws Exception {
@@ -67,14 +55,15 @@ public class TestRegistrationController extends AbstractAppTest {
     public void testRegisterUser() throws Exception {
         UserRegistrationDTO regInfo = new UserRegistrationDTO();
         String username = UUID.randomUUID().toString();
+        String email = username + "@test.com";
         regInfo.setUsername(username);
         regInfo.setPassword("1qaz2wsx");
-        regInfo.setEmail(username + "@test.com");
+        regInfo.setEmail(email);
         regInfo.setFirstName("UserJ");
         regInfo.setLastName("UserF");
         regInfo.setSysrole(0);
 
-        ResultActions res = mockMvc.perform(post("/api/register")
+        ResultActions res = mockMvc.perform(post("/api/v1/user/register")
                 .content(this.json(regInfo))
                 .accept(contentType)
                 .contentType(contentType))
@@ -86,15 +75,11 @@ public class TestRegistrationController extends AbstractAppTest {
 
         AppUser au = appUserDAO.findByUsername(username);
         Assert.assertNotNull(au);
-        Assert.assertTrue(au.getUsername().equals(username));
+        Assert.assertEquals(username, au.getUsername());
+        Assert.assertEquals(email, au.getEmail());
+        Assert.assertEquals("UserJ", au.getFirstname());
+        Assert.assertEquals("UserF", au.getLastname());
         // appUserDAO.delete(au);
     }
 
-
-    protected String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(
-                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
-    }
 }

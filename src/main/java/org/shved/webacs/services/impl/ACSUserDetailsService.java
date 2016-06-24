@@ -1,4 +1,4 @@
-package org.shved.webacs.services;
+package org.shved.webacs.services.impl;
 
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.model.AppUser;

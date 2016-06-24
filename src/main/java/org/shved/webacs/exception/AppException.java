@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author dshvedchenko on 6/17/16.
  */
-@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "internal server error")
+
 public class AppException extends RuntimeException {
 
     public AppException() {
