@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
@@ -30,11 +28,16 @@ public class RestUserController {
     @Qualifier("passwordValidator")
     private Validator validator;
 
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(validator); //? only this validator fires
+    }
+
     //TODO : http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-adding-validation-to-a-rest-api/
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public ResponseData<Boolean> register(
-            @Valid @RequestBody UserRegistrationDTO regInfo,
+            @RequestBody @Valid UserRegistrationDTO regInfo,
             BindingResult result, WebRequest request, Errors errors
     ) {
         ResponseData rd = new ResponseData();

@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class TestRestUserController extends AbstractAppTest {
     private MockMvc mockMvc;
 
-    private String userName = "admin";
+    private String userName = "ad";
 
 
     @Autowired
@@ -55,7 +55,7 @@ public class TestRestUserController extends AbstractAppTest {
     public void testRegisterUser() throws Exception {
         UserRegistrationDTO regInfo = new UserRegistrationDTO();
         String username = UUID.randomUUID().toString();
-        String email = username + "@test.com";
+        String email = username + "_test.com";
         regInfo.setUsername(username);
         regInfo.setPassword("1qaz2wsx");
         regInfo.setEmail(email);
