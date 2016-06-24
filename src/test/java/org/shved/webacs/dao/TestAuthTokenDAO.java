@@ -49,7 +49,7 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
 
         AuthToken token2 = authTokenDAO.getAuthToken(tokenStr);
         Assert.assertNotNull(token2);
-
+        Assert.assertEquals(tokenStr, token2.getToken());
     }
 
 

@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"org.shved.webacs.*"})
-@Import({SecurityConfig.class, MessageConverterConfig.class, ValidatorsConfig.class, HibernateConfig.class})
+@Import({SecurityConfig.class, MessageConverterConfig.class, ValidatorsConfig.class, HibernateConfig.class, DAOConfig.class})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     Logger logger = LoggerFactory.logger(AppConfig.class);
