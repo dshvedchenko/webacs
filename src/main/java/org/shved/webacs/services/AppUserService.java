@@ -20,4 +20,7 @@ public interface AppUserService {
     String getTestData(String token);
 
     AppUserDTO getAppUserById(Long userId);
+
+    @Transactional
+    void handleSaveEditedAppUser(AppUserDTO appUserDTO);
 }

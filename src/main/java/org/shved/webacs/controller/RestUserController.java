@@ -31,9 +31,13 @@ public class RestUserController {
     @Autowired
     AuthTokenService authTokenService;
 
-    //getById
+    /**
+     * @param token
+     * @param userId
+     * @return
+     */
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseData<AuthToken> getTestData(
+    public ResponseData<AuthToken> getUserById(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId
     ) {
@@ -44,8 +48,19 @@ public class RestUserController {
         return rd;
     }
 
-    //edit
-
+    //edit - save
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseData<AuthToken> saveUser(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @PathVariable(value = "userId") Long userId,
+            @RequestBody AppUserDTO appUserDTO
+    ) {
+        authTokenService.isTokenValid(token);
+        appUserService.handleSaveEditedAppUser(appUserDTO);
+        ResponseData rd = new ResponseData();
+        rd.setData(true);
+        return rd;
+    }
     //create
 
     //delete

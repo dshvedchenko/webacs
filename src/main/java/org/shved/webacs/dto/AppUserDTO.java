@@ -12,6 +12,8 @@ import java.util.List;
  */
 @Data
 public class AppUserDTO {
+
+    private Long id;
     private String username;
 
     private String firstname;
@@ -19,5 +21,6 @@ public class AppUserDTO {
 
     private String email;
     private Integer sysrole;
+    private boolean enabled;
 
 }

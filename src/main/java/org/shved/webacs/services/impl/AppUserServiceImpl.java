@@ -78,6 +78,27 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserDTO;
     }
 
+    @Transactional
+    @Override
+    public void handleSaveEditedAppUser(AppUserDTO appUserDTO) {
+        AppUser appUser = appUserDAO.findById(appUserDTO.getId());
+        if (appUser == null) throw new AppException();
+
+        if (isEmailUsedByAnotherUser(appUser, appUserDTO.getEmail())) throw new EmailExistsException();
+
+        convertAppUserDTO2AppUser(appUserDTO, appUser);
+
+        appUserDAO.saveAppUser(appUser);
+    }
+
+    private void convertAppUserDTO2AppUser(AppUserDTO appUserDTO, AppUser appUser) {
+        appUser.setEnabled(appUserDTO.isEnabled());
+        appUser.setEmail(appUserDTO.getEmail());
+        appUser.setSysrole(appUserDTO.getSysrole());
+        appUser.setFirstname(appUserDTO.getFirstname());
+        appUser.setLastname(appUserDTO.getLastname());
+    }
+
     private void isNewUserValid(UserRegistrationDTO newUser) {
         if (emailExist(newUser.getEmail()))
             throw new EmailExistsException();
@@ -99,4 +120,9 @@ public class AppUserServiceImpl implements AppUserService {
         return appUserDAO.findByUsername(username) != null;
     }
 
+    private boolean isEmailUsedByAnotherUser(AppUser currUser, String email) {
+        AppUser anotherUser = appUserDAO.findByEmail(email);
+        if (anotherUser == null) return false;
+        return currUser.getId() != anotherUser.getId();
+    }
 }
