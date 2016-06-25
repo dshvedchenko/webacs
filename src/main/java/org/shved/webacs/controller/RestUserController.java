@@ -31,8 +31,8 @@ public class RestUserController {
     @Autowired
     AuthTokenService authTokenService;
 
-    //create
-    @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
+    //getById
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseData<AuthToken> getTestData(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId
@@ -46,7 +46,7 @@ public class RestUserController {
 
     //edit
 
-    //get
+    //create
 
     //delete
 

@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
@@ -21,12 +22,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -48,7 +50,7 @@ public class TestRestUserController extends AbstractAppTest {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
-
+    @Transactional
     @Test
     public void testGetUserById() throws Exception {
         UserAuthDTO loginInfo = new UserAuthDTO();
@@ -63,15 +65,18 @@ public class TestRestUserController extends AbstractAppTest {
 
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
-        ResultActions resUserById = mockMvc.perform(post("/api/v1/user/1")
-                .content(this.json(loginInfo))
+        ResultActions resUserById = mockMvc.perform(get("/api/v1/user/1")
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.username").exists());
+                .andExpect(jsonPath("$.data.username", is("admin")))
+                .andExpect(jsonPath("$.data.lastname", is("admin")))
+                .andExpect(jsonPath("$.data.firstname", is("admin")))
+                .andExpect(jsonPath("$.data.email", is("admin@example.com")))
+                .andExpect(jsonPath("$.data.sysrole", is(0)));
 
-        String useri = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data");
+
     }
 
 }
