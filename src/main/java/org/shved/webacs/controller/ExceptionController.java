@@ -53,10 +53,10 @@ public class ExceptionController {
         return rd;
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "information not found")
-    @ExceptionHandler({TokenException.class, NotFoundException.class})
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "token not found")
+    @ExceptionHandler(TokenException.class)
     @ResponseBody
-    public ResponseData handleTokenException(AppException error) {
+    public ResponseData handleTokenException(TokenException error) {
         ResponseData rd = new ResponseData();
         Error err = new Error();
         err.setMessage(error.getMessage());
@@ -64,6 +64,17 @@ public class ExceptionController {
         return rd;
     }
 
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "information not found")
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseBody
+    public ResponseData handleTokenException(NotFoundException error) {
+        ResponseData rd = new ResponseData();
+        Error err = new Error();
+        err.setMessage(error.getMessage());
+        rd.setError(err);
+        return rd;
+    }
 
     @ResponseStatus(code = HttpStatus.CONFLICT, reason = "user already registered")
     @ExceptionHandler(UserExistsException.class)
