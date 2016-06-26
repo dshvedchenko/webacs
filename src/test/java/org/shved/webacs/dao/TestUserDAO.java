@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.transaction.TransactionManager;
 
@@ -55,6 +56,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void createUser() {
         AppUser user = initUser();
         appUserDAO.saveAppUser(user);
@@ -70,29 +72,30 @@ public class TestUserDAO extends AbstractRepositoryTest {
         Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
     }
 
+//    @Test
+//    public void deleteUser() {
+//        AppUser user = initUser();
+//        appUserDAO.saveAppUser(user);
+//        logger.info("USER IN DB : " + user);
+//        appUserDAO.delete(user);
+//        AppUser findDeleted = appUserDAO.findById(user.getId());
+//        Assert.assertNull(findDeleted);
+//    }
+//
+//
+//    @Test
+//    public void deleteUserById() throws Exception {
+//        AppUser user = initUser();
+//        appUserDAO.saveAppUser(user);
+//        logger.info("USER IN DB : " + user);
+//        appUserDAO.deleteById(user.getId());
+//
+//        AppUser findDeleted = appUserDAO.findById(user.getId());
+//        Assert.assertNull(findDeleted);
+//    }
+
     @Test
-    public void deleteUser() {
-        AppUser user = initUser();
-        appUserDAO.saveAppUser(user);
-        logger.info("USER IN DB : " + user);
-        appUserDAO.delete(user);
-        AppUser findDeleted = appUserDAO.findById(user.getId());
-        Assert.assertNull(findDeleted);
-    }
-
-
-    @Test
-    public void deleteUserById() throws Exception {
-        AppUser user = initUser();
-        appUserDAO.saveAppUser(user);
-        logger.info("USER IN DB : " + user);
-        appUserDAO.deleteById(user.getId());
-
-        AppUser findDeleted = appUserDAO.findById(user.getId());
-        Assert.assertNull(findDeleted);
-    }
-
-    @Test
+    @Transactional
     public void findByUsername() {
         AppUser user = initUser();
         appUserDAO.saveAppUser(user);
@@ -101,6 +104,12 @@ public class TestUserDAO extends AbstractRepositoryTest {
 
         user = appUserDAO.findByUsername("black02");
         Assert.assertNotNull(user);
+        Assert.assertEquals("black02", user.getUsername());
+        Assert.assertEquals("test@test.net", user.getEmail());
+        Assert.assertEquals(true, user.getEnabled());
+        Assert.assertEquals("Jill", user.getFirstname());
+        Assert.assertEquals("Krupps", user.getLastname());
+        Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
     }
 
     @Test
@@ -112,5 +121,11 @@ public class TestUserDAO extends AbstractRepositoryTest {
 
         user = appUserDAO.findByEmail("test@test.net");
         Assert.assertNotNull(user);
+        Assert.assertEquals("black02", user.getUsername());
+        Assert.assertEquals("test@test.net", user.getEmail());
+        Assert.assertEquals(true, user.getEnabled());
+        Assert.assertEquals("Jill", user.getFirstname());
+        Assert.assertEquals("Krupps", user.getLastname());
+        Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
     }
 }

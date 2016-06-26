@@ -6,6 +6,7 @@ import org.shved.webacs.model.SysRole;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,5 +25,9 @@ public class AppUserDTO {
     private String email;
     private SysRole sysrole;
     private boolean enabled;
+
+    private Date created_at;
+    private Date updated_at;
+    private Date disabled_at;
 
 }

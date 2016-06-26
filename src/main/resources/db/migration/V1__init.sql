@@ -1,17 +1,29 @@
+CREATE OR REPLACE FUNCTION app.update_updated_at_column()
+  RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+
 -- Table: app.appuser
 
 -- DROP TABLE app.appuser;
 
 CREATE TABLE app.appuser
 (
-  id        BIGSERIAL NOT NULL,
-  username  CHARACTER VARYING(64),
-  password  CHARACTER VARYING(128), -- to store as md5/sha256 hash, and need to use Apache Shiro
-  firstname CHARACTER VARYING(64),
-  lastname  CHARACTER VARYING(64),
-  email     CHARACTER VARYING(64),
-  sysrole   INTEGER,
-  enabled   BOOLEAN,
+  id          BIGSERIAL NOT NULL,
+  username    CHARACTER VARYING(64),
+  password    CHARACTER VARYING(128), -- to store as md5/sha256 hash, and need to use Apache Shiro
+  firstname   CHARACTER VARYING(64),
+  lastname    CHARACTER VARYING(64),
+  email       CHARACTER VARYING(64),
+  sysrole     INTEGER,
+  enabled     BOOLEAN,
+  disabled_at TIMESTAMPTZ DEFAULT NULL,
+  created_at  TIMESTAMPTZ DEFAULT now(),
+  updated_at  TIMESTAMPTZ DEFAULT now(),
   CONSTRAINT appuser_pkey PRIMARY KEY (id),
   CONSTRAINT appuser_username_key UNIQUE (username)
 )
@@ -22,6 +34,8 @@ ALTER TABLE app.appuser
   OWNER TO acs_app;
 COMMENT ON COLUMN app.appuser.password IS 'to store as md5/sha256 hash, and need to use Apache Shiro';
 
+
+CREATE TRIGGER update_appuser_updated_at BEFORE UPDATE ON app.appuser FOR EACH ROW EXECUTE PROCEDURE app.update_updated_at_column();
 -- DROP TABLE app.resource;
 
 CREATE TABLE app.resource
@@ -79,10 +93,10 @@ CREATE TABLE app.user_permission
   CONSTRAINT user_permission_pkey PRIMARY KEY (id),
   CONSTRAINT user_permission_permission_id_fkey FOREIGN KEY (permission_id)
   REFERENCES app.permission (id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION,
+  ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT user_permission_user_id_fkey FOREIGN KEY (user_id)
   REFERENCES app.appuser (id) MATCH SIMPLE
-  ON UPDATE RESTRICT ON DELETE RESTRICT,
+  ON UPDATE RESTRICT ON DELETE CASCADE,
   CONSTRAINT unique_claim UNIQUE (claim_id)
 )
 WITH (

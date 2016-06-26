@@ -27,5 +27,6 @@ public interface AppUserService {
     AppUser createAppUserByAdmin(UserCreationDTO appUser);
 
     @Transactional
-    void deleteAppUser(Long userId);
+    void deleteById(Long userId);
+
 }

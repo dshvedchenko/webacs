@@ -8,11 +8,8 @@ import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.AppUserService;
 import org.shved.webacs.services.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * @author dshvedchenko on 6/23/16.
@@ -78,6 +75,7 @@ public class RestUserController {
             @PathVariable(value = "userId") Long userId
     ) {
         authTokenService.isTokenValid(token);
-        appUserService.deleteAppUser(userId);
+        appUserService.deleteById(userId);
     }
+
 }

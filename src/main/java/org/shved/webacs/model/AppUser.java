@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.Constraint;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +54,21 @@ public class AppUser {
     @OneToMany(mappedBy = "appUser")
     @Getter
     private List<AuthToken> authTokens;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Getter
+    @Column(name = "created_at")
+    private Date created_at;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Getter
+    @Column(name = "updated_at")
+    private Date updated_at;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Getter
+    @Column(name = "disabled_at")
+    private Date disabled_at;
 
     @Override
     public boolean equals(Object obj) {

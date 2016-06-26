@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,8 +79,11 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional
-    public void deleteAppUser(Long userId) {
-        appUserDAO.deleteById(userId);
+    public void deleteById(Long userId) {
+        AppUser appUser = appUserDAO.findById(userId);
+        appUser.setEnabled(false);
+        appUser.setDisabled_at(new Date());
+        appUserDAO.saveAppUser(appUser);
     }
 
     @Override

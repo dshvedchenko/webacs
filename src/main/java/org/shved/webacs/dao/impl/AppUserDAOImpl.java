@@ -8,6 +8,7 @@ import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,13 +41,6 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUse
     @Transactional
     public void saveAppUser(AppUser user) {
         persist(user);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    @Override
-    public void deleteById(Long id) {
-        getSession().delete(getSession().get(AppUser.class, id));
     }
 
 
