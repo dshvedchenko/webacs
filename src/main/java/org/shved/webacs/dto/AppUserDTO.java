@@ -2,6 +2,7 @@ package org.shved.webacs.dto;
 
 import lombok.Data;
 import org.shved.webacs.model.Permission;
+import org.shved.webacs.model.SysRole;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class AppUserDTO {
     //  private String password;
 
     private String email;
-    private Integer sysrole;
+    private SysRole sysrole;
     private boolean enabled;
 
 }

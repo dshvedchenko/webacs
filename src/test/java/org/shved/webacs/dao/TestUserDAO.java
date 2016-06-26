@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,7 +50,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
         user.setFirstname("Jill");
         user.setLastname("Krupps");
         user.setPassword("3420394uw3423423423423423432");
-        user.setSysrole(0);
+        user.setSysrole(SysRole.GENERIC);
         return user;
     }
 
@@ -59,6 +60,14 @@ public class TestUserDAO extends AbstractRepositoryTest {
         appUserDAO.saveAppUser(user);
         logger.info("USER IN DB : " + user);
         Assert.assertNotNull(user.getId());
+
+        user = appUserDAO.findById(user.getId());
+        Assert.assertEquals("black02", user.getUsername());
+        Assert.assertEquals("test@test.net", user.getEmail());
+        Assert.assertEquals(true, user.getEnabled());
+        Assert.assertEquals("Jill", user.getFirstname());
+        Assert.assertEquals("Krupps", user.getLastname());
+        Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
     }
 
     @Test

@@ -2,6 +2,7 @@ package org.shved.webacs.services.impl;
 
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,13 +39,13 @@ public class ACSUserDetailsService implements org.springframework.security.core.
         return new User(user.getUsername(), user.getPassword(), true, true, true, true, authorities);
     }
 
-    private List<GrantedAuthority> buildUserAuthority(Integer role) {
+    private List<GrantedAuthority> buildUserAuthority(SysRole role) {
 //        return userRoles.stream()
 //                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole()))
 //                .collect(Collectors.toList());
         List<GrantedAuthority> result = new LinkedList<>();
         result.add(new SimpleGrantedAuthority("GENERIC"));
-        if (role == 0) result.add(new SimpleGrantedAuthority("ADMIN"));
+        if (role == SysRole.ADMIN) result.add(new SimpleGrantedAuthority("ADMIN"));
         return result;
     }
 }

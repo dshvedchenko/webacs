@@ -9,6 +9,7 @@ import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.EmailExistsException;
 import org.shved.webacs.exception.UserExistsException;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.SysRole;
 import org.shved.webacs.services.AppUserService;
 import org.shved.webacs.services.AuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUser registerUser(UserRegistrationDTO newUser) {
 
         AppUser appUser = modelMapper.map(newUser, AppUser.class);
-        appUser.setSysrole(1);
+        appUser.setSysrole(SysRole.GENERIC);
         appUser.setEnabled(true);
 
         return addNewAppUser(appUser);

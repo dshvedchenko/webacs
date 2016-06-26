@@ -67,9 +67,16 @@ public class TestRestUserController extends AbstractAppTest {
     }
 
 
-    //@Transactional
+    @Transactional
     @Test
     public void editUserTest() throws Exception {
+        final Long EDIT_USERS_ID = 2L;
+        final String EDIT_USER_USERNAME = "johns";
+        final String EDIT_USER_LASTNAME = "Salivan";
+        final String EDIT_USER_FIRSTNAME = "Johns";
+        final String EDIT_USER_EMAIL = "johns@example.com";
+        final Integer EDIT_USER_SYSROLE = 1;
+
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
         loginInfo.setPassword("1qaz2wsx");
@@ -82,16 +89,16 @@ public class TestRestUserController extends AbstractAppTest {
 
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
-        ResultActions resUserById = mockMvc.perform(get("/api/v1/user/2")
+        ResultActions resUserById = mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.username", is("johns")))
-                .andExpect(jsonPath("$.data.lastname", is("Salivan")))
-                .andExpect(jsonPath("$.data.firstname", is("John")))
-                .andExpect(jsonPath("$.data.email", is("johns@example.com")))
-                .andExpect(jsonPath("$.data.sysrole", is(1)));
+                .andExpect(jsonPath("$.data.username", is(EDIT_USER_USERNAME)))
+                .andExpect(jsonPath("$.data.lastname", is(EDIT_USER_LASTNAME)))
+                .andExpect(jsonPath("$.data.firstname", is(EDIT_USER_FIRSTNAME)))
+                .andExpect(jsonPath("$.data.email", is(EDIT_USER_EMAIL)))
+                .andExpect(jsonPath("$.data.sysrole", is(EDIT_USER_SYSROLE)));
 
         Map userRecord = JsonPath.read(resUserById.andReturn().getResponse().getContentAsString(), "$.data");
         userRecord.replace("firstname", "Jonnys");
@@ -105,5 +112,16 @@ public class TestRestUserController extends AbstractAppTest {
                 .contentType(contentType)
                 .content(new ObjectMapper().writeValueAsString(userRecord))
         ).andExpect(status().isAccepted());
+
+        resUserById = mockMvc.perform(get("/api/v1/user/2")
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.username", is("johns")))
+                .andExpect(jsonPath("$.data.lastname", is("Salivan")))
+                .andExpect(jsonPath("$.data.firstname", is("John")))
+                .andExpect(jsonPath("$.data.email", is("johns@example.com")))
+                .andExpect(jsonPath("$.data.sysrole", is(1)));
     }
 }

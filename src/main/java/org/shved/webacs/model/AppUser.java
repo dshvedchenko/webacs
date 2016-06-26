@@ -2,8 +2,10 @@ package org.shved.webacs.model;
 
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import java.util.List;
 
 /**
@@ -39,8 +41,10 @@ public class AppUser {
     private String email;
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "sysrole")
-    private Integer sysrole;
+    private SysRole sysrole;
 
     @OneToMany(mappedBy = "user")
     @Getter
