@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +57,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private AppUser addNewAppUser(AppUser appUser) {
         isNewUserValid(appUser);
+        if (appUser.getPassword() == null) throw new AppException("NULL PASSWORD IS NOT ALLOWED", null);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 
         try {
@@ -72,7 +72,6 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser createAppUserByAdmin(UserCreationDTO newUser) {
         AppUser appUser = modelMapper.map(newUser, AppUser.class);
-
         return addNewAppUser(appUser);
     }
 

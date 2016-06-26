@@ -57,7 +57,7 @@ public class RestUserController {
     }
     //create
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<AuthToken> createUser(
             @RequestHeader(name = "X-AUTHID") String token,
