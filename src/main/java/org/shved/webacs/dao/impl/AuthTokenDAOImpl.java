@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author dshvedchenko on 6/17/16.
@@ -61,7 +62,7 @@ public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements 
                         Restrictions.eq("u.id", userId),
                         Restrictions.ge("lastUsed", validPoint)
                 )).addOrder(Order.desc("lastUsed")).list();
-        return lst.get(0);
+        return lst.size() > 0 ? lst.get(0) : null;
     }
 
 }

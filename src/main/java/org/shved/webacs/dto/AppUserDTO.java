@@ -1,5 +1,7 @@
 package org.shved.webacs.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.SysRole;
@@ -26,8 +28,15 @@ public class AppUserDTO {
     private SysRole sysrole;
     private boolean enabled;
 
+
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.SSSZ")
     private Date created_at;
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.SSSZ")
     private Date updated_at;
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.SSSZ")
     private Date disabled_at;
 
 }

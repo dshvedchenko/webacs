@@ -18,7 +18,10 @@ VALUES
   , ('maryl', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Mary', 'Linn', 'maryl@example.com', 1,
      TRUE)
   , ('ninaa', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
-     TRUE);
+     TRUE)
+  ,
+  ('fireoff', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
+   FALSE);
 
 
 INSERT INTO app.resource (

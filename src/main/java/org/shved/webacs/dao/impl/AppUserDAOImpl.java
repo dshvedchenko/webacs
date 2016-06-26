@@ -27,7 +27,21 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUs
     @Transactional
     public List<AppUser> findAllAppUsers() {
         Criteria criteria = createEntityCriteria(AppUser.class);
-        return (List<AppUser>) criteria.setFetchMode("permissions", FetchMode.JOIN).list();
+        return (List<AppUser>) criteria.setFetchMode("permission", FetchMode.JOIN).list();
+    }
+
+    @Override
+    public List<AppUser> findAllEnabled() {
+        Criteria criteria = createEntityCriteria(AppUser.class)
+                .add(Restrictions.eq("enabled", true));
+        return (List<AppUser>) criteria.setFetchMode("permission", FetchMode.JOIN).list();
+    }
+
+    @Override
+    public List<AppUser> findAllDisabled() {
+        Criteria criteria = createEntityCriteria(AppUser.class)
+                .add(Restrictions.eq("enabled", false));
+        return (List<AppUser>) criteria.setFetchMode("permission", FetchMode.JOIN).list();
     }
 
     @SuppressWarnings("unchecked")

@@ -13,6 +13,10 @@ public interface IAppUserDAO {
 
     List<AppUser> findAllAppUsers();
 
+    List<AppUser> findAllEnabled();
+
+    List<AppUser> findAllDisabled();
+
     AppUser findById(Long id);
 
     void saveAppUser(AppUser user);

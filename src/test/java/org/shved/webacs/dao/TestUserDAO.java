@@ -10,6 +10,8 @@ import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author dshvedchenko on 6/10/16.
  */
@@ -119,5 +121,19 @@ public class TestUserDAO extends AbstractRepositoryTest {
         Assert.assertEquals("Jill", user.getFirstname());
         Assert.assertEquals("Krupps", user.getLastname());
         Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
+    }
+
+    @Test
+    public void getAllEnabledTest() {
+        List<AppUser> lap = appUserDAO.findAllEnabled();
+        Assert.assertEquals(5, lap.size());
+        Assert.assertEquals("First should be Admin", (Long) 1L, lap.get(0).getId());
+    }
+
+    @Test
+    public void getAllDisabledTest() {
+        List<AppUser> lap = appUserDAO.findAllDisabled();
+        Assert.assertEquals(1, lap.size());
+        Assert.assertEquals("Fired Fireoff", (Long) 6L, lap.get(0).getId());
     }
 }

@@ -48,6 +48,20 @@ public class AppUserServiceImpl implements IAppUserService {
 
     @Override
     @Transactional
+    public List<AppUserDTO> getAllEnabled() {
+        List<AppUser> list = appUserDAO.findAllEnabled();
+        return getAppUserDtoList(list);
+    }
+
+    @Override
+    @Transactional
+    public List<AppUserDTO> getAllDisabled() {
+        List<AppUser> list = appUserDAO.findAllDisabled();
+        return getAppUserDtoList(list);
+    }
+
+    @Override
+    @Transactional
     public AppUser registerUser(UserRegistrationDTO newUser) {
 
         AppUser appUser = modelMapper.map(newUser, AppUser.class);

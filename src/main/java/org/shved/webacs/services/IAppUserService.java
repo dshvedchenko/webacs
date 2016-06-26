@@ -14,6 +14,10 @@ import java.util.List;
 public interface IAppUserService {
     List<AppUserDTO> getAll();
 
+    List<AppUserDTO> getAllEnabled();
+
+    List<AppUserDTO> getAllDisabled();
+
     @Transactional
     AppUser registerUser(UserRegistrationDTO appUser);
     String getTestData(String token);

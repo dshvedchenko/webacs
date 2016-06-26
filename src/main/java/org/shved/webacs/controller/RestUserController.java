@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author dshvedchenko on 6/23/16.
  */
@@ -76,6 +78,28 @@ public class RestUserController {
     ) {
         authTokenService.isTokenValid(token);
         appUserService.deleteById(userId);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    public ResponseData<AppUserDTO> getAll(
+            @RequestHeader(name = "X-AUTHID") String token
+    ) {
+        authTokenService.isTokenValid(token);
+        List<AppUserDTO> listUsers = appUserService.getAllEnabled();
+        ResponseData rd = new ResponseData();
+        rd.setData(listUsers);
+        return rd;
+    }
+
+    @RequestMapping(value = "/listdisabled", method = RequestMethod.GET, produces = "application/json")
+    public ResponseData<AppUserDTO> getAllDisabled(
+            @RequestHeader(name = "X-AUTHID") String token
+    ) {
+        authTokenService.isTokenValid(token);
+        List<AppUserDTO> listUsers = appUserService.getAllDisabled();
+        ResponseData rd = new ResponseData();
+        rd.setData(listUsers);
+        return rd;
     }
 
 }
