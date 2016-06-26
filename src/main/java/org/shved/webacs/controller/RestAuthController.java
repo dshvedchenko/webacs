@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -29,9 +30,11 @@ public class RestAuthController extends AbstractAPIV1Controller {
     @Autowired
     IAppUserService appUserService;
 
+
+    //TODO add link to logout
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseData<AuthToken> login(
-            @RequestBody UserAuthDTO userLogin
+            @RequestBody UserAuthDTO userLogin, UriComponentsBuilder ucb
     ) {
         ResponseData rd = new ResponseData();
         UserAuthDTO authRes = null;
