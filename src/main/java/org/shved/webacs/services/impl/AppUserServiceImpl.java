@@ -7,6 +7,7 @@ import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.EmailExistsException;
+import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.exception.UserExistsException;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.SysRole;
@@ -91,7 +92,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUserDTO getAppUserById(Long userId) {
         AppUser appUser = appUserDAO.findById(userId);
-        if (appUser == null) throw new AppException();
+        if (appUser == null) throw new NotFoundException();
 
         AppUserDTO appUserDTO = modelMapper.map(appUser, AppUserDTO.class);
         secureFilterAppUserDTO(appUserDTO);

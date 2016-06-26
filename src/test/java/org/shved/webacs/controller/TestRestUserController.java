@@ -194,5 +194,37 @@ public class TestRestUserController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.enabled", is(NEW_USER_ENABLED)));
     }
 
+    @Transactional
+    @Test
+    public void deleteUserTest() throws Exception {
+        final Long EDIT_USERS_ID = 2L;
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword("1qaz2wsx");
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+
+
+        mockMvc.perform(delete("/api/v1/user/" + EDIT_USERS_ID)
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType)
+
+        ).andExpect(status().isAccepted());
+
+        mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
 
 }

@@ -1,10 +1,7 @@
 package org.shved.webacs.controller;
 
 import org.shved.webacs.dto.ValidationErrorDTO;
-import org.shved.webacs.exception.AppException;
-import org.shved.webacs.exception.EmailExistsException;
-import org.shved.webacs.exception.TokenException;
-import org.shved.webacs.exception.UserExistsException;
+import org.shved.webacs.exception.*;
 import org.shved.webacs.response.Error;
 import org.shved.webacs.response.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +53,17 @@ public class ExceptionController {
         return rd;
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "token unauthroized")
-    @ExceptionHandler(TokenException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "information not found")
+    @ExceptionHandler({TokenException.class, NotFoundException.class})
     @ResponseBody
-    public ResponseData handleTokenException(TokenException error) {
+    public ResponseData handleTokenException(AppException error) {
         ResponseData rd = new ResponseData();
         Error err = new Error();
         err.setMessage(error.getMessage());
         rd.setError(err);
         return rd;
     }
+
 
     @ResponseStatus(code = HttpStatus.CONFLICT, reason = "user already registered")
     @ExceptionHandler(UserExistsException.class)
