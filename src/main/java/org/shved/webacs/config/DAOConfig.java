@@ -6,6 +6,7 @@ import org.shved.webacs.dao.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -13,13 +14,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
+@Component
 public class DAOConfig {
     @Bean(name = "appUserDAO")
     @Autowired
     AppUserDAO appUserDAO(SessionFactory sessionFactory) {
         return new AppUserDAOImpl(sessionFactory);
     }
-
 
     @Bean(name = "authTokenDAO")
     @Autowired

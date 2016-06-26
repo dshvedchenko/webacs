@@ -1,10 +1,9 @@
 package org.shved.webacs.services;
 
 import org.shved.webacs.dto.AppUserDTO;
-import org.shved.webacs.dto.UserAuthDTO;
+import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
-import org.shved.webacs.model.AuthToken;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,4 +22,10 @@ public interface AppUserService {
 
     @Transactional
     void handleSaveEditedAppUser(AppUserDTO appUserDTO);
+
+    @Transactional
+    AppUser createAppUserByAdmin(UserCreationDTO appUser);
+
+    @Transactional
+    void deleteAppUser(Long userId);
 }

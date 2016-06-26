@@ -24,6 +24,5 @@ public class UserRegistrationDTO {
 
     @Pattern(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}", message = "Invalid email address.")
     private String email;
-    private Integer sysrole;
-    private List<Permission> permissions;
+
 }

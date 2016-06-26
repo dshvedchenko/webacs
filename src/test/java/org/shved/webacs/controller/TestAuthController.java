@@ -80,7 +80,6 @@ public class TestAuthController extends AbstractAppTest {
         regInfo.setEmail(email);
         regInfo.setFirstName("UserJ");
         regInfo.setLastName("UserF");
-        regInfo.setSysrole(0);
 
         ResultActions res = mockMvc.perform(post("/api/v1/register")
                 .content(this.json(regInfo))

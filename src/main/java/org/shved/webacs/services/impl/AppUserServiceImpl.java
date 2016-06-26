@@ -3,6 +3,7 @@ package org.shved.webacs.services.impl;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.AppUserDAO;
 import org.shved.webacs.dto.AppUserDTO;
+import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.EmailExistsException;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,12 +48,16 @@ public class AppUserServiceImpl implements AppUserService {
     @Transactional
     public AppUser registerUser(UserRegistrationDTO newUser) {
 
-        isNewUserValid(newUser);
-
         AppUser appUser = modelMapper.map(newUser, AppUser.class);
-        appUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         appUser.setSysrole(1);
         appUser.setEnabled(true);
+
+        return addNewAppUser(appUser);
+    }
+
+    private AppUser addNewAppUser(AppUser appUser) {
+        isNewUserValid(appUser);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 
         try {
             appUserDAO.saveAppUser(appUser);
@@ -60,6 +66,19 @@ public class AppUserServiceImpl implements AppUserService {
         }
 
         return appUser;
+    }
+
+    @Override
+    public AppUser createAppUserByAdmin(UserCreationDTO newUser) {
+        AppUser appUser = modelMapper.map(newUser, AppUser.class);
+
+        return addNewAppUser(appUser);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAppUser(Long userId) {
+        appUserDAO.deleteById(userId);
     }
 
     @Override
@@ -75,7 +94,12 @@ public class AppUserServiceImpl implements AppUserService {
         if (appUser == null) throw new AppException();
 
         AppUserDTO appUserDTO = modelMapper.map(appUser, AppUserDTO.class);
+        secureFilterAppUserDTO(appUserDTO);
         return appUserDTO;
+    }
+
+    private void secureFilterAppUserDTO(AppUserDTO appUserDTO) {
+        //  appUserDTO.setPassword(null);
     }
 
     @Transactional
@@ -86,12 +110,12 @@ public class AppUserServiceImpl implements AppUserService {
 
         if (isEmailUsedByAnotherUser(appUser, appUserDTO.getEmail())) throw new EmailExistsException();
 
-        convertAppUserDTO2AppUser(appUserDTO, appUser);
+        applyAppUserDTO2AppUserByAdmin(appUserDTO, appUser);
 
         appUserDAO.saveAppUser(appUser);
     }
 
-    private void convertAppUserDTO2AppUser(AppUserDTO appUserDTO, AppUser appUser) {
+    private void applyAppUserDTO2AppUserByAdmin(AppUserDTO appUserDTO, AppUser appUser) {
         appUser.setEnabled(appUserDTO.isEnabled());
         appUser.setEmail(appUserDTO.getEmail());
         appUser.setSysrole(appUserDTO.getSysrole());
@@ -99,7 +123,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setLastname(appUserDTO.getLastname());
     }
 
-    private void isNewUserValid(UserRegistrationDTO newUser) {
+    private void isNewUserValid(AppUser newUser) {
         if (emailExist(newUser.getEmail()))
             throw new EmailExistsException();
 
