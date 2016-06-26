@@ -20,10 +20,10 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
     Logger logger = LoggerFactory.logger(TestAuthTokenDAO.class);
 
     @Autowired
-    private AuthTokenDAO authTokenDAO;
+    private IAuthTokenDAO authTokenDAO;
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
 
     @Test

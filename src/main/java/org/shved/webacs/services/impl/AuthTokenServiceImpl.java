@@ -1,12 +1,12 @@
 package org.shved.webacs.services.impl;
 
-import org.shved.webacs.dao.AppUserDAO;
-import org.shved.webacs.dao.AuthTokenDAO;
+import org.shved.webacs.dao.IAppUserDAO;
+import org.shved.webacs.dao.IAuthTokenDAO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.exception.TokenException;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
-import org.shved.webacs.services.AuthTokenService;
+import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ import java.util.UUID;
  * @author dshvedchenko on 6/24/16.
  */
 @Service
-public class AuthTokenServiceImpl implements AuthTokenService {
+public class AuthTokenServiceImpl implements IAuthTokenService {
 
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Autowired
-    private AuthTokenDAO authTokenDAO;
+    private IAuthTokenDAO authTokenDAO;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,12 +39,24 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
 
         if (passwordEncoder.matches(userLogin.getPassword(), appUser.getPassword())) {
-            AuthToken token = generateNewAuthToken(appUser);
+            AuthToken token = null;
+            token = authTokenDAO.findNonExpiredByUserId(appUser.getId(), getValidPoint());
+            if (token == null) {
+                token = generateNewAuthToken(appUser);
+            } else {
+                token.setLastUsed(new Date());
+            }
             authTokenDAO.saveToken(token);
             result.setToken(token.getToken());
             result.setUsername(userLogin.getUsername());
         }
         return result;
+    }
+
+    Date getValidPoint() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -1);
+        return cal.getTime();
     }
 
     @Override
@@ -58,7 +70,7 @@ public class AuthTokenServiceImpl implements AuthTokenService {
     }
 
     @Override
-    public AuthToken isTokenValid(String tokenStr) {
+    public boolean isTokenValid(String tokenStr) {
         AuthToken token = authTokenDAO.getAuthToken(tokenStr);
 
         if (token == null) {
@@ -67,7 +79,7 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
         handleTokenExpired(token);
 
-        return token;
+        return token != null;
     }
 
     private void handleTokenExpired(AuthToken token) {

@@ -3,18 +3,17 @@ package org.shved.webacs.dao.impl;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * @author dshvedchenko on 6/10/16.
  */
-public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements AppUserDAO {
+public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUserDAO {
 
     @Autowired
     public SessionFactory sessionFactory;

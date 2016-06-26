@@ -3,7 +3,7 @@ package org.shved.webacs.controller;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.response.ResponseData;
-import org.shved.webacs.services.AppUserService;
+import org.shved.webacs.services.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class AppUserController {
 
     @Autowired
-    AppUserService appUserService;
+    IAppUserService appUserService;
 
     @Autowired
     ModelMapper modelMapper;

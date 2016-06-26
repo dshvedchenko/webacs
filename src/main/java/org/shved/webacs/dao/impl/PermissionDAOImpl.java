@@ -4,20 +4,18 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.PermissionDAO;
+import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.Resource;
-import org.shved.webacs.model.UserPermission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.feed.RssChannelHttpMessageConverter;
 
 import java.util.List;
 
 /**
  * @author dshvedchenko on 6/12/16.
  */
-public class PermissionDAOImpl extends AbstractDao<Long, Permission> implements PermissionDAO {
+public class PermissionDAOImpl extends AbstractDao<Long, Permission> implements IPermissionDAO {
 
     @Autowired
     SessionFactory sessionFactory;

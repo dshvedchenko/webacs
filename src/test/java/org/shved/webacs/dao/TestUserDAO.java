@@ -1,22 +1,14 @@
 package org.shved.webacs.dao;
 
-import org.hibernate.Session;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.transaction.TransactionManager;
 
 /**
  * @author dshvedchenko on 6/10/16.
@@ -26,7 +18,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
     Logger logger = LoggerFactory.logger(TestUserDAO.class);
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
 
 

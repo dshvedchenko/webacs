@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/13/16.
  */
-public interface PermissionClaimDAO {
+public interface IPermissionClaimDAO {
     List<PermissionClaim> findAllPermissionClaim();
 
     void savePermissionClaim(PermissionClaim permissionClaim);

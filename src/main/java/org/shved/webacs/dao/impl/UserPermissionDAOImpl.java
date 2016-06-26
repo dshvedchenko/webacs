@@ -3,10 +3,8 @@ package org.shved.webacs.dao.impl;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.UserPermissionDAO;
-import org.shved.webacs.model.AppUser;
+import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
@@ -20,7 +18,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/12/16.
  */
-public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> implements UserPermissionDAO {
+public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> implements IUserPermissionDAO {
 
     @Autowired
     SessionFactory sessionFactory;

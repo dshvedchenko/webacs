@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
-import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.model.SysRole;
@@ -32,7 +32,7 @@ public class TestRestUserController extends AbstractAppTest {
     private MockMvc mockMvc;
     private String userName = "admin";
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Before
     public void setup() throws Exception {

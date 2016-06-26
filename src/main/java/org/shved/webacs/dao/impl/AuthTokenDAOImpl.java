@@ -1,21 +1,23 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.AuthTokenDAO;
-import org.shved.webacs.exception.TokenException;
+import org.shved.webacs.dao.IAuthTokenDAO;
 import org.shved.webacs.model.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author dshvedchenko on 6/17/16.
  */
 @Transactional(propagation = Propagation.SUPPORTS)
-public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements AuthTokenDAO {
+public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements IAuthTokenDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -50,4 +52,16 @@ public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements 
             persist(authToken);
         }
     }
+
+    @Override
+    public AuthToken findNonExpiredByUserId(Long userId, Date validPoint) {
+        List<AuthToken> lst = getSession().createCriteria(AuthToken.class)
+                .createAlias("appUser", "u")
+                .add(Restrictions.conjunction(
+                        Restrictions.eq("u.id", userId),
+                        Restrictions.ge("lastUsed", validPoint)
+                )).addOrder(Order.desc("lastUsed")).list();
+        return lst.get(0);
+    }
+
 }

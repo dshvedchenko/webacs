@@ -1,7 +1,7 @@
 package org.shved.webacs.services.impl;
 
 import org.modelmapper.ModelMapper;
-import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
@@ -11,8 +11,8 @@ import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.exception.UserExistsException;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.SysRole;
-import org.shved.webacs.services.AppUserService;
-import org.shved.webacs.services.AuthTokenService;
+import org.shved.webacs.services.IAppUserService;
+import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,13 @@ import java.util.stream.Collectors;
  * @author dshvedchenko on 6/10/16.
  */
 @Service
-public class AppUserServiceImpl implements AppUserService {
+public class AppUserServiceImpl implements IAppUserService {
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Autowired
-    private AuthTokenService authTokenService;
+    private IAuthTokenService authTokenService;
 
     @Autowired
     private ModelMapper modelMapper;

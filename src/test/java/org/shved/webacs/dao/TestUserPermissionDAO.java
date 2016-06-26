@@ -19,19 +19,19 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
     Logger logger = LoggerFactory.logger(TestUserPermissionDAO.class);
 
     @Autowired
-    UserPermissionDAO userPermissionDAO;
+    IUserPermissionDAO userPermissionDAO;
 
     @Autowired
-    PermissionDAO permissionDAO;
+    IPermissionDAO permissionDAO;
 
     @Autowired
-    AppUserDAO appUserDAO;
+    IAppUserDAO appUserDAO;
 
     @Autowired
-    PermissionClaimDAO permissionClaimDAO;
+    IPermissionClaimDAO permissionClaimDAO;
 
     @Autowired
-    ClaimStateDAO claimStateDAO;
+    IClaimStateDAO claimStateDAO;
 
     @Test
     public void testDao() {

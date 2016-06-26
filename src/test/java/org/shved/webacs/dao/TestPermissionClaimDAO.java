@@ -15,16 +15,16 @@ import java.util.List;
 public class TestPermissionClaimDAO extends AbstractRepositoryTest {
 
     @Autowired
-    PermissionClaimDAO permissionClaimDAO;
+    IPermissionClaimDAO permissionClaimDAO;
 
     @Autowired
-    ClaimStateDAO claimStateDAO;
+    IClaimStateDAO claimStateDAO;
 
     @Autowired
-    PermissionDAO permissionDAO;
+    IPermissionDAO permissionDAO;
 
     @Autowired
-    AppUserDAO appUserDAO;
+    IAppUserDAO appUserDAO;
 
     @Test
     public void testDao() {

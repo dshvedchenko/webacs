@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/10/16.
  */
-public interface AppUserDAO {
+public interface IAppUserDAO {
 
     List<AppUser> findAllAppUsers();
 

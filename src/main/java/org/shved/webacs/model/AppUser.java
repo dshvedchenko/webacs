@@ -57,12 +57,12 @@ public class AppUser {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Getter
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Date created_at;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Getter
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", updatable = false)
     private Date updated_at;
 
     @Temporal(TemporalType.TIMESTAMP)

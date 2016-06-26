@@ -1,6 +1,6 @@
 package org.shved.webacs.services.impl;
 
-import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author dshvedchenko on 6/14/16.
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 public class ACSUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Override
     @Transactional(readOnly = true)

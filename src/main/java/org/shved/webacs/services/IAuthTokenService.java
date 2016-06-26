@@ -6,10 +6,10 @@ import org.shved.webacs.model.AuthToken;
 /**
  * @author dshvedchenko on 6/24/16.
  */
-public interface AuthTokenService {
+public interface IAuthTokenService {
     UserAuthDTO restLogin(UserAuthDTO userLogin);
 
-    AuthToken isTokenValid(String token);
+    boolean isTokenValid(String token);
 
     void restLogout(String token);
 }

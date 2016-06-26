@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/12/16.
  */
-public interface PermissionDAO {
+public interface IPermissionDAO {
     List<Permission> findAllPermissions();
 
     Permission findById(Long id);

@@ -18,7 +18,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     Logger logger = LoggerFactory.logger(TestResourceDAO.class);
 
     @Autowired
-    private ResourceDAO resourceDAO;
+    private IResourceDAO resourceDAO;
 
 
     @Test

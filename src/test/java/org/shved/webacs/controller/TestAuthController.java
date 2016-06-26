@@ -4,10 +4,12 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.shved.webacs.dao.AppUserDAO;
+import org.shved.webacs.dao.IAppUserDAO;
+import org.shved.webacs.dao.IAuthTokenDAO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -28,7 +30,10 @@ public class TestAuthController extends AbstractAppTest {
     private String userName = "admin";
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
+
+    @Autowired
+    private IAuthTokenService authTokenService;
 
     @Before
     public void setup() throws Exception {
@@ -48,8 +53,7 @@ public class TestAuthController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.token").exists());
 
         String resp = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
-        Assert.assertEquals("eejwekfoweifwerwer", resp);
-
+        Assert.assertTrue(authTokenService.isTokenValid(resp));
     }
 
 
@@ -63,13 +67,10 @@ public class TestAuthController extends AbstractAppTest {
                 .contentType(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-
         ;
     }
 
     @Test
-    //enabled to avoid : Could not obtain transaction-synchronized Session for current thread
-    //also it lead that all service+ dao method executed in this transaction and all DB changes rolledback
     @Transactional
     public void testRegisterUser() throws Exception {
         UserRegistrationDTO regInfo = new UserRegistrationDTO();
@@ -86,7 +87,6 @@ public class TestAuthController extends AbstractAppTest {
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
-                // .andExpect(jsonPath("$", hasSize(1))) ?? java.lang.NoSuchMethodError: org.hamcrest.Matcher.describeMismatch(Ljava/lang/Object;Lorg/hamcrest/Description;)V
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data").value(true));
 
@@ -97,7 +97,6 @@ public class TestAuthController extends AbstractAppTest {
         Assert.assertEquals(email, au.getEmail());
         Assert.assertEquals("UserJ", au.getFirstname());
         Assert.assertEquals("UserF", au.getLastname());
-        // appUserDAO.delete(au);
     }
 
 

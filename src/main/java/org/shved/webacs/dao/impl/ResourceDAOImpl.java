@@ -3,8 +3,7 @@ package org.shved.webacs.dao.impl;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.ResourceDAO;
-import org.shved.webacs.model.AppUser;
+import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/12/16.
  */
-public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements ResourceDAO {
+public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements IResourceDAO {
 
     @Autowired
     SessionFactory sessionFactory;

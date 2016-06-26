@@ -1,23 +1,19 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.shved.webacs.dao.AbstractDao;
-import org.shved.webacs.dao.PermissionClaimDAO;
-import org.shved.webacs.dao.PermissionDAO;
+import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.util.List;
 
 /**
  * @author dshvedchenko on 6/13/16.
  */
-public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> implements PermissionClaimDAO {
+public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> implements IPermissionClaimDAO {
 
     @Autowired
     SessionFactory sessionFactory;

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/17/16.
  */
-public interface AppUserService {
+public interface IAppUserService {
     List<AppUserDTO> getAll();
 
     @Transactional

@@ -5,8 +5,8 @@ import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.response.ResponseData;
-import org.shved.webacs.services.AppUserService;
-import org.shved.webacs.services.AuthTokenService;
+import org.shved.webacs.services.IAppUserService;
+import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/v1/user", consumes = "application/json", produces = "application/json")
 public class RestUserController {
     @Autowired
-    AppUserService appUserService;
+    IAppUserService appUserService;
 
     @Autowired
-    AuthTokenService authTokenService;
+    IAuthTokenService authTokenService;
 
     /**
      * @param token

@@ -4,7 +4,7 @@ import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.exception.EmailExistsException;
 import org.shved.webacs.exception.UserExistsException;
 import org.shved.webacs.model.AppUser;
-import org.shved.webacs.services.AppUserService;
+import org.shved.webacs.services.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ import javax.validation.Valid;
 @Controller()
 public class RegistrationController {
     @Autowired
-    AppUserService appUserService;
+    IAppUserService appUserService;
 
     @Autowired
     @Qualifier("passwordValidator")

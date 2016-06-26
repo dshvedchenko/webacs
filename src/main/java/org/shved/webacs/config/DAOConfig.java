@@ -18,43 +18,43 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DAOConfig {
     @Bean(name = "appUserDAO")
     @Autowired
-    AppUserDAO appUserDAO(SessionFactory sessionFactory) {
+    IAppUserDAO appUserDAO(SessionFactory sessionFactory) {
         return new AppUserDAOImpl(sessionFactory);
     }
 
     @Bean(name = "authTokenDAO")
     @Autowired
-    AuthTokenDAO authTokenDAO(SessionFactory sessionFactory) {
+    IAuthTokenDAO authTokenDAO(SessionFactory sessionFactory) {
         return new AuthTokenDAOImpl(sessionFactory);
     }
 
     @Bean(name = "permissionDAO")
     @Autowired
-    PermissionDAO permissionDAO(SessionFactory sessionFactory) {
+    IPermissionDAO permissionDAO(SessionFactory sessionFactory) {
         return new PermissionDAOImpl(sessionFactory);
     }
 
     @Bean(name = "resourceDAO")
     @Autowired
-    ResourceDAO resourceDAO(SessionFactory sessionFactory) {
+    IResourceDAO resourceDAO(SessionFactory sessionFactory) {
         return new ResourceDAOImpl(sessionFactory);
     }
 
     @Bean(name = "userPermissionDAO")
     @Autowired
-    UserPermissionDAO userPermissionDAO(SessionFactory sessionFactory) {
+    IUserPermissionDAO userPermissionDAO(SessionFactory sessionFactory) {
         return new UserPermissionDAOImpl(sessionFactory);
     }
 
     @Bean(name = "permissionClaimDAO")
     @Autowired
-    PermissionClaimDAO permissionClaimDAO(SessionFactory sessionFactory) {
+    IPermissionClaimDAO permissionClaimDAO(SessionFactory sessionFactory) {
         return new PermissionClaimDAOImpl(sessionFactory);
     }
 
     @Bean(name = "claimStateDAO")
     @Autowired
-    ClaimStateDAO claimStateDAO(SessionFactory sessionFactory) {
+    IClaimStateDAO claimStateDAO(SessionFactory sessionFactory) {
         return new ClaimStateDAOImpl(sessionFactory);
     }
 }

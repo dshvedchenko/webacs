@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.shved.webacs.dto.ValidationErrorDTO;
 import org.shved.webacs.exception.*;
 import org.shved.webacs.response.Error;
@@ -53,7 +54,7 @@ public class ExceptionController {
         return rd;
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "token not found")
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "token not found")
     @ExceptionHandler(TokenException.class)
     @ResponseBody
     public ResponseData handleTokenException(TokenException error) {

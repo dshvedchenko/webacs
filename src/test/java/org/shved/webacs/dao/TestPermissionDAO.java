@@ -1,7 +1,6 @@
 package org.shved.webacs.dao;
 
 import junitx.framework.Assert;
-import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.Permission;
@@ -16,10 +15,10 @@ import java.util.List;
 public class TestPermissionDAO extends AbstractRepositoryTest {
 
     @Autowired
-    PermissionDAO permissionDAO;
+    IPermissionDAO permissionDAO;
 
     @Autowired
-    ResourceDAO resourceDAO;
+    IResourceDAO resourceDAO;
 
     @Test
     public void checkPermissionDAO() {

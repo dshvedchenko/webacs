@@ -4,16 +4,12 @@ import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
-import org.shved.webacs.response.Error;
 import org.shved.webacs.response.ResponseData;
-import org.shved.webacs.services.AppUserService;
-import org.shved.webacs.services.AuthTokenService;
+import org.shved.webacs.services.IAppUserService;
+import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -24,14 +20,14 @@ import javax.validation.Valid;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json;charset=UTF-8")
 public class RestAuthController extends AbstractAPIV1Controller {
 
     @Autowired
-    AuthTokenService authTokenService;
+    IAuthTokenService authTokenService;
 
     @Autowired
-    AppUserService appUserService;
+    IAppUserService appUserService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseData<AuthToken> login(
