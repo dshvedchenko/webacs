@@ -1,6 +1,9 @@
 package org.shved.webacs.services;
 
 import org.shved.webacs.dto.ResourceDTO;
+import org.shved.webacs.model.Resource;
+
+import java.util.List;
 
 /**
  * @author dshvedchenko on 6/26/16.
@@ -8,4 +11,13 @@ import org.shved.webacs.dto.ResourceDTO;
 public interface IResourceService {
 
     ResourceDTO create(ResourceDTO resourceDTO);
+
+    ResourceDTO getById(Long id);
+
+    void updateResource(ResourceDTO resourceDTO);
+
+    void deleteById(Long id);
+
+    List<ResourceDTO> getAll();
+
 }
