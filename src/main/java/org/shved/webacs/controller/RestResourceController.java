@@ -62,7 +62,6 @@ public class RestResourceController {
     ) {
         authTokenService.isTokenValid(token);
         resourceService.updateResource(resourceDTO);
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")

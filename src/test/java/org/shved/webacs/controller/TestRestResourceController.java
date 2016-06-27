@@ -2,25 +2,21 @@ package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import com.sun.javafx.collections.MappingChange;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.dto.UserAuthDTO;
-import org.shved.webacs.dto.UserCreationDTO;
-import org.shved.webacs.model.SysRole;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -43,7 +39,7 @@ public class TestRestResourceController extends AbstractAppTest {
 
     @Transactional
     @Test
-    public void createUserTest() throws Exception {
+    public void createResourceTest() throws Exception {
 
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
@@ -71,7 +67,10 @@ public class TestRestResourceController extends AbstractAppTest {
                         .content(new ObjectMapper().writeValueAsString(rdto))
         )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.id").exists());
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.kind", is("time")))
+                .andExpect(jsonPath("$.data.name", is("future")))
+                .andExpect(jsonPath("$.data.detail", is("my future")));
 
         Integer newResourceId = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data.id");
         Assert.assertNotNull(newResourceId);
@@ -102,9 +101,59 @@ public class TestRestResourceController extends AbstractAppTest {
 
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").exists());
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.id", is(1)))
+                .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
+                .andExpect(jsonPath("$.data.kind", is("Calendar")))
+                .andExpect(jsonPath("$.data.detail", is("xDep shared calendar")));
 
-        Map resMap = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
-        Assert.assertNotNull(resMap);
+    }
+
+    @Transactional
+    @Test
+    public void getResurceEditdTest() throws Exception {
+        final long EXIST_RESOURCE_ID = 1L;
+
+        final String EXISTS_RESOURCE_KIND = "Calendar";
+        final String EXISTS_RESOURCE_DETAIL = "xDep shared calendar";
+
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.id", is(1)))
+                .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
+                .andExpect(jsonPath("$.data.kind", is(EXISTS_RESOURCE_KIND)))
+                .andExpect(jsonPath("$.data.detail", is(EXISTS_RESOURCE_DETAIL)));
+
+        Map resourceClientBag = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
+
+        resourceClientBag.replace("kind", "qazwsx");
+        resourceClientBag.replace("detail", "detail detail");
+
+        ResultActions updateResponce = mockMvc.perform(
+                put("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(resourceClientBag))
+        ).andExpect(status().isAccepted());
     }
 }

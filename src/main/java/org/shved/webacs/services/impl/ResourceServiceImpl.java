@@ -3,6 +3,7 @@ package org.shved.webacs.services.impl;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.dto.ResourceDTO;
+import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.model.Resource;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,21 @@ public class ResourceServiceImpl implements IResourceService {
     @Override
     @Transactional
     public ResourceDTO getById(Long id) {
-        return modelMapper.map(resourceDAO.findById(id), ResourceDTO.class);
+        Resource resource = resourceDAO.findById(id);
+        if (resource == null) throw new NotFoundException("not found for " + id);
+
+        return modelMapper.map(resource, ResourceDTO.class);
     }
 
     @Override
     public void updateResource(ResourceDTO resourceDTO) {
-        resourceDAO.saveResource(modelMapper.map(resourceDTO, Resource.class));
+        Resource resource = modelMapper.map(resourceDTO, Resource.class);
+        Resource toSave = resourceDAO.findById(resource.getId());
+        toSave.setDetail(resource.getDetail());
+        toSave.setKind(resource.getKind());
+        //TODO resolve trouble with storing such entities from REST
+        //toSave.setOwnerPermission();
+        resourceDAO.saveResource(toSave);
     }
 
     @Override
