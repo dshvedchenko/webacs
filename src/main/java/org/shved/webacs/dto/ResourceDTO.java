@@ -12,6 +12,5 @@ public class ResourceDTO {
     private String kind;
     private String name;
     private String detail;
-    //TODO clarify
-    private Permission ownerPermission;
+//    private Permission ownerPermission;
 }

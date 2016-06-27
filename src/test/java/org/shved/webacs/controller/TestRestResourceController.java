@@ -2,6 +2,8 @@ package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.sun.javafx.collections.MappingChange;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.shved.webacs.dao.IAppUserDAO;
@@ -15,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,6 +29,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @author dshvedchenko on 6/26/16.
  */
 public class TestRestResourceController extends AbstractAppTest {
+
+    public static final String PASSWORD = "1qaz2wsx";
 
     private MockMvc mockMvc;
     private String userName = "admin";
@@ -40,7 +47,7 @@ public class TestRestResourceController extends AbstractAppTest {
 
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
+        loginInfo.setPassword(PASSWORD);
         ResultActions res = mockMvc.perform(post("/api/v1/login")
                 .content(this.json(loginInfo))
                 .accept(contentType)
@@ -67,6 +74,37 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists());
 
         Integer newResourceId = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data.id");
+        Assert.assertNotNull(newResourceId);
+    }
 
+    @Transactional
+    @Test
+    public void getResurceByIdTest() throws Exception {
+        final long EXIST_RESOURCE_ID = 1L;
+
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").exists());
+
+        Map resMap = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
+        Assert.assertNotNull(resMap);
     }
 }
