@@ -5,6 +5,7 @@ import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dao.IResTypeDAO;
 import org.shved.webacs.dto.ClaimStateDTO;
 import org.shved.webacs.dto.ResTypeDTO;
+import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.model.ClaimState;
 import org.shved.webacs.model.ResType;
@@ -60,7 +61,11 @@ public class ResTypeServiceImpl implements IResTypeService {
         } else {
             dbObj = newObj;
         }
-        resTypeDAO.save(dbObj);
+        try {
+            resTypeDAO.save(dbObj);
+        } catch (Exception e) {
+            throw new AppException(e.getMessage(), e);
+        }
     }
 
 
