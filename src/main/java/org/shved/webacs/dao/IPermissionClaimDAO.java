@@ -27,4 +27,6 @@ public interface IPermissionClaimDAO {
     List<PermissionClaim> findAllRevoked();
 
     List<PermissionClaim> findAllToBeApprovedBy(AppUser appUser);
+
+    void save(PermissionClaim permissionClaim);
 }

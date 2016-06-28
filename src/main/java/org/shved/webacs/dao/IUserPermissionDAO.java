@@ -29,4 +29,8 @@ public interface IUserPermissionDAO {
 
     List<UserPermission> findAllToBeRevoked();
 
+    void save(UserPermission userPermission);
+
+    void delete(UserPermission userPermission);
+
 }

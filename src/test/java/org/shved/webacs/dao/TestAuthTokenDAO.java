@@ -45,7 +45,7 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
         token.setAppUser(user);
         token.setToken(tokenStr);
         token.setLastUsed(new Date());
-        authTokenDAO.saveToken(token);
+        authTokenDAO.save(token);
 
         AuthToken token2 = authTokenDAO.getAuthToken(tokenStr);
         Assert.assertNotNull(token2);
@@ -61,7 +61,7 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
         token.setAppUser(user);
         token.setToken(tokenStr);
         token.setLastUsed(new Date());
-        authTokenDAO.saveToken(token);
+        authTokenDAO.save(token);
         authTokenDAO.deleteTokenByVal(tokenStr);
 
         AuthToken token2 = authTokenDAO.getAuthToken(tokenStr);

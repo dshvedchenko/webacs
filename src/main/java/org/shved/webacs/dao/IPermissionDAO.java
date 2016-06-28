@@ -14,7 +14,7 @@ public interface IPermissionDAO {
 
     Permission findById(Long id);
 
-    void savePermission(Permission permission);
+    void save(Permission permission);
 
     void delete(Permission permission);
 

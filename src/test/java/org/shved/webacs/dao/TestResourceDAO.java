@@ -39,7 +39,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
-        resourceDAO.saveResource(resource);
+        resourceDAO.save(resource);
         Resource foundRes = resourceDAO.findById(resource.getId());
         Assert.assertNotNull(foundRes);
     }
@@ -50,7 +50,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
-        resourceDAO.saveResource(resource);
+        resourceDAO.save(resource);
         resourceDAO.delete(resource);
         Assert.assertNotNull(resource);
     }
@@ -62,7 +62,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
-        resourceDAO.saveResource(resource);
+        resourceDAO.save(resource);
         resourceDAO.deleteById(resource.getId());
         Resource res = resourceDAO.findById(resource.getId());
         Assert.assertNull(res);

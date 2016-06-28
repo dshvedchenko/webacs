@@ -52,7 +52,7 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUs
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public void saveAppUser(AppUser user) {
+    public void save(AppUser user) {
         persist(user);
     }
 

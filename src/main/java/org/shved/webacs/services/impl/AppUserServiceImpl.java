@@ -77,7 +77,7 @@ public class AppUserServiceImpl implements IAppUserService {
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 
         try {
-            appUserDAO.saveAppUser(appUser);
+            appUserDAO.save(appUser);
         } catch (Exception e) {
             throw new AppException("Can not save new user", e);
         }
@@ -97,7 +97,7 @@ public class AppUserServiceImpl implements IAppUserService {
         AppUser appUser = appUserDAO.findById(userId);
         appUser.setEnabled(false);
         appUser.setDisabled_at(new Date());
-        appUserDAO.saveAppUser(appUser);
+        appUserDAO.save(appUser);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class AppUserServiceImpl implements IAppUserService {
 
         applyAppUserDTO2AppUserByAdmin(appUserDTO, appUser);
 
-        appUserDAO.saveAppUser(appUser);
+        appUserDAO.save(appUser);
     }
 
     private void applyAppUserDTO2AppUserByAdmin(AppUserDTO appUserDTO, AppUser appUser) {

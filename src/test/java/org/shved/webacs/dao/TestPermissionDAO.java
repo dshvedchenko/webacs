@@ -40,7 +40,7 @@ public class TestPermissionDAO extends AbstractRepositoryTest {
         permission.setDescription("some description");
         permission.setTitle("Any Kind of Rights");
 
-        permissionDAO.savePermission(permission);
+        permissionDAO.save(permission);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class TestPermissionDAO extends AbstractRepositoryTest {
         permission.setDescription("some description");
         permission.setTitle("Any Kind of Rights");
 
-        permissionDAO.savePermission(permission);
+        permissionDAO.save(permission);
 
         permissionDAO.delete(permission);
 
@@ -67,7 +67,7 @@ public class TestPermissionDAO extends AbstractRepositoryTest {
         permission.setDescription("some description");
         permission.setTitle("Any Kind of Rights");
 
-        permissionDAO.savePermission(permission);
+        permissionDAO.save(permission);
 
         permissionDAO.deleteById(permission.getId());
 

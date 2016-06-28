@@ -46,7 +46,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
             } else {
                 token.setLastUsed(new Date());
             }
-            authTokenDAO.saveToken(token);
+            authTokenDAO.save(token);
             result.setToken(token.getToken());
             result.setUsername(userLogin.getUsername());
         }

@@ -19,7 +19,7 @@ public interface IAppUserDAO {
 
     AppUser findById(Long id);
 
-    void saveAppUser(AppUser user);
+    void save(AppUser user);
 
     AppUser findByUsername(String username);
 

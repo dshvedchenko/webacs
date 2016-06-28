@@ -10,7 +10,8 @@ import java.util.Date;
  */
 public interface IAuthTokenDAO {
     AuthToken getAuthToken(String tokenVal);
-    void saveToken(AuthToken token);
+
+    void save(AuthToken token);
     void deleteTokenByVal(String token);
     void updateToken(String token);
 

@@ -53,7 +53,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
     @Transactional
     public void createUser() {
         AppUser user = initUser();
-        appUserDAO.saveAppUser(user);
+        appUserDAO.save(user);
         logger.info("USER IN DB : " + user);
         Assert.assertNotNull(user.getId());
 
@@ -69,7 +69,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
 //    @Test
 //    public void deleteUser() {
 //        AppUser user = initUser();
-//        appUserDAO.saveAppUser(user);
+//        appUserDAO.save(user);
 //        logger.info("USER IN DB : " + user);
 //        appUserDAO.delete(user);
 //        AppUser findDeleted = appUserDAO.findById(user.getId());
@@ -80,7 +80,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
 //    @Test
 //    public void deleteUserById() throws Exception {
 //        AppUser user = initUser();
-//        appUserDAO.saveAppUser(user);
+//        appUserDAO.save(user);
 //        logger.info("USER IN DB : " + user);
 //        appUserDAO.deleteById(user.getId());
 //
@@ -92,7 +92,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
     @Transactional
     public void findByUsername() {
         AppUser user = initUser();
-        appUserDAO.saveAppUser(user);
+        appUserDAO.save(user);
         user = appUserDAO.findByUsername("black03");
         Assert.assertNull(user);
 
@@ -109,7 +109,7 @@ public class TestUserDAO extends AbstractRepositoryTest {
     @Test
     public void findByEmail() {
         AppUser user = initUser();
-        appUserDAO.saveAppUser(user);
+        appUserDAO.save(user);
         user = appUserDAO.findByEmail("test@test1.net");
         Assert.assertNull(user);
 

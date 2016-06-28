@@ -33,7 +33,7 @@ public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements 
     }
 
     @Override
-    public void saveToken(AuthToken token) {
+    public void save(AuthToken token) {
         persist(token);
     }
 

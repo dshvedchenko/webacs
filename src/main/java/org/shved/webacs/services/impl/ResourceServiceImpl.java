@@ -8,11 +8,9 @@ import org.shved.webacs.model.Resource;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +29,7 @@ public class ResourceServiceImpl implements IResourceService {
     @Transactional()
     public ResourceDTO create(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
-        resourceDAO.saveResource(resource);
+        resourceDAO.save(resource);
         return modelMapper.map(resource, ResourceDTO.class);
     }
 
@@ -52,7 +50,7 @@ public class ResourceServiceImpl implements IResourceService {
         toSave.setKind(resource.getKind());
         //TODO resolve trouble with storing such entities from REST
         //toSave.setOwnerPermission();
-        resourceDAO.saveResource(toSave);
+        resourceDAO.save(toSave);
     }
 
     @Override

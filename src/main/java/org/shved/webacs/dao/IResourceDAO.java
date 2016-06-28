@@ -12,7 +12,7 @@ public interface IResourceDAO {
     List<Resource> findAllResources();
     Resource findById(Long id);
 
-    void saveResource(Resource resource);
+    void save(Resource resource);
 
     void delete(Resource resource);
 

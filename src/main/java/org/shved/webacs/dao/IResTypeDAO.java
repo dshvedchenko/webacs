@@ -12,9 +12,9 @@ public interface IResTypeDAO {
 
     List<ResType> findAll();
 
-    ResType findById(Long id);
+    ResType findById(Integer id);
 
-    void saveResType(ResType resType);
+    void save(ResType resType);
 
     void delete(ResType resType);
 
