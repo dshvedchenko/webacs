@@ -23,17 +23,22 @@ VALUES
   ('fireoff', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
    FALSE);
 
+INSERT INTO app.restype (
+  id,
+  name
+)
+VALUES (1, 'Calendar'), (2, 'wiki'), (3, 'room');
 
 INSERT INTO app.resource (
   name
-  , kind
+  , restype_id
   , detail
   , owner_permission_id
 )
 VALUES
-  ('xDep Calendar', 'Calendar', 'xDep shared calendar', NULL),
-  ('xDep wiki space', 'wiki', 'xDep wiki ', NULL),
-  ('Large RestRoom', 'room', 'company shared rest room', NULL);
+  ('xDep Calendar', 1, 'xDep shared calendar', NULL),
+  ('xDep wiki space', 2, 'xDep wiki ', NULL),
+  ('Large RestRoom', 3, 'company shared rest room', NULL);
 
 INSERT INTO app.permission (
   resource_id
@@ -116,8 +121,9 @@ INSERT INTO app.permission_claim
     ('maryl', 'Large RestRoom', 'room', 'Visitor', 'ninaa', 'admin', 'infinity'),
     ('ninaa', 'Large RestRoom', 'room', 'Visitor', 'ninaa', 'admin', '20160515')
        ) demo
+    JOIN app.restype rt ON demo.column3 = rt.name
     JOIN app.appuser au ON demo.column1 = au.username
-    JOIN app.resource r ON r.name = demo.column2 AND r.kind = demo.column3
+    JOIN app.resource r ON r.name = demo.column2 AND r.restype_id = rt.id
     JOIN app.permission rr ON r.id = rr.resource_id AND rr.title = demo.column4
     JOIN app.appuser appr ON appr.username = demo.column5
     JOIN app.appuser gr ON gr.username = demo.column6;

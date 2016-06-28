@@ -10,6 +10,7 @@ import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -86,7 +87,8 @@ public class RestResourceController {
         return rd;
     }
 
-    @RequestMapping(value = "/list/kind/{kindName}", method = RequestMethod.GET, produces = "application/json")
+    @Transactional
+    @RequestMapping(value = "/kind/{kindName}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAllByKind(
             @RequestHeader(name = "X-AUTHID") String token,

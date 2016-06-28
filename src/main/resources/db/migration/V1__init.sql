@@ -38,11 +38,22 @@ COMMENT ON COLUMN app.appuser.password IS 'to store as md5/sha256 hash, and need
 CREATE TRIGGER update_appuser_updated_at BEFORE UPDATE ON app.appuser FOR EACH ROW EXECUTE PROCEDURE app.update_updated_at_column();
 -- DROP TABLE app.resource;
 
+CREATE TABLE app.restype
+(
+  id   SERIAL NOT NULL PRIMARY KEY,
+  name CHARACTER VARYING(64),
+  CONSTRAINT restype_name UNIQUE (name)
+) WITH (
+OIDS = FALSE
+);
+ALTER TABLE app.restype
+  OWNER TO acs_app;
+
 CREATE TABLE app.resource
 (
   id                  BIGSERIAL NOT NULL,
   name                CHARACTER VARYING(128),
-  kind                CHARACTER VARYING(64),
+  restype_id          INTEGER,
   detail              CHARACTER VARYING(256),
   owner_permission_id BIGINT,
   CONSTRAINT resource_pkey PRIMARY KEY (id),
@@ -53,6 +64,10 @@ OIDS = FALSE
 );
 ALTER TABLE app.resource
   OWNER TO acs_app;
+ALTER TABLE app.resource
+  ADD CONSTRAINT restype_id_fk FOREIGN KEY (restype_id)
+REFERENCES app.restype (id) MATCH SIMPLE
+ON UPDATE NO ACTION ON DELETE RESTRICT;
 
 -- Table: app.permission
 
