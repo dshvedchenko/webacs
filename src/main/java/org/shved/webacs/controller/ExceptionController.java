@@ -1,7 +1,6 @@
 package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.deploy.net.HttpResponse;
 import org.shved.webacs.dto.ValidationErrorDTO;
 import org.shved.webacs.exception.*;
 import org.shved.webacs.response.Error;

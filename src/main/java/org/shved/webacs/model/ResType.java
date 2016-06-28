@@ -5,32 +5,20 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * @author dshvedchenko on 6/8/16.
+ * @author dshvedchenko on 6/28/16.
  */
 @Data
 //resource
 @Entity
-@Table(name = "resource", schema = "app")
-public class Resource {
+@Table(name = "restype", schema = "app")
+public class ResType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id", name = "restype_id")
-    @Column(name = "restype_id")
-    private ResType resType;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "detail")
-    private String detail;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_permission_id")
-    private Permission ownerPermission;
 
     @Override
     public boolean equals(Object obj) {
@@ -39,7 +27,7 @@ public class Resource {
         if (obj == null) return false;
 
         if (this.getClass() != getClass()) return false;
-        Resource inputObj = (Resource) obj;
+        ResType inputObj = (ResType) obj;
 
         if (this.getId() != inputObj.getId()) return false;
 

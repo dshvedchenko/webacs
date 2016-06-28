@@ -36,7 +36,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     @Test
     public void findById() {
         Resource resource = new Resource();
-        resource.setKind("Software Instance");
+        resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.saveResource(resource);
@@ -47,7 +47,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     @Test
     public void delete() {
         Resource resource = new Resource();
-        resource.setKind("Software Instance");
+        resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.saveResource(resource);
@@ -59,7 +59,7 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     @Test
     public void deleteById() {
         Resource resource = new Resource();
-        resource.setKind("Software Instance");
+        resource.setResType("Software Instance");
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.saveResource(resource);
