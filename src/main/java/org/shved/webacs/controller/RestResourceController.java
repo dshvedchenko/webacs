@@ -86,4 +86,17 @@ public class RestResourceController {
         return rd;
     }
 
+    @RequestMapping(value = "/list/kind/{kindName}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<ResourceDTO> getAllByKind(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @PathVariable String kindName
+    ) {
+        authTokenService.isTokenValid(token);
+        List<ResourceDTO> resourceDTOList = resourceService.getAllByKind(kindName);
+        ResponseData rd = new ResponseData();
+        rd.setData(resourceDTOList);
+        return rd;
+    }
+
 }

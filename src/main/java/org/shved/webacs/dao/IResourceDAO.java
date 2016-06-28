@@ -10,7 +10,6 @@ import java.util.List;
 public interface IResourceDAO {
 
     List<Resource> findAllResources();
-
     Resource findById(Long id);
 
     void saveResource(Resource resource);

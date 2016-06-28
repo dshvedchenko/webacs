@@ -20,4 +20,6 @@ public interface IResourceService {
 
     List<ResourceDTO> getAll();
 
+    List<ResourceDTO> getAllByKind(String kindName);
+
 }

@@ -156,4 +156,38 @@ public class TestRestResourceController extends AbstractAppTest {
                         .content(new ObjectMapper().writeValueAsString(resourceClientBag))
         ).andExpect(status().isAccepted());
     }
+
+    @Transactional
+    @Test
+    public void getResurcesByKind() throws Exception {
+        final String EXIST_RESOURCE_KIND = "Calendar";
+
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/resource/list/kind/" + EXIST_RESOURCE_KIND)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.id", is(1)))
+                .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
+                .andExpect(jsonPath("$.data.kind", is("Calendar")))
+                .andExpect(jsonPath("$.data.detail", is("xDep shared calendar")));
+
+    }
+
 }

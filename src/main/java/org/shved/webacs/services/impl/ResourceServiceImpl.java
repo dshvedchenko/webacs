@@ -65,6 +65,11 @@ public class ResourceServiceImpl implements IResourceService {
         return convertListResourcesToListResourceDTO(resourceDAO.findAllResources());
     }
 
+    @Override
+    public List<ResourceDTO> getAllByKind(String kindName) {
+        return convertListResourcesToListResourceDTO(resourceDAO.findAllByKind(kindName));
+    }
+
     private List<ResourceDTO> convertListResourcesToListResourceDTO(List<Resource> resources) {
         return resources.stream().map(item -> modelMapper.map(item, ResourceDTO.class)).collect(Collectors.toList());
     }
