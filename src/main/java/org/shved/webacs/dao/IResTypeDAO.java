@@ -18,7 +18,7 @@ public interface IResTypeDAO {
 
     void delete(ResType resType);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 
     ResType findByName(String name);
 

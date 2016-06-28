@@ -1,7 +1,9 @@
 package org.shved.webacs.dao.impl;
 
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IResTypeDAO;
 import org.shved.webacs.model.ResType;
@@ -47,13 +49,17 @@ public class ResTypeDAOImpl extends AbstractDao<Integer, ResType> implements IRe
     @SuppressWarnings("unchecked")
     @Transactional
     @Override
-    public void deleteById(Long id) {
-        getSession().delete(getSession().get(Resource.class, id));
+    public void deleteById(Integer id) {
+        getSession().delete(getSession().get(ResType.class, id));
     }
 
 
     @Override
     public ResType findByName(String name) {
-        return null;
+        ResType resType = null;
+        Criteria criteria = getSession().createCriteria(ResType.class)
+                .add(Restrictions.eq("name", name));
+        resType = (ResType) criteria.uniqueResult();
+        return resType;
     }
 }
