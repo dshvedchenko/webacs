@@ -86,7 +86,7 @@ public class TestPermissionClaimDAO extends AbstractRepositoryTest {
         pc.setClaimedAt(new Date());
         pc.setClaimState(cs);
         UserPermission up = new UserPermission();
-        permissionClaimDAO.savePermissionClaim(pc);
+        permissionClaimDAO.save(pc);
 
         au = appUserDAO.findByUsername("billk");
         Assert.assertNotNull(au);

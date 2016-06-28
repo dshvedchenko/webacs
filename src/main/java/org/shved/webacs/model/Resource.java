@@ -19,7 +19,6 @@ public class Resource {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "id", name = "restype_id")
-    @Column(name = "restype_id")
     private ResType resType;
 
     @Column(name = "name")

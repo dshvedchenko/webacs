@@ -10,7 +10,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         TestPermissionDAO.class,
         TestResourceDAO.class,
-        TestUserDAO.class
+        TestUserDAO.class,
+        TestAuthTokenDAO.class,
+        TestPermissionClaimDAO.class,
+        TestUserPermissionDAO.class
 })
 public class DAOSuite {
 }

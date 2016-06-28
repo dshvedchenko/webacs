@@ -18,7 +18,7 @@ public interface IResourceDAO {
 
     void deleteById(Long id);
 
-    List<Resource> findAllByKind(String kind);
+    List<Resource> findAllByTypeName(String typeName);
 
     Resource findByName(String name);
 

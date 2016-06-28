@@ -57,7 +57,7 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
             PermissionClaim permissionClaim = userPermission.getClaim();
             permissionClaim.setRevokedAt(new Date());
             permissionClaim.setRevoker(appUserDAO.findByUsername("admin"));
-            permissionClaimDAO.savePermissionClaim(permissionClaim);
+            permissionClaimDAO.save(permissionClaim);
             userPermissionDAO.deleteByClaim(userPermission.getClaim());
             UserPermission upDeleted = userPermissionDAO.findById(userPermission.getId());
             Assert.assertNull(upDeleted);
@@ -134,9 +134,9 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
         pc.setClaimedAt(new Date());
         pc.setClaimState(cs);
         UserPermission up = new UserPermission();
-        permissionClaimDAO.savePermissionClaim(pc);
+        permissionClaimDAO.save(pc);
         up.setClaim(pc);
-        userPermissionDAO.saveUserPermission(up);
+        userPermissionDAO.save(up);
 
         Assert.assertNotNull(up.getId());
     }

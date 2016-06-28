@@ -47,7 +47,7 @@ public class ResourceServiceImpl implements IResourceService {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         Resource toSave = resourceDAO.findById(resource.getId());
         toSave.setDetail(resource.getDetail());
-        toSave.setKind(resource.getKind());
+        toSave.setResType(resource.getResType());
         //TODO resolve trouble with storing such entities from REST
         //toSave.setOwnerPermission();
         resourceDAO.save(toSave);
@@ -65,7 +65,7 @@ public class ResourceServiceImpl implements IResourceService {
 
     @Override
     public List<ResourceDTO> getAllByKind(String kindName) {
-        return convertListResourcesToListResourceDTO(resourceDAO.findAllByKind(kindName));
+        return convertListResourcesToListResourceDTO(resourceDAO.findAllByTypeName(kindName));
     }
 
     private List<ResourceDTO> convertListResourcesToListResourceDTO(List<Resource> resources) {

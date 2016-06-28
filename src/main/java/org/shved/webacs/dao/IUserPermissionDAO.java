@@ -23,8 +23,6 @@ public interface IUserPermissionDAO {
 
     void deleteByClaim(PermissionClaim claim);
 
-    void saveUserPermission(UserPermission userPermission);
-
     UserPermission findByClaim(PermissionClaim claim);
 
     List<UserPermission> findAllToBeRevoked();

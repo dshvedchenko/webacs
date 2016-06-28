@@ -29,7 +29,7 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     }
 
     @Override
-    public void savePermissionClaim(PermissionClaim permissionClaim) {
+    public void save(PermissionClaim permissionClaim) {
         persist(permissionClaim);
     }
 
@@ -43,7 +43,8 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     @Override
     public List<PermissionClaim> findAllByResource(Resource resource) {
         Criteria criteria = getSession().createCriteria(PermissionClaim.class)
-                .add(Restrictions.eq("permission.resource", resource));
+                .createAlias("permission", "p")
+                .add(Restrictions.eq("p.resource", resource));
         return criteria.list();
     }
 

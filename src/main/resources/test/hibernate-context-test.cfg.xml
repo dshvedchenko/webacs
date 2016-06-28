@@ -76,4 +76,8 @@
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <bean id="resTypeDAO" class="org.shved.webacs.dao.impl.ResTypeDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
 </beans>

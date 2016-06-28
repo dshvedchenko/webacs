@@ -10,8 +10,6 @@ import java.util.List;
 public interface IPermissionClaimDAO {
     List<PermissionClaim> findAllPermissionClaim();
 
-    void savePermissionClaim(PermissionClaim permissionClaim);
-
     List<PermissionClaim> findAllByClaimState(ClaimState claimState);
 
     List<PermissionClaim> findAllByResource(Resource resource);

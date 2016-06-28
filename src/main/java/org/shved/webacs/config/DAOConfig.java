@@ -57,4 +57,10 @@ public class DAOConfig {
     IClaimStateDAO claimStateDAO(SessionFactory sessionFactory) {
         return new ClaimStateDAOImpl(sessionFactory);
     }
+
+    @Bean(name = "resTypeDAO")
+    @Autowired
+    IResTypeDAO resTypeDAO(SessionFactory sessionFactory) {
+        return new ResTypeDAOImpl(sessionFactory);
+    }
 }

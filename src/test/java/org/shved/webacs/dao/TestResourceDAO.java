@@ -5,8 +5,10 @@ import org.jboss.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
+import org.shved.webacs.model.ResType;
 import org.shved.webacs.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,11 +22,8 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     @Autowired
     private IResourceDAO resourceDAO;
 
-
-    @Test
-    public void daoExists() {
-        Assert.assertNotNull(resourceDAO);
-    }
+    @Autowired
+    private IResTypeDAO resTypeDAO;
 
     @Test
     public void findAllResources() {
@@ -34,9 +33,13 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void findById() {
+        initResType();
+        ResType resType = resTypeDAO.findByName("Software Instance");
+
         Resource resource = new Resource();
-        resource.setResType("Software Instance");
+        resource.setResType(resType);
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.save(resource);
@@ -45,9 +48,13 @@ public class TestResourceDAO extends AbstractRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void delete() {
+        initResType();
+        ResType resType = resTypeDAO.findByName("Software Instance");
+
         Resource resource = new Resource();
-        resource.setResType("Software Instance");
+        resource.setResType(resType);
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.save(resource);
@@ -55,11 +62,14 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         Assert.assertNotNull(resource);
     }
 
-
     @Test
+    @Transactional
     public void deleteById() {
+        initResType();
+        ResType resType = resTypeDAO.findByName("Software Instance");
+
         Resource resource = new Resource();
-        resource.setResType("Software Instance");
+        resource.setResType(resType);
         resource.setName("Redhat Linux AS 32");
         resource.setDetail("some description");
         resourceDAO.save(resource);
@@ -68,16 +78,23 @@ public class TestResourceDAO extends AbstractRepositoryTest {
         Assert.assertNull(res);
     }
 
+
     @Test
     public void findAllByKind() {
-        List<Resource> resources = resourceDAO.findAllByKind("room");
-        Assert.assertTrue(resources.size() > 0);
+        List<Resource> resources = resourceDAO.findAllByTypeName("room");
+        Assert.assertTrue(resources.size() == 1);
     }
 
     @Test
     public void findByName() {
         Resource resource = resourceDAO.findByName("xDep wiki space");
         Assert.assertNotNull(resource);
+    }
+
+    public void initResType() {
+        ResType resType = new ResType();
+        resType.setName("Software Instance");
+        resTypeDAO.save(resType);
     }
 
 }

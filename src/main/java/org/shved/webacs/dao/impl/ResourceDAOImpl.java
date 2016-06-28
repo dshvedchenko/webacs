@@ -51,7 +51,7 @@ public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements IRes
     }
 
     @Override
-    public List<Resource> findAllByKind(String typeName) {
+    public List<Resource> findAllByTypeName(String typeName) {
         Criteria criteria = getSession().createCriteria(Resource.class)
                 .createAlias("resType", "rt")
                 .add(Restrictions.eq("rt.name", typeName));
