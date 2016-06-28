@@ -1,6 +1,5 @@
 package org.shved.webacs.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.shved.webacs.dto.ValidationErrorDTO;
 import org.shved.webacs.exception.*;
 import org.shved.webacs.response.Error;
@@ -10,19 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,16 +29,17 @@ import java.util.Locale;
  * @author dshvedchenko on 6/21/16.
  */
 @ControllerAdvice
-public class ExceptionController {
+public class ExceptionController extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
+    @Autowired
     private MessageSource messageSource;
 
-    @Autowired
-    public ExceptionController(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
+//    @Autowired
+//    public ExceptionController(MessageSource messageSource) {
+//        this.messageSource = messageSource;
+//    }
 
 //    @ExceptionHandler(MethodArgumentNotValidException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -54,65 +54,37 @@ public class ExceptionController {
 //        return handleExceptionInternal(ex, processFieldErrors(fieldErrors) ,headers,HttpStatus.UNAUTHORIZED, request);
 //    }
 
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "internal server error")
     @ExceptionHandler(AppException.class)
     @ResponseBody
-    public ResponseData handleAppException(AppException error, WebRequest request) {
-        ResponseData rd = new ResponseData();
-        Error err = new Error();
-        err.setMessage(error.getMessage());
-        rd.setError(err);
-        return rd;
+    public ResponseEntity<Object> handleAppException(AppException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "token not found")
     @ExceptionHandler(TokenException.class)
     @ResponseBody
-    public ResponseData handleTokenException(TokenException error) {
-        logger.info("Token Not found occured: " + error);
-        ResponseData rd = new ResponseData();
-        Error err = new Error();
-        err.setMessage(error.getMessage());
-        err.setStatus(401);
-        rd.setError(err);
-        return rd;
+    public ResponseEntity<Object> handleTokenException(TokenException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        logger.info("Token Not found occured: " + ex);
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
 
-
-    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "information not found")
     @ExceptionHandler(NotFoundException.class)
     @ResponseBody
-    public ResponseData handleTokenException(NotFoundException error, WebRequest request) {
-        ResponseData rd = new ResponseData();
-        Error err = new Error();
-        err.setMessage(error.getMessage());
-        rd.setError(err);
-        return rd;
-
+    public ResponseEntity<Object> handleTokenException(NotFoundException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
 
-    @ResponseStatus(code = HttpStatus.CONFLICT, reason = "user already registered")
+
     @ExceptionHandler(UserExistsException.class)
     @ResponseBody
-    public ResponseData handleUserExistsException(UserExistsException error, WebRequest request) {
-        ResponseData rd = new ResponseData();
-        Error err = new Error();
-        err.setMessage(error.getMessage());
-        rd.setError(err);
-        return rd;
+    public ResponseEntity<Object> handleUserExistsException(UserExistsException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
 
-    @ResponseStatus(code = HttpStatus.CONFLICT, reason = "email already used")
     @ExceptionHandler(EmailExistsException.class)
     @ResponseBody
-    public ResponseData handleEmailExistsException(EmailExistsException error, WebRequest request) {
-        ResponseData rd = new ResponseData();
-        Error err = new Error();
-        err.setMessage(error.getMessage());
-        rd.setError(err);
-        return rd;
+    public ResponseEntity<Object> handleEmailExistsException(EmailExistsException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
-
 
     private ValidationErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
         ValidationErrorDTO dto = new ValidationErrorDTO();
@@ -124,6 +96,7 @@ public class ExceptionController {
 
         return dto;
     }
+
 
     private String resolveLocalizedErrorMessage(FieldError fieldError) {
         Locale currentLocale = LocaleContextHolder.getLocale();
@@ -137,6 +110,24 @@ public class ExceptionController {
         }
 
         return localizedErrorMessage;
+    }
+
+    private ResponseEntity<Object> getDefaultErrorResponseEntity(Exception ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        ResponseData rd = new ResponseData();
+        Error err = new Error(ex, httpServletRequest);
+        rd.setError(err);
+        final HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(ex, rd, headers, getHttpStatus(ex), request);
+    }
+
+    private HttpStatus getHttpStatus(Exception e) {
+        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
+            return e.getClass().getAnnotation(ResponseStatus.class).value();
+
+        } else {
+            return HttpStatus.BAD_REQUEST;
+
+        }
     }
 
 }

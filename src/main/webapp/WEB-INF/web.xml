@@ -38,5 +38,8 @@
     <!--<servlet-name>default</servlet-name>-->
     <!--<url-pattern>*.html</url-pattern>-->
     <!--</servlet-mapping>-->
+    <!--<error-page>-->
+    <!--<location>/main.html</location>-->
+    <!--</error-page>-->
 
 </web-app>

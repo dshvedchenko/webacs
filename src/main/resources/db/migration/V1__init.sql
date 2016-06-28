@@ -25,7 +25,8 @@ CREATE TABLE app.appuser
   created_at  TIMESTAMPTZ DEFAULT now(),
   updated_at  TIMESTAMPTZ DEFAULT now(),
   CONSTRAINT appuser_pkey PRIMARY KEY (id),
-  CONSTRAINT appuser_username_key UNIQUE (username)
+  CONSTRAINT appuser_username_key UNIQUE (username),
+  CONSTRAINT disabled_at_for_disabled CHECK (enabled OR NOT (enabled) AND disabled_at IS NOT NULL)
 )
 WITH (
 OIDS = FALSE

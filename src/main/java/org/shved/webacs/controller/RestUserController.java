@@ -9,6 +9,7 @@ import org.shved.webacs.services.IAppUserService;
 import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/user", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestUserController {
     @Autowired
     IAppUserService appUserService;
@@ -31,7 +32,7 @@ public class RestUserController {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<AppUserDTO> getUserById(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId
@@ -44,7 +45,7 @@ public class RestUserController {
     }
 
     //edit - save
-    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -56,7 +57,7 @@ public class RestUserController {
     }
     //create
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<AuthToken> createUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -70,7 +71,7 @@ public class RestUserController {
     }
 
     //delete
-    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -80,7 +81,7 @@ public class RestUserController {
         appUserService.deleteById(userId);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<AppUserDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
     ) {
@@ -91,7 +92,7 @@ public class RestUserController {
         return rd;
     }
 
-    @RequestMapping(value = "/listdisabled", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/listdisabled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<AppUserDTO> getAllDisabled(
             @RequestHeader(name = "X-AUTHID") String token
     ) {

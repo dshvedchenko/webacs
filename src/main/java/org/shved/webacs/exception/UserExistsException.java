@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author dshvedchenko on 6/17/16.
  */
+@ResponseStatus(value = HttpStatus.CONFLICT)
 public class UserExistsException extends AppException {
     public UserExistsException() {
         super();

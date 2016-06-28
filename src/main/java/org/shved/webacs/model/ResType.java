@@ -45,9 +45,7 @@ public class ResType {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("RESOURCE : ").append(getName()).append(" [").append(getId()).append("]");
-        return sb.toString();
+        return getName();
     }
 
 }

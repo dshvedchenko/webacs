@@ -54,7 +54,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
         ResourceDTO rdto = new ResourceDTO();
-        rdto.setKind("time");
+        rdto.setResType("time");
         rdto.setName("future");
         rdto.setDetail("my future");
 

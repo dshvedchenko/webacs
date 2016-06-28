@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author dshvedchenko on 6/17/16.
  */
-
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class TokenException extends RuntimeException {
 
     public TokenException() {

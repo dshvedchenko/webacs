@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/resource", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/api/v1/resource", produces = "application/json")
 public class RestResourceController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class RestResourceController {
     @Autowired
     IAuthTokenService authTokenService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<ResourceDTO> createUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -55,7 +55,7 @@ public class RestResourceController {
         return rd;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateResource(
             @RequestHeader(name = "X-AUTHID") String token,

@@ -7,21 +7,22 @@ INSERT INTO app.appuser (
   , email
   , sysrole
   , enabled
+  , disabled_at
 )
 VALUES
   ('admin', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'admin', 'admin', 'admin@example.com', 0,
-   TRUE)
+   TRUE, NULL)
   , ('johns', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'John', 'Salivan', 'johns@example.com', 1,
-     TRUE)
+     TRUE, NULL)
   , ('billk', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Bill', 'Klark', 'billk@example.com', 1,
-     TRUE)
+     TRUE, NULL)
   , ('maryl', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Mary', 'Linn', 'maryl@example.com', 1,
-     TRUE)
+     TRUE, NULL)
   , ('ninaa', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
-     TRUE)
+     TRUE, NULL)
   ,
   ('fireoff', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
-   FALSE);
+   FALSE, now() - INTERVAL '3 week');
 
 INSERT INTO app.restype (
   id,
