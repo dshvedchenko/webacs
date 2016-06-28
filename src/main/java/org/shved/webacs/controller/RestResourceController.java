@@ -10,6 +10,7 @@ import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/resource", produces = "application/json")
+@RequestMapping(value = "/api/v1/resource", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestResourceController {
 
     @Autowired
@@ -29,7 +30,7 @@ public class RestResourceController {
     @Autowired
     IAuthTokenService authTokenService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<ResourceDTO> createUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -37,12 +38,10 @@ public class RestResourceController {
     ) {
         authTokenService.isTokenValid(token);
         ResourceDTO createdRes = resourceService.create(resourceDTO);
-        ResponseData rd = new ResponseData();
-        rd.setData(createdRes);
-        return rd;
+        return new ResponseData(createdRes);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> findById(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -50,12 +49,10 @@ public class RestResourceController {
     ) {
         authTokenService.isTokenValid(token);
         ResourceDTO res = resourceService.getById(id);
-        ResponseData rd = new ResponseData();
-        rd.setData(res);
-        return rd;
+        return new ResponseData(res);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateResource(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -65,7 +62,7 @@ public class RestResourceController {
         resourceService.updateResource(resourceDTO);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteById(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -75,20 +72,18 @@ public class RestResourceController {
         resourceService.deleteById(id);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
     ) {
         authTokenService.isTokenValid(token);
         List<ResourceDTO> resourceDTOList = resourceService.getAll();
-        ResponseData rd = new ResponseData();
-        rd.setData(resourceDTOList);
-        return rd;
+        return new ResponseData(resourceDTOList);
     }
 
     @Transactional
-    @RequestMapping(value = "/kind/{kindName}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/kind/{kindName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAllByKind(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -96,9 +91,8 @@ public class RestResourceController {
     ) {
         authTokenService.isTokenValid(token);
         List<ResourceDTO> resourceDTOList = resourceService.getAllByKind(kindName);
-        ResponseData rd = new ResponseData();
-        rd.setData(resourceDTOList);
-        return rd;
+        return new ResponseData(resourceDTOList);
     }
+
 
 }

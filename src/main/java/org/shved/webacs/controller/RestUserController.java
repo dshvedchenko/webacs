@@ -53,6 +53,7 @@ public class RestUserController {
             @RequestBody AppUserDTO appUserDTO
     ) {
         authTokenService.isTokenValid(token);
+        appUserDTO.setId(userId);
         appUserService.handleSaveEditedAppUser(appUserDTO);
     }
     //create
@@ -98,9 +99,7 @@ public class RestUserController {
     ) {
         authTokenService.isTokenValid(token);
         List<AppUserDTO> listUsers = appUserService.getAllDisabled();
-        ResponseData rd = new ResponseData();
-        rd.setData(listUsers);
-        return rd;
+        return new ResponseData(listUsers);
     }
 
 }

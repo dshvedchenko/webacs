@@ -1,6 +1,7 @@
 package org.shved.webacs.model;
 
 import lombok.Data;
+import org.shved.webacs.dto.ResTypeDTO;
 
 import javax.persistence.*;
 
@@ -19,6 +20,11 @@ public class ResType {
 
     @Column(name = "name")
     private String name;
+
+    public void update(ResType updatedItem) {
+        setName(updatedItem.getName());
+    }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -47,5 +53,6 @@ public class ResType {
     public String toString() {
         return getName();
     }
+
 
 }

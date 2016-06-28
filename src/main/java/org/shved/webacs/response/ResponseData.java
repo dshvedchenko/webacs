@@ -8,7 +8,14 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseData<T> {
-    private T data;
+public class ResponseData<DATA> {
+    private DATA data;
     private Error error;
+
+    public ResponseData() {
+    }
+
+    public ResponseData(DATA data) {
+        this.data = data;
+    }
 }
