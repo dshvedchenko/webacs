@@ -30,6 +30,8 @@ INSERT INTO app.restype (
 )
 VALUES (1, 'Calendar'), (2, 'wiki'), (3, 'room');
 
+SELECT setval('app.restype_id_seq', 10, TRUE);
+
 INSERT INTO app.resource (
   name
   , restype_id

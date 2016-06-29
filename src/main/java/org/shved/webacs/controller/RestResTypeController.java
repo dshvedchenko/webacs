@@ -53,12 +53,13 @@ public class RestResTypeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void create(
+    public ResponseData<ResTypeDTO> create(
             @RequestHeader(name = "X-AUTHID") String token,
             @RequestBody ResTypeDTO updatedItem
     ) {
         authTokenService.isTokenValid(token);
-        resTypeService.save(updatedItem);
+        ResTypeDTO rtdto = resTypeService.save(updatedItem);
+        return new ResponseData<>(rtdto);
     }
 
 }

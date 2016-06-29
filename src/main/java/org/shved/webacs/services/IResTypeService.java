@@ -20,5 +20,5 @@ public interface IResTypeService {
     void deleteById(Integer id);
 
     @Transactional
-    void save(ResTypeDTO resTypeDTO);
+    ResTypeDTO save(ResTypeDTO resTypeDTO);
 }

@@ -52,7 +52,7 @@ public class ResTypeServiceImpl implements IResTypeService {
 
 
     @Override
-    public void save(ResTypeDTO resTypeDTO) {
+    public ResTypeDTO save(ResTypeDTO resTypeDTO) {
         ResType newObj = modelMapper.map(resTypeDTO, ResType.class);
         ResType dbObj = null;
         if (resTypeDTO.getId() != null) {
@@ -66,6 +66,8 @@ public class ResTypeServiceImpl implements IResTypeService {
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
+
+        return modelMapper.map(dbObj, ResTypeDTO.class);
     }
 
 
