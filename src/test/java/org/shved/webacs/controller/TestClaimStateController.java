@@ -57,7 +57,11 @@ public class TestClaimStateController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data[?(@.id == 0)].name", hasItem("CLAIMED")))
                 .andExpect(jsonPath("$.data[?(@.id == 1)].name", hasItem("APPROVED")))
                 .andExpect(jsonPath("$.data[?(@.id == 2)].name", hasItem("GRANTED")))
-                .andExpect(jsonPath("$.data[?(@.id == 3)].name", hasItem("REVOKED")));
+                .andExpect(jsonPath("$.data[?(@.id == 3)].name", hasItem("REVOKED")))
+                .andExpect(jsonPath("$.data[?(@.id == 0)].name", hasSize(1)))
+                .andExpect(jsonPath("$.data[?(@.id == 1)].name", hasSize(1)))
+                .andExpect(jsonPath("$.data[?(@.id == 2)].name", hasSize(1)))
+                .andExpect(jsonPath("$.data[?(@.id == 3)].name", hasSize(1)));
     }
 
 
