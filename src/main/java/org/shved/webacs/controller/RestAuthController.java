@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import javax.validation.Valid;
 
 /**
@@ -21,7 +23,7 @@ import javax.validation.Valid;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json;charset=UTF-8")
+@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json")
 public class RestAuthController extends AbstractAPIV1Controller {
 
     @Autowired
@@ -41,6 +43,7 @@ public class RestAuthController extends AbstractAPIV1Controller {
         authRes = authTokenService.restLogin(userLogin);
 
         rd.setData(authRes);
+        rd.add(linkTo(methodOn(RestAuthController.class).login(userLogin, ucb)).withSelfRel());
         return rd;
     }
 
