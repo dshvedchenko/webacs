@@ -81,7 +81,7 @@ public class RestResourceController {
     @Transactional
     @RequestMapping(value = "/type/{typeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseData<ResourceDTO> getAllByType(
+    public ResponseData<ResourceDTO> getAllByResTypeId(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable("typeId") Integer typeId
     ) {
@@ -89,6 +89,4 @@ public class RestResourceController {
         List<ResourceDTO> resourceDTOList = resourceService.getAllByResTypeId(typeId);
         return new ResponseData(resourceDTOList);
     }
-
-
 }

@@ -9,7 +9,7 @@ import org.shved.webacs.model.Permission;
 @Data
 public class ResourceDTO {
     private Long id;
-    private String resType;
+    private ResTypeDTO resType;
     private String name;
     private String detail;
     private Long ownerPermissionId;

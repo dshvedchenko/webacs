@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.springframework.test.web.servlet.MockMvc;
@@ -55,7 +56,9 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
         ResourceDTO rdto = new ResourceDTO();
-        rdto.setResType("Calendar");
+        ResTypeDTO rtdto = new ResTypeDTO();
+        rtdto.setName("Calendar");
+        rdto.setResType(rtdto);
         rdto.setName("future");
         rdto.setDetail("my future");
 
@@ -187,7 +190,7 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.data[0].id", is(1)))
                 .andExpect(jsonPath("$.data[0].name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data[0].resType", is("Calendar")))
+                .andExpect(jsonPath("$.data[0].resType.name", is("Calendar")))
                 .andExpect(jsonPath("$.data[0].detail", is("xDep shared calendar")));
 
     }
