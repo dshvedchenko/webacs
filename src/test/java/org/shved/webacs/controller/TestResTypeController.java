@@ -11,6 +11,7 @@ import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dao.IResTypeDAO;
 import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.dto.UserAuthDTO;
+import org.shved.webacs.model.ResType;
 import org.shved.webacs.services.IClaimStateService;
 import org.shved.webacs.services.IResTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.Map;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -108,6 +110,43 @@ public class TestResTypeController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.name", is("Software")))
                 .andExpect(jsonPath("$.data.id", greaterThan(10)));
     }
+
+    @Test
+    @Transactional
+    public void getEditResTypeTest() throws Exception {
+        String tokenStr = getAuthToken();
+        ResTypeDTO rtdto = new ResTypeDTO();
+
+        rtdto.setName("Software");
+
+        ResultActions createdResp = mockMvc.perform(
+                post("/api/v1/restype/")
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(rtdto))
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.name", is("Software")))
+                .andExpect(jsonPath("$.data.id", greaterThan(10)));
+
+        Map newResType = JsonPath.read(createdResp.andReturn().getResponse().getContentAsString(), "$.data");
+        Integer newId = (Integer) newResType.get("id");
+        rtdto.setId(newId);
+        rtdto.setName("Commercial Software");
+
+        ResultActions editedResp = mockMvc.perform(
+                put("/api/v1/restype/" + newId)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(rtdto))
+        )
+                .andExpect(status().isOk());
+        ResType rt = resTypeDAO.findById(newId);
+        Assert.assertEquals("Commercial Software", rt.getName());
+    }
+
 
 
     private String getAuthToken() throws Exception {

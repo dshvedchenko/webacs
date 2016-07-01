@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
@@ -36,14 +35,14 @@ public class RestAuthController extends AbstractAPIV1Controller {
     //TODO add link to logout
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseData<AuthToken> login(
-            @RequestBody UserAuthDTO userLogin, UriComponentsBuilder ucb
+            @RequestBody UserAuthDTO userLogin
     ) {
         ResponseData rd = new ResponseData();
         UserAuthDTO authRes = null;
         authRes = authTokenService.restLogin(userLogin);
 
         rd.setData(authRes);
-        rd.add(linkTo(methodOn(RestAuthController.class).login(userLogin, ucb)).withSelfRel());
+        rd.add(linkTo(methodOn(RestAuthController.class).login(userLogin)).withSelfRel());
         return rd;
     }
 
@@ -55,6 +54,7 @@ public class RestAuthController extends AbstractAPIV1Controller {
         authTokenService.restLogout(token);
 
         rd.setData("success");
+        rd.add(linkTo(methodOn(RestAuthController.class).logout(token)).withSelfRel());
         return rd;
     }
 

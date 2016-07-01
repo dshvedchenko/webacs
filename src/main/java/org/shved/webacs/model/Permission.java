@@ -2,6 +2,7 @@ package org.shved.webacs.model;
 
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -37,6 +38,10 @@ public class Permission {
     @OneToMany(mappedBy = "permission")
     @Getter
     private List<PermissionClaim> permissionClaims;
+
+    @ManyToMany(mappedBy = "permissions")
+    @Getter
+    private List<AppUser> users;
 
     @Override
     public boolean equals(Object obj) {
