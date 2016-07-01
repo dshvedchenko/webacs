@@ -20,6 +20,8 @@ public interface IResourceDAO {
 
     List<Resource> findAllByTypeName(String typeName);
 
+    List<Resource> findAllByResTypeId(Integer typeId);
+
     Resource findByName(String name);
 
 }

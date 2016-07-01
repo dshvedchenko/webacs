@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,7 +55,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
         ResourceDTO rdto = new ResourceDTO();
-        rdto.setResType("time");
+        rdto.setResType("Calendar");
         rdto.setName("future");
         rdto.setDetail("my future");
 
@@ -68,7 +69,7 @@ public class TestRestResourceController extends AbstractAppTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.id").exists())
-                .andExpect(jsonPath("$.data.kind", is("time")))
+                .andExpect(jsonPath("$.data.resType", is("Calendar")))
                 .andExpect(jsonPath("$.data.name", is("future")))
                 .andExpect(jsonPath("$.data.detail", is("my future")));
 
@@ -104,7 +105,7 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists())
                 .andExpect(jsonPath("$.data.id", is(1)))
                 .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data.kind", is("Calendar")))
+                .andExpect(jsonPath("$.data.resType", is("Calendar")))
                 .andExpect(jsonPath("$.data.detail", is("xDep shared calendar")));
 
     }
@@ -140,12 +141,12 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists())
                 .andExpect(jsonPath("$.data.id", is(1)))
                 .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data.kind", is(EXISTS_RESOURCE_KIND)))
+                .andExpect(jsonPath("$.data.resType", is(EXISTS_RESOURCE_KIND)))
                 .andExpect(jsonPath("$.data.detail", is(EXISTS_RESOURCE_DETAIL)));
 
         Map resourceClientBag = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
 
-        resourceClientBag.replace("kind", "qazwsx");
+        resourceClientBag.replace("resType", "qazwsx");
         resourceClientBag.replace("detail", "detail detail");
 
         ResultActions updateResponce = mockMvc.perform(
@@ -159,8 +160,8 @@ public class TestRestResourceController extends AbstractAppTest {
 
     @Transactional
     @Test
-    public void getResurcesByKind() throws Exception {
-        final String EXIST_RESOURCE_KIND = "Calendar";
+    public void getResurcesByType() throws Exception {
+        final Integer EXIST_RESOURCE_TYPE_ID = 1;
 
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
@@ -175,18 +176,19 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/resource/list/kind/" + EXIST_RESOURCE_KIND)
+                get("/api/v1/resource/type/" + EXIST_RESOURCE_TYPE_ID)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
 
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.id").exists())
-                .andExpect(jsonPath("$.data.id", is(1)))
-                .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data.kind", is("Calendar")))
-                .andExpect(jsonPath("$.data.detail", is("xDep shared calendar")));
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data", hasSize(1)))
+                .andExpect(jsonPath("$.data[0].id", is(1)))
+                .andExpect(jsonPath("$.data[0].name", is("xDep Calendar")))
+                .andExpect(jsonPath("$.data[0].resType", is("Calendar")))
+                .andExpect(jsonPath("$.data[0].detail", is("xDep shared calendar")));
 
     }
 

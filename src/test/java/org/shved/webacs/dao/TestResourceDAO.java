@@ -80,10 +80,18 @@ public class TestResourceDAO extends AbstractRepositoryTest {
 
 
     @Test
-    public void findAllByKind() {
+    public void findAllByResTypeName() {
         List<Resource> resources = resourceDAO.findAllByTypeName("room");
         Assert.assertTrue(resources.size() == 1);
     }
+
+    @Test
+    public void findAllByResTypeId() {
+        List<Resource> resources = resourceDAO.findAllByResTypeId(1);
+        Assert.assertTrue(resources.size() == 1);
+//        Assert.assertEquals();
+    }
+
 
     @Test
     public void findByName() {

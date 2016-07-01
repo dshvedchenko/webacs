@@ -1,10 +1,6 @@
 package org.shved.webacs.controller;
 
 import org.shved.webacs.dto.ResourceDTO;
-import org.shved.webacs.dto.UserCreationDTO;
-import org.shved.webacs.model.AppUser;
-import org.shved.webacs.model.AuthToken;
-import org.shved.webacs.model.Resource;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IResourceService;
@@ -83,14 +79,14 @@ public class RestResourceController {
     }
 
     @Transactional
-    @RequestMapping(value = "/kind/{kindName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/type/{typeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseData<ResourceDTO> getAllByKind(
+    public ResponseData<ResourceDTO> getAllByType(
             @RequestHeader(name = "X-AUTHID") String token,
-            @PathVariable String kindName
+            @PathVariable("typeId") Integer typeId
     ) {
         authTokenService.isTokenValid(token);
-        List<ResourceDTO> resourceDTOList = resourceService.getAllByKind(kindName);
+        List<ResourceDTO> resourceDTOList = resourceService.getAllByResTypeId(typeId);
         return new ResponseData(resourceDTOList);
     }
 

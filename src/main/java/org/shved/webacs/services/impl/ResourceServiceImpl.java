@@ -64,8 +64,8 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
-    public List<ResourceDTO> getAllByKind(String kindName) {
-        return convertListResourcesToListResourceDTO(resourceDAO.findAllByTypeName(kindName));
+    public List<ResourceDTO> getAllByResTypeId(Integer typeId) {
+        return convertListResourcesToListResourceDTO(resourceDAO.findAllByResTypeId(typeId));
     }
 
     private List<ResourceDTO> convertListResourcesToListResourceDTO(List<Resource> resources) {
