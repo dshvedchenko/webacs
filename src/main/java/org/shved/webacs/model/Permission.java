@@ -22,9 +22,6 @@ public class Permission {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany(mappedBy = "permissions")
-    private Set<AppUser> appUsers;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
@@ -40,8 +37,7 @@ public class Permission {
     private List<PermissionClaim> permissionClaims;
 
     @ManyToMany(mappedBy = "permissions")
-    @Getter
-    private List<AppUser> users;
+    private Set<AppUser> appUsers;
 
     @Override
     public boolean equals(Object obj) {
