@@ -64,8 +64,9 @@ public class TestAuthController extends AbstractAppTest {
         loginInfo.setPassword("eeeee");
         mockMvc.perform(post("/api/v1/login")
                 .content(this.json(loginInfo))
+                .accept(contentType)
                 .contentType(contentType))
-                .andExpect(status().isOk())
+                .andExpect(status().isUnauthorized())
                 .andExpect(content().contentType(contentType))
         ;
     }

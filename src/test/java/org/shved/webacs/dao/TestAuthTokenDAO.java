@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
+import org.shved.webacs.services.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -24,7 +25,6 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
 
     @Autowired
     private IAppUserDAO appUserDAO;
-
 
     @Test
     public void daoExists() {

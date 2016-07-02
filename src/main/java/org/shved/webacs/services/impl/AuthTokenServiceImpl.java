@@ -50,6 +50,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
             result.setToken(token.getToken());
             result.setUsername(userLogin.getUsername());
         }
+        if (result.getToken() == null) throw new TokenException();
         return result;
     }
 

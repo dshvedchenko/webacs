@@ -6,11 +6,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author dshvedchenko on 6/11/16.
  */
-@ContextConfiguration("classpath:test/hibernate-context-test.cfg.xml")
+@ContextConfiguration(value = "classpath:test/hibernate-context-test.cfg.xml")
+@ComponentScan({"org.shved.webacs", "org.shved.webacs.dao.impl.*"})
 public abstract class AbstractRepositoryTest extends AbstractTransactionalProfileTest {
 }

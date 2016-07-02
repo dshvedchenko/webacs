@@ -6,6 +6,7 @@ import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -13,15 +14,8 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/10/16.
  */
+@Repository
 public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUserDAO {
-
-    @Autowired
-    public SessionFactory sessionFactory;
-
-    public AppUserDAOImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
 
     @SuppressWarnings("unchecked")
     @Transactional

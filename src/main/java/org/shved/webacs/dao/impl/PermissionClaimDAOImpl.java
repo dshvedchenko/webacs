@@ -7,20 +7,16 @@ import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author dshvedchenko on 6/13/16.
  */
+@Repository
 public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> implements IPermissionClaimDAO {
-
-    @Autowired
-    SessionFactory sessionFactory;
-
-    public PermissionClaimDAOImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public List<PermissionClaim> findAllPermissionClaim() {

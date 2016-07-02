@@ -49,35 +49,27 @@
           p:sessionFactory-ref="sessionFactory"/>
 
     <bean id="appUserDAO" class="org.shved.webacs.dao.impl.AppUserDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="resourceDAO" class="org.shved.webacs.dao.impl.ResourceDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="permissionDAO" class="org.shved.webacs.dao.impl.PermissionDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="userPermissionDAO" class="org.shved.webacs.dao.impl.UserPermissionDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="permissionClaimDAO" class="org.shved.webacs.dao.impl.PermissionClaimDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="authTokenDAO" class="org.shved.webacs.dao.impl.AuthTokenDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="claimStateDAO" class="org.shved.webacs.dao.impl.ClaimStateDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
     <bean id="resTypeDAO" class="org.shved.webacs.dao.impl.ResTypeDAOImpl">
-        <constructor-arg ref="sessionFactory"/>
     </bean>
 
 </beans>

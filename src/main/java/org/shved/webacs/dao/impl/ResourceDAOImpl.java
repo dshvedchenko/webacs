@@ -6,6 +6,7 @@ import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -13,14 +14,8 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/12/16.
  */
+@Repository("resourceDAO")
 public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements IResourceDAO {
-
-    @Autowired
-    SessionFactory sessionFactory;
-
-    public ResourceDAOImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public List<Resource> findAllResources() {

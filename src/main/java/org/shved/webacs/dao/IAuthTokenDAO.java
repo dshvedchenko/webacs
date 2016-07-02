@@ -2,12 +2,14 @@ package org.shved.webacs.dao;
 
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
 /**
  * @author dshvedchenko on 6/17/16.
  */
+
 public interface IAuthTokenDAO {
     AuthToken getAuthToken(String tokenVal);
 

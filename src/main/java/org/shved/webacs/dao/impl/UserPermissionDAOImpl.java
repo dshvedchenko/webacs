@@ -9,6 +9,7 @@ import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +19,8 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/12/16.
  */
+@Repository
 public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> implements IUserPermissionDAO {
-
-    @Autowired
-    SessionFactory sessionFactory;
-
-    public UserPermissionDAOImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public List<UserPermission> findAllUserPermissions() {

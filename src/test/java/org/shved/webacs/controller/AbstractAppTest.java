@@ -36,9 +36,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration
 public class AbstractAppTest {
-    protected MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+    protected MediaType contentType = MediaType.APPLICATION_JSON;
 
     protected HttpMessageConverter mappingJackson2HttpMessageConverter;
 

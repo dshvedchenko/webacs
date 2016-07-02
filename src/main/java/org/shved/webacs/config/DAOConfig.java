@@ -16,51 +16,43 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @Component
 public class DAOConfig {
-    @Bean(name = "appUserDAO")
-    @Autowired
-    IAppUserDAO appUserDAO(SessionFactory sessionFactory) {
-        return new AppUserDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "authTokenDAO")
-    @Autowired
-    IAuthTokenDAO authTokenDAO(SessionFactory sessionFactory) {
-        return new AuthTokenDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "permissionDAO")
-    @Autowired
-    IPermissionDAO permissionDAO(SessionFactory sessionFactory) {
-        return new PermissionDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "resourceDAO")
-    @Autowired
-    IResourceDAO resourceDAO(SessionFactory sessionFactory) {
-        return new ResourceDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "userPermissionDAO")
-    @Autowired
-    IUserPermissionDAO userPermissionDAO(SessionFactory sessionFactory) {
-        return new UserPermissionDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "permissionClaimDAO")
-    @Autowired
-    IPermissionClaimDAO permissionClaimDAO(SessionFactory sessionFactory) {
-        return new PermissionClaimDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "claimStateDAO")
-    @Autowired
-    IClaimStateDAO claimStateDAO(SessionFactory sessionFactory) {
-        return new ClaimStateDAOImpl(sessionFactory);
-    }
-
-    @Bean(name = "resTypeDAO")
-    @Autowired
-    IResTypeDAO resTypeDAO(SessionFactory sessionFactory) {
-        return new ResTypeDAOImpl(sessionFactory);
-    }
+//    @Bean(name = "appUserDAO")
+//    IAppUserDAO appUserDAO() {
+//        return new AppUserDAOImpl();
+//    }
+//
+//    @Bean(name = "authTokenDAO")
+//    IAuthTokenDAO authTokenDAO() {
+//        return new AuthTokenDAOImpl();
+//    }
+//
+//    @Bean(name = "permissionDAO")
+//    IPermissionDAO permissionDAO() {
+//        return new PermissionDAOImpl();
+//    }
+//
+//    @Bean(name = "resourceDAO")
+//    IResourceDAO resourceDAO() {
+//        return new ResourceDAOImpl();
+//    }
+//
+//    @Bean(name = "userPermissionDAO")
+//    IUserPermissionDAO userPermissionDAO() {
+//        return new UserPermissionDAOImpl();
+//    }
+//
+//    @Bean(name = "permissionClaimDAO")
+//    IPermissionClaimDAO permissionClaimDAO() {
+//        return new PermissionClaimDAOImpl();
+//    }
+//
+//    @Bean(name = "claimStateDAO")
+//    IClaimStateDAO claimStateDAO() {
+//        return new ClaimStateDAOImpl();
+//    }
+//
+//    @Bean(name = "resTypeDAO")
+//    IResTypeDAO resTypeDAO() {
+//        return new ResTypeDAOImpl();
+//    }
 }

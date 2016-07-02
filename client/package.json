@@ -1,0 +1,17 @@
+{
+  "name": "angular-meet",
+  "version": "1.0.0",
+  "description": "ACS pre test",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start karma.conf.js"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^1.1.0",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5"
+  },
+  "author": "",
+  "license": "ISC"
+}
