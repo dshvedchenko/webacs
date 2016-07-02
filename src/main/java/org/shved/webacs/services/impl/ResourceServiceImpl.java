@@ -1,9 +1,11 @@
 package org.shved.webacs.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.exception.NotFoundException;
+import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.Resource;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ResourceServiceImpl implements IResourceService {
 
     @Autowired
     IResourceDAO resourceDAO;
+
+    @Autowired
+    IPermissionDAO permissionDAO;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -46,10 +51,11 @@ public class ResourceServiceImpl implements IResourceService {
     public void updateResource(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         Resource toSave = resourceDAO.findById(resource.getId());
+        Permission newOwnerPermission = permissionDAO.findById(resourceDTO.getOwnerPermissionId());
         toSave.setDetail(resource.getDetail());
         toSave.setResType(resource.getResType());
         //TODO resolve trouble with storing such entities from REST
-        //toSave.setOwnerPermission();
+        toSave.updateOwnerPermission(newOwnerPermission);
         resourceDAO.save(toSave);
     }
 

@@ -1,5 +1,6 @@
 package org.shved.webacs.dto;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;
 import org.shved.webacs.model.Permission;
 

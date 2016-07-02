@@ -41,17 +41,7 @@ public class TestRestPermissionController extends AbstractAppTest {
     @Test
     public void getAll() throws Exception {
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/permission/list")
@@ -68,5 +58,38 @@ public class TestRestPermissionController extends AbstractAppTest {
 
     }
 
+    @Transactional
+    @Test
+    public void getById() throws Exception {
+
+        String tokenStr = getTokenInfo();
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/permission/" + 1)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data.title", is("Reader")))
+                .andExpect(jsonPath("$.data.description", is("readers")))
+                .andExpect(jsonPath("$.data.resource.id", is(1)));
+    }
+
+    private String getTokenInfo() throws Exception {
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+    }
 
 }

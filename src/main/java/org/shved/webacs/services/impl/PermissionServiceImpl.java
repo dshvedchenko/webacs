@@ -5,6 +5,8 @@ import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.dto.PermissionDTO;
+import org.shved.webacs.exception.AppException;
+import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.services.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,9 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Override
     public PermissionDTO getById(Long id) {
-        return null;
+        Permission permission = permissionDAO.findById(id);
+        if (permission == null) throw new NotFoundException();
+        return modelMapper.map(permission, PermissionDTO.class);
     }
 
     @Override

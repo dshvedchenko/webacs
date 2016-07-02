@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -43,17 +44,7 @@ public class TestRestResourceController extends AbstractAppTest {
     @Test
     public void createResourceTest() throws Exception {
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenValue();
 
         ResourceDTO rdto = new ResourceDTO();
         ResTypeDTO rtdto = new ResTypeDTO();
@@ -85,17 +76,7 @@ public class TestRestResourceController extends AbstractAppTest {
     public void getResurceByIdTest() throws Exception {
         final long EXIST_RESOURCE_ID = 1L;
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenValue();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/" + EXIST_RESOURCE_ID)
@@ -121,17 +102,7 @@ public class TestRestResourceController extends AbstractAppTest {
         final String EXISTS_RESOURCE_KIND = "Calendar";
         final String EXISTS_RESOURCE_DETAIL = "xDep shared calendar";
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenValue();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/" + EXIST_RESOURCE_ID)
@@ -144,13 +115,18 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists())
                 .andExpect(jsonPath("$.data.id", is(1)))
                 .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data.resType", is(EXISTS_RESOURCE_KIND)))
+                .andExpect(jsonPath("$.data.resType.name", is(EXISTS_RESOURCE_KIND)))
                 .andExpect(jsonPath("$.data.detail", is(EXISTS_RESOURCE_DETAIL)));
 
         Map resourceClientBag = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
 
-        resourceClientBag.replace("resType", "qazwsx");
+        Map newResType = new LinkedHashMap<String, Object>();
+        newResType.put("id", 5);
+        newResType.put("name", "detail detail detail");
+
+        resourceClientBag.replace("resType", newResType);
         resourceClientBag.replace("detail", "detail detail");
+        resourceClientBag.replace("ownerPermissionId", 3);
 
         ResultActions updateResponce = mockMvc.perform(
                 put("/api/v1/resource/" + EXIST_RESOURCE_ID)
@@ -166,17 +142,7 @@ public class TestRestResourceController extends AbstractAppTest {
     public void getResurcesByType() throws Exception {
         final Integer EXIST_RESOURCE_TYPE_ID = 1;
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenValue();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/type/" + EXIST_RESOURCE_TYPE_ID)
@@ -193,6 +159,20 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data[0].resType.name", is("Calendar")))
                 .andExpect(jsonPath("$.data[0].detail", is("xDep shared calendar")));
 
+    }
+
+    private String getTokenValue() throws Exception {
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
     }
 
 }

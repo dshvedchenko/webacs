@@ -61,4 +61,8 @@ public class Resource {
         return sb.toString();
     }
 
+    public void updateOwnerPermission(Permission newOwner) {
+        setOwnerPermission(newOwner);
+    }
+
 }

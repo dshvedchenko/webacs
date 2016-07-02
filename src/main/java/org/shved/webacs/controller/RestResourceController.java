@@ -1,9 +1,11 @@
 package org.shved.webacs.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IResourceService;
+import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,7 +50,7 @@ public class RestResourceController {
         return new ResponseData(res);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateResource(
             @RequestHeader(name = "X-AUTHID") String token,

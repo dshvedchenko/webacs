@@ -2,6 +2,7 @@ package org.shved.webacs.controller;
 
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResourceDTO;
+import org.shved.webacs.model.Permission;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IPermissionService;
@@ -39,16 +40,16 @@ public class RestPermissionController {
 //        return new ResponseData(createdRes);
 //    }
 //
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseData<ResourceDTO> findById(
-//            @RequestHeader(name = "X-AUTHID") String token,
-//            @PathVariable Long id
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        ResourceDTO res = resourceService.getById(id);
-//        return new ResponseData(res);
-//    }
+@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+@ResponseStatus(HttpStatus.OK)
+public ResponseData<PermissionDTO> findById(
+        @RequestHeader(name = "X-AUTHID") String token,
+        @PathVariable Long id
+) {
+    authTokenService.isTokenValid(token);
+    PermissionDTO res = permissionService.getById(id);
+    return new ResponseData(res);
+}
 //
 //    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @ResponseStatus(HttpStatus.ACCEPTED)
