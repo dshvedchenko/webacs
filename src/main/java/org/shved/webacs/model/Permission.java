@@ -39,6 +39,11 @@ public class Permission {
     @ManyToMany(mappedBy = "permissions")
     private Set<AppUser> appUsers;
 
+    public void update(Permission updatedPermission) {
+        setTitle(updatedPermission.getTitle());
+        setDescription(updatedPermission.getDescription());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -44,12 +44,19 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Override
     public void update(PermissionDTO permissionDTO) {
-
+        Permission updatedPermission = modelMapper.map(permissionDTO, Permission.class);
+        Permission existingPermission = permissionDAO.findById(permissionDTO.getId());
+        if (existingPermission != null) {
+            existingPermission.update(updatedPermission);
+            permissionDAO.save(existingPermission);
+        } else {
+            throw new NotFoundException("Permission not found : " + updatedPermission.getId());
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-
+        permissionDAO.deleteById(id);
     }
 
     @Override

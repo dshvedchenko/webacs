@@ -50,16 +50,16 @@ public ResponseData<PermissionDTO> findById(
     PermissionDTO res = permissionService.getById(id);
     return new ResponseData(res);
 }
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public void updateResource(
-//            @RequestHeader(name = "X-AUTHID") String token,
-//            @RequestBody ResourceDTO resourceDTO
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        resourceService.updateResource(resourceDTO);
-//    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updatePermission(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @RequestBody PermissionDTO permissionDTO
+    ) {
+        authTokenService.isTokenValid(token);
+        permissionService.update(permissionDTO);
+    }
 //
 //    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @ResponseStatus(HttpStatus.ACCEPTED)

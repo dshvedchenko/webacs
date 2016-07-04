@@ -39,7 +39,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
     @Transactional
     @Test
-    public void getAll() throws Exception {
+    public void getAllTest() throws Exception {
 
         String tokenStr = getTokenInfo();
 
@@ -60,7 +60,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
     @Transactional
     @Test
-    public void getById() throws Exception {
+    public void getByIdTest() throws Exception {
 
         String tokenStr = getTokenInfo();
 
@@ -76,6 +76,44 @@ public class TestRestPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.title", is("Reader")))
                 .andExpect(jsonPath("$.data.description", is("readers")))
                 .andExpect(jsonPath("$.data.resource.id", is(1)));
+    }
+
+
+    @Transactional
+    @Test
+    public void updatePermissionTest() throws Exception {
+
+        ResultActions response;
+        String tokenStr = getTokenInfo();
+
+        Map respData = getPermissionById(1L, tokenStr);
+        respData.replace("description", "readers new description");
+
+        response = mockMvc.perform(
+                put("/api/v1/permission/1")
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(respData))
+        ).andExpect(status().isAccepted())
+        ;
+    }
+
+    private Map getPermissionById(Long id, String tokenStr) throws Exception {
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/permission/" + id)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data.title", is("Reader")))
+                .andExpect(jsonPath("$.data.description", is("readers")))
+                .andExpect(jsonPath("$.data.resource.id", is(id.intValue())));
+
+        return JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
     }
 
     private String getTokenInfo() throws Exception {
