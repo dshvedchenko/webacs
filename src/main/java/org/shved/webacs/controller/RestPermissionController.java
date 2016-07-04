@@ -29,17 +29,17 @@ public class RestPermissionController {
     @Autowired
     private IAuthTokenService authTokenService;
 
-//    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResponseData<ResourceDTO> createUser(
-//            @RequestHeader(name = "X-AUTHID") String token,
-//            @RequestBody ResourceDTO resourceDTO
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        ResourceDTO createdRes = resourceService.create(resourceDTO);
-//        return new ResponseData(createdRes);
-//    }
-//
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseData<ResourceDTO> createPermission(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @RequestBody PermissionDTO permissionDTO
+    ) {
+        authTokenService.isTokenValid(token);
+        PermissionDTO permissionDTO1 = permissionService.create(permissionDTO);
+        return new ResponseData(permissionDTO1);
+    }
+
 @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.OK)
 public ResponseData<PermissionDTO> findById(
@@ -51,25 +51,28 @@ public ResponseData<PermissionDTO> findById(
     return new ResponseData(res);
 }
 
+
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updatePermission(
             @RequestHeader(name = "X-AUTHID") String token,
-            @RequestBody PermissionDTO permissionDTO
+            @RequestBody PermissionDTO permissionDTO,
+            //TODO - consume id !!!
+            @PathVariable("id") Long id
     ) {
         authTokenService.isTokenValid(token);
         permissionService.update(permissionDTO);
     }
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public void deleteById(
-//            @RequestHeader(name = "X-AUTHID") String token,
-//            @PathVariable Long id
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        resourceService.deleteById(id);
-//    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteById(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @PathVariable Long id
+    ) {
+        authTokenService.isTokenValid(token);
+        permissionService.deleteById(id);
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

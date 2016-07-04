@@ -20,4 +20,5 @@ public interface IPermissionService {
     List<PermissionDTO> getAll();
 
     List<PermissionDTO> getAllByResourceId(Long resourceId);
+
 }

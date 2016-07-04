@@ -33,6 +33,7 @@ public class PermissionDAOImpl extends AbstractDao<Long, Permission> implements 
     @Override
     public void save(Permission permission) {
         persist(permission);
+        getSession().flush();
     }
 
     @Override

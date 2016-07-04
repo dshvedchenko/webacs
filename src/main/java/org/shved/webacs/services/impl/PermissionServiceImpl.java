@@ -11,6 +11,7 @@ import org.shved.webacs.model.Permission;
 import org.shved.webacs.services.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +32,13 @@ public class PermissionServiceImpl implements IPermissionService {
     ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public PermissionDTO create(PermissionDTO permissionDTO) {
-        return null;
+        Permission permission = modelMapper.map(permissionDTO, Permission.class);
+        permissionDAO.save(permission);
+        Permission newPerm = permissionDAO.findById(permission.getId());
+        PermissionDTO result = modelMapper.map(newPerm, PermissionDTO.class);
+        return result;
     }
 
     @Override

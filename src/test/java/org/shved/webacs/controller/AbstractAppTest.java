@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.shved.webacs.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,6 +43,9 @@ public class AbstractAppTest {
 
     @Autowired
     protected WebApplicationContext webApplicationContext;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
