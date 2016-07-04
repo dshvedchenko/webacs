@@ -87,6 +87,7 @@ public class TestResTypeController extends AbstractAppTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data").exists())
                     .andExpect(jsonPath("$.data.name", is(entry.getValue())))
+                    .andExpect(jsonPath("$.data.id", is(entry.getKey())))
             ;
         }
     }

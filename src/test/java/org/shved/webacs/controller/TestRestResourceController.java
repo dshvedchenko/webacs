@@ -17,9 +17,7 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -47,8 +45,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = getTokenValue();
 
         ResourceDTO rdto = new ResourceDTO();
-        ResTypeDTO rtdto = new ResTypeDTO();
-        rtdto.setName("Calendar");
+        ResTypeDTO rtdto = getResTypeDTOById(1);
         rdto.setResType(rtdto);
         rdto.setName("future");
         rdto.setDetail("my future");
@@ -63,7 +60,7 @@ public class TestRestResourceController extends AbstractAppTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.id").exists())
-                .andExpect(jsonPath("$.data.resType", is("Calendar")))
+                .andExpect(jsonPath("$.data.resType.name", is("Calendar")))
                 .andExpect(jsonPath("$.data.name", is("future")))
                 .andExpect(jsonPath("$.data.detail", is("my future")));
 
@@ -120,11 +117,6 @@ public class TestRestResourceController extends AbstractAppTest {
 
         Map resourceClientBag = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
 
-        Map newResType = new LinkedHashMap<String, Object>();
-        newResType.put("id", 5);
-        newResType.put("name", "detail detail detail");
-
-        resourceClientBag.replace("resType", newResType);
         resourceClientBag.replace("detail", "detail detail");
         resourceClientBag.replace("ownerPermissionId", 3);
 
@@ -159,6 +151,64 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data[0].resType.name", is("Calendar")))
                 .andExpect(jsonPath("$.data[0].detail", is("xDep shared calendar")));
 
+    }
+
+    @Transactional
+    @Test
+    public void deleteResourceTest() throws Exception {
+
+        String tokenStr = getTokenValue();
+
+        ResourceDTO rdto = new ResourceDTO();
+        ResTypeDTO rtdto = getResTypeDTOById(1);
+        rdto.setResType(rtdto);
+        rdto.setName("future");
+        rdto.setDetail("my future");
+
+
+        ResultActions response = mockMvc.perform(
+                post("/api/v1/resource")
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(rdto))
+        )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.id").exists())
+                .andExpect(jsonPath("$.data.resType.name", is("Calendar")))
+                .andExpect(jsonPath("$.data.name", is("future")))
+                .andExpect(jsonPath("$.data.detail", is("my future")));
+
+        Integer newResourceId = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data.id");
+        Assert.assertNotNull(newResourceId);
+
+        response = mockMvc.perform(
+                delete("/api/v1/resource/" + newResourceId)
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(rdto))
+        )
+                .andExpect(status().isAccepted());
+
+    }
+
+
+    private ResTypeDTO getResTypeDTOById(Integer resTypeId) throws Exception {
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/restype/" + resTypeId)
+                        .header("X-AUTHID", getTokenValue())
+                        .accept(contentType)
+                        .contentType(contentType)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data.id", is(resTypeId)));
+        Map respData = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
+        ResTypeDTO resTypeDTO = new ResTypeDTO();
+        resTypeDTO.setId((Integer) respData.get("id"));
+        resTypeDTO.setName((String) respData.get("name"));
+        return resTypeDTO;
     }
 
     private String getTokenValue() throws Exception {

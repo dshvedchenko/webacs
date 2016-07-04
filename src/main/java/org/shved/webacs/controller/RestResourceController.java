@@ -60,7 +60,7 @@ public class RestResourceController {
         resourceService.updateResource(resourceDTO);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteById(
             @RequestHeader(name = "X-AUTHID") String token,
