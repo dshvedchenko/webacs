@@ -29,8 +29,7 @@ public class TestRestUserController extends AbstractAppTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-    private MockMvc mockMvc;
-    private String userName = "admin";
+
     @Autowired
     private IAppUserDAO appUserDAO;
 

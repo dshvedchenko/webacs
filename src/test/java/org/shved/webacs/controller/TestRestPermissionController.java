@@ -27,11 +27,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 public class TestRestPermissionController extends AbstractAppTest {
 
-    public static final String PASSWORD = "1qaz2wsx";
-
-    private MockMvc mockMvc;
-    private String userName = "admin";
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();

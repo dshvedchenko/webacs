@@ -3,12 +3,14 @@ package org.shved.webacs.services.impl;
 import lombok.Data;
 import org.shved.webacs.dto.*;
 import org.shved.webacs.services.IPermissionClaimService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author dshvedchenko on 7/5/16.
  */
+@Service
 @Data
 public class PermissionClaimService implements IPermissionClaimService {
     @Override

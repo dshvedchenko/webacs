@@ -37,13 +37,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration
 public class AbstractAppTest {
+    public static final String PASSWORD = "1qaz2wsx";
     protected MediaType contentType = MediaType.APPLICATION_JSON;
-
     protected HttpMessageConverter mappingJackson2HttpMessageConverter;
-
     @Autowired
     protected WebApplicationContext webApplicationContext;
-
+    protected MockMvc mockMvc;
+    protected String userName = "admin";
     @Autowired
     ModelMapper modelMapper;
 

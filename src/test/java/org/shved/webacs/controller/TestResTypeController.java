@@ -33,9 +33,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @author dshvedchenko on 6/21/16.
  */
 public class TestResTypeController extends AbstractAppTest {
-    private MockMvc mockMvc;
-
-    private String userName = "admin";
 
     @Autowired
     private IResTypeDAO resTypeDAO;
