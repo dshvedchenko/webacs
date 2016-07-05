@@ -47,7 +47,7 @@ public class TestResTypeController extends AbstractAppTest {
 
     @Test
     public void listResTypesTest() throws Exception {
-        String tokenStr = getAuthToken();
+        String tokenStr = getTokenInfo();
 
         mockMvc.perform(
                 get("/api/v1/restype/list")
@@ -71,7 +71,7 @@ public class TestResTypeController extends AbstractAppTest {
     @Test
     @Transactional
     public void getResTypeByIdTest() throws Exception {
-        String tokenStr = getAuthToken();
+        String tokenStr = getTokenInfo();
         Map<Integer, String> resTypes = ImmutableMap.of(1, "Calendar", 2, "wiki", 3, "room");
 
         for (Map.Entry entry : resTypes.entrySet()) {
@@ -92,7 +92,7 @@ public class TestResTypeController extends AbstractAppTest {
     @Test
     @Transactional
     public void getCreateResTypeTest() throws Exception {
-        String tokenStr = getAuthToken();
+        String tokenStr = getTokenInfo();
         ResTypeDTO rtdto = new ResTypeDTO();
 
         rtdto.setName("Software");
@@ -112,7 +112,7 @@ public class TestResTypeController extends AbstractAppTest {
     @Test
     @Transactional
     public void getEditResTypeTest() throws Exception {
-        String tokenStr = getAuthToken();
+        String tokenStr = getTokenInfo();
         ResTypeDTO rtdto = new ResTypeDTO();
 
         rtdto.setName("Software");
@@ -144,22 +144,5 @@ public class TestResTypeController extends AbstractAppTest {
         ResType rt = resTypeDAO.findById(newId);
         Assert.assertEquals("Commercial Software", rt.getName());
     }
-
-
-
-    private String getAuthToken() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
-    }
-
 
 }

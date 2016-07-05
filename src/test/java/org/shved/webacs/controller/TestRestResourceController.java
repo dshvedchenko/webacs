@@ -38,7 +38,7 @@ public class TestRestResourceController extends AbstractAppTest {
     @Test
     public void createResourceTest() throws Exception {
 
-        String tokenStr = getTokenValue();
+        String tokenStr = getTokenInfo();
 
         ResourceDTO rdto = new ResourceDTO();
         ResTypeDTO rtdto = getResTypeDTOById(1);
@@ -69,7 +69,7 @@ public class TestRestResourceController extends AbstractAppTest {
     public void getResurceByIdTest() throws Exception {
         final long EXIST_RESOURCE_ID = 1L;
 
-        String tokenStr = getTokenValue();
+        String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/" + EXIST_RESOURCE_ID)
@@ -95,7 +95,7 @@ public class TestRestResourceController extends AbstractAppTest {
         final String EXISTS_RESOURCE_KIND = "Calendar";
         final String EXISTS_RESOURCE_DETAIL = "xDep shared calendar";
 
-        String tokenStr = getTokenValue();
+        String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/" + EXIST_RESOURCE_ID)
@@ -130,7 +130,7 @@ public class TestRestResourceController extends AbstractAppTest {
     public void getResurcesByType() throws Exception {
         final Integer EXIST_RESOURCE_TYPE_ID = 1;
 
-        String tokenStr = getTokenValue();
+        String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/resource/type/" + EXIST_RESOURCE_TYPE_ID)
@@ -153,7 +153,7 @@ public class TestRestResourceController extends AbstractAppTest {
     @Test
     public void deleteResourceTest() throws Exception {
 
-        String tokenStr = getTokenValue();
+        String tokenStr = getTokenInfo();
 
         ResourceDTO rdto = new ResourceDTO();
         ResTypeDTO rtdto = getResTypeDTOById(1);
@@ -193,7 +193,7 @@ public class TestRestResourceController extends AbstractAppTest {
     private ResTypeDTO getResTypeDTOById(Integer resTypeId) throws Exception {
         ResultActions response = mockMvc.perform(
                 get("/api/v1/restype/" + resTypeId)
-                        .header("X-AUTHID", getTokenValue())
+                        .header("X-AUTHID", getTokenInfo())
                         .accept(contentType)
                         .contentType(contentType)
         )
@@ -205,20 +205,6 @@ public class TestRestResourceController extends AbstractAppTest {
         resTypeDTO.setId((Integer) respData.get("id"));
         resTypeDTO.setName((String) respData.get("name"));
         return resTypeDTO;
-    }
-
-    private String getTokenValue() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
     }
 
 }

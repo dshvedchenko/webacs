@@ -41,17 +41,7 @@ public class TestRestUserController extends AbstractAppTest {
     @Transactional
     @Test
     public void testGetUserById() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenInfo();
 
         mockMvc.perform(get("/api/v1/user/1")
                 .header("X-AUTHID", tokenStr)
@@ -83,17 +73,7 @@ public class TestRestUserController extends AbstractAppTest {
         final SysRole EDIT_USER_SYSROLE_NEW = SysRole.ADMIN;
         final Boolean EDIT_USER_ENABLED_NEW = false;
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenInfo();
 
         ResultActions resUserById = mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
@@ -145,17 +125,7 @@ public class TestRestUserController extends AbstractAppTest {
         final String NEW_USER_PASSWORD = "2wsx3edc";
         final String NEW_USER_PASSWORD_ENC = passwordEncoder.encode(NEW_USER_PASSWORD);
 
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String tokenStr = getTokenInfo();
 
         UserCreationDTO appUserDTO = new UserCreationDTO();
         appUserDTO.setUsername(NEW_USER_USERNAME);
@@ -197,18 +167,8 @@ public class TestRestUserController extends AbstractAppTest {
     @Test
     public void deleteUserTest() throws Exception {
         final Long EDIT_USERS_ID = 2L;
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
 
-        String tokenStr = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
-
+        String tokenStr = getTokenInfo();
 
         mockMvc.perform(delete("/api/v1/user/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)

@@ -40,17 +40,8 @@ public class TestAuthController extends AbstractAppTest {
 
     @Test
     public void testLogin() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword("1qaz2wsx");
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
 
-        String resp = JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
+        String resp = getTokenInfo();
         Assert.assertTrue(authTokenService.isTokenValid(resp));
     }
 

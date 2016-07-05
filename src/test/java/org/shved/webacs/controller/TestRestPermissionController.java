@@ -27,11 +27,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 public class TestRestPermissionController extends AbstractAppTest {
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
 
     @Transactional
     @Test
@@ -194,18 +189,5 @@ public class TestRestPermissionController extends AbstractAppTest {
         return JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
     }
 
-    private String getTokenInfo() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
-        loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
-                .content(this.json(loginInfo))
-                .accept(contentType)
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.token").exists());
-
-        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
-    }
 
 }

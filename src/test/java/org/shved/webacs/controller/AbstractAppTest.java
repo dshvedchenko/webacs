@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.config.AppConfig;
+import org.shved.webacs.dto.UserAuthDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -16,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
@@ -47,6 +50,12 @@ public class AbstractAppTest {
     @Autowired
     ModelMapper modelMapper;
 
+
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+    }
+
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
 
@@ -62,6 +71,20 @@ public class AbstractAppTest {
         this.mappingJackson2HttpMessageConverter.write(
                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
+    }
+
+    protected String getTokenInfo() throws Exception {
+        UserAuthDTO loginInfo = new UserAuthDTO();
+        loginInfo.setUsername(userName);
+        loginInfo.setPassword(PASSWORD);
+        ResultActions res = mockMvc.perform(post("/api/v1/login")
+                .content(this.json(loginInfo))
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists());
+
+        return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
     }
 
 }
