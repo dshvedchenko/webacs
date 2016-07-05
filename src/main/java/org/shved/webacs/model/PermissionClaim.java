@@ -111,5 +111,21 @@ public class PermissionClaim {
         return result;
     }
 
+    public void update(PermissionClaim newVersion) {
+        setClaimState(newVersion.getClaimState());
+        setClaimedAt(newVersion.getClaimedAt());
+
+        setRevokedAt(newVersion.getRevokedAt());
+        setRevoker(newVersion.getRevoker());
+
+        setApprovedAt(newVersion.getApprovedAt());
+        setApprover(newVersion.getApprover());
+
+        setGrantedAt(newVersion.getGrantedAt());
+        setGranter(newVersion.getGranter());
+
+        setStartAt(newVersion.getStartAt());
+        setEndAt(newVersion.getEndAt());
+    }
 
 }

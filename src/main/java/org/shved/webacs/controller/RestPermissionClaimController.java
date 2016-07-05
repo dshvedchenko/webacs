@@ -1,10 +1,12 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAppUserService;
 import org.shved.webacs.services.IAuthTokenService;
+import org.shved.webacs.services.IPermissionClaimService;
 import org.shved.webacs.services.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class RestPermissionClaimController {
 
     @Autowired
     private IPermissionService permissionService;
+
+    @Autowired
+    private IPermissionClaimService permissionClaimService;
 
     @Autowired
     private IAppUserService appUserService;
@@ -74,15 +79,15 @@ public class RestPermissionClaimController {
 //        authTokenService.isTokenValid(token);
 //        permissionService.deleteById(id);
 //    }
-//
-//    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseData<ResourceDTO> getAll(
-//            @RequestHeader(name = "X-AUTHID") String token
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        List<PermissionDTO> list = permissionService.getAll();
-//        return new ResponseData(list);
-//    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAll(
+            @RequestHeader(name = "X-AUTHID") String token
+    ) {
+        authTokenService.isTokenValid(token);
+        List<PermissionClaimDTO> list = permissionClaimService.getAll();
+        return new ResponseData(list);
+    }
 
 }
