@@ -4,7 +4,13 @@
         <td><input type="text" ng-model="item.firstname"/></td>
         <td>{{item.username}}</td>
         <td>
-            <button ng-click="handleClick(123)">{{item.created_at}}</button>
+            <button ng-click="handleClick(item)">{{item.created_at}}</button>
         </td>
     </tr>
 </table>
+
+<!--<div ng-switch="userInfo.length % 2">-->
+<!--<div ng-switch-when="0">-->
+<!--<h1>URRA</h1>-->
+<!--</div>-->
+<!--</div>-->

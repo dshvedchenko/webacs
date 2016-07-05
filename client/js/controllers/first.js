@@ -1,6 +1,7 @@
 app.controller('firstController', function ($scope, coreService, $http) {
     $scope.token = ''
     $scope.userInfo = {}
+    $scope.rt = coreService
     var data = {
         username: 'admin',
         password: '1qaz2wsx'
@@ -35,6 +36,9 @@ app.controller('firstController', function ($scope, coreService, $http) {
     }
 
     $scope.handleClick = function (evt) {
+        console.log(evt)
         $scope.userInfo.pop();
     }
+
+
 })
