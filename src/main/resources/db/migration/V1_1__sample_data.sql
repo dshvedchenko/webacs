@@ -100,13 +100,13 @@ INSERT INTO app.permission_claim
 ) SELECT
     au.id,
     rr.id,
-    2     AS state_id,
+    2                                    AS state_id,
     appr.id,
-    now() AS approved_at,
-    now() AS claimed_at,
-    now() AS granted_at,
+    '20160610 10:00:00+0' :: TIMESTAMPTZ AS approved_at,
+    '20160610 09:00:00+0' :: TIMESTAMPTZ AS claimed_at,
+    '20160610 10:20:00+0' :: TIMESTAMPTZ AS granted_at,
     gr.id,
-    now() - INTERVAL '1 day',
+    '20160611 10:00:00+0' :: TIMESTAMPTZ,
     demo.column7 :: TIMESTAMPTZ
   FROM (VALUES
     ('billk', 'xDep Calendar', 'Calendar', 'Owner', 'admin', 'admin', 'infinity'),

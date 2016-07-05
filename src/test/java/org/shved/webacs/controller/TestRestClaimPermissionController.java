@@ -40,6 +40,14 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data", hasSize(14)))
                 .andExpect(jsonPath("$.data[0].approver.username", is("billk")))
-                .andExpect(jsonPath("$.data[13].approver.username", is("admin")));
+                .andExpect(jsonPath("$.data[0].user.username", is("ninaa")))
+                .andExpect(jsonPath("$.data[0].claimedAt", is("2016-06-10 09:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[0].approvedAt", is("2016-06-10 10:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[0].grantedAt", is("2016-06-10 10:20:00.000+0000")))
+                .andExpect(jsonPath("$.data[13].approver.username", is("admin")))
+                .andExpect(jsonPath("$.data[13].user.username", is("billk")))
+                .andExpect(jsonPath("$.data[13].claimedAt", is("2016-06-10 09:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[13].approvedAt", is("2016-06-10 10:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[13].grantedAt", is("2016-06-10 10:20:00.000+0000")));
     }
 }
