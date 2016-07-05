@@ -50,4 +50,25 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data[13].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[13].grantedAt", is("2016-06-10 10:20:00.000+0000")));
     }
+
+    @Test
+    @Transactional
+    public void getClaimByIdTest() throws Exception {
+        String tokenStr = getTokenInfo();
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/claim/1")
+                        .header("X-AUTHID", tokenStr)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data.approver.username", is("billk")))
+                .andExpect(jsonPath("$.data.user.username", is("ninaa")))
+                .andExpect(jsonPath("$.data.claimedAt", is("2016-06-10 09:00:00.000+0000")))
+                .andExpect(jsonPath("$.data.approvedAt", is("2016-06-10 10:00:00.000+0000")))
+                .andExpect(jsonPath("$.data.grantedAt", is("2016-06-10 10:20:00.000+0000")));
+    }
 }

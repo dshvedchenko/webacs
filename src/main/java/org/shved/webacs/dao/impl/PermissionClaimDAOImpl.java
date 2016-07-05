@@ -90,4 +90,16 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
                 .add(Restrictions.eq("aus.id", appUser.getId()));
         return criteria.list();
     }
+
+    @Override
+    public PermissionClaim findById(Long id) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.eq("id", id));
+        return (PermissionClaim) criteria.uniqueResult();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
 }

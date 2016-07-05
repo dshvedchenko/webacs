@@ -44,7 +44,8 @@ public class PermissionClaimService implements IPermissionClaimService {
 
     @Override
     public PermissionClaimDTO getById(Long id) {
-        return null;
+        PermissionClaim claim = permissionClaimDAO.findById(id);
+        return modelMapper.map(claim, PermissionClaimDTO.class);
     }
 
     @Override

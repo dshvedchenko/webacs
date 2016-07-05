@@ -26,5 +26,8 @@ public interface IPermissionClaimDAO {
 
     List<PermissionClaim> findAllToBeApprovedBy(AppUser appUser);
 
+    PermissionClaim findById(Long id);
+
+    void deleteById(Long id);
     void save(PermissionClaim permissionClaim);
 }
