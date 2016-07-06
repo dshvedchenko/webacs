@@ -13,11 +13,21 @@
     <!-- controllers -->
     <script src="js/controllers/first.js"></script>
     <script src="js/controllers/second.js"></script>
+    <script src="js/controllers/resourcetype.js"></script>
+    <script src="js/controllers/login.js"></script>
 </head>
 <body>
 <div ng-app="app">
-    <a href="#/first">First Controller</a>
-    <a href="#/second">Second Controller</a>
+    <div ng-switch on="token === undefined">
+        <div ng-switch-when="true">
+            <a href="#/login">Login</a>
+        </div>
+        <div ng-switch-when="false">
+            <a href="#/first">First Controller</a>
+            <a href="#/second">Second Controller</a>
+            <a href="#/resourcetype">Resource Types</a>
+        </div>
+    </div>
     <div ng-view></div>
 </div>
 </body>

@@ -1,23 +1,13 @@
-app.controller('firstController', function ($scope, coreService, $http) {
+app.controller('firstController', function ($scope, coreService, $http, $rootScope) {
     $scope.token = ''
     $scope.userInfo = {}
     $scope.rt = coreService
-    var data = {
-        username: 'admin',
-        password: '1qaz2wsx'
-    }
-    $http.post(backend_server + "/api/v1/login", data)
-        .then(
-            function ok(response) {
-                $scope.token = response.data.data.token
-                setToken()
-            }
-        )
+
 
     setToken = function () {
         var config = {
             headers: {
-                'X-AUTHID': $scope.token,
+                'X-AUTHID': $rootScope.token,
                 'Content-Type': 'application/json'
             }
         }
@@ -40,5 +30,6 @@ app.controller('firstController', function ($scope, coreService, $http) {
         $scope.userInfo.pop();
     }
 
+    setToken()
 
 })

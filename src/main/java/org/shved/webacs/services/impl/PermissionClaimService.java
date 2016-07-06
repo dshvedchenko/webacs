@@ -33,12 +33,14 @@ public class PermissionClaimService implements IPermissionClaimService {
 
     @Override
     public List<PermissionClaimDTO> getAll() {
+        //only admin can get list of all claims
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllPermissionClaim();
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
     public List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO) {
+        // only admin can see by claimstates
         return null;
     }
 
@@ -58,34 +60,38 @@ public class PermissionClaimService implements IPermissionClaimService {
         return null;
     }
 
+    // TODO, 1. how to pass user ( by token or userid )
+    // 2. verify claim already exists for permission for time period ( look only in not revoked , expired claims )
+    // 3. how to check permissions
     @Override
     public PermissionClaimDTO create(PermissionClaimDTO permissionClaimDTO) {
+        //any user can create claim
         return null;
     }
 
     @Override
     public void update(PermissionClaimDTO permissionClaimDTO) {
-
+        //only creator can update claim
     }
 
     @Override
     public void delete(PermissionClaimDTO permissionClaimDTO) {
-
+        // no one can delete claim ( yet )
     }
 
     @Override
     public void approve(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
-
+        //only owner can approve claim
     }
 
     @Override
     public void grant(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
-
+        //only admin can approve claim
     }
 
     @Override
     public void revoke(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
-
+        //only admin,owner can revoke claim
     }
 
     private List<PermissionClaimDTO> convertListPermissionClaimsToPermissionClaimDTO(List<PermissionClaim> permissionClaimList) {

@@ -36,16 +36,17 @@ public class RestPermissionClaimController {
     @Autowired
     private IAuthTokenService authTokenService;
 
-//    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResponseData<ResourceDTO> createPermission(
-//            @RequestHeader(name = "X-AUTHID") String token,
-//            @RequestBody PermissionDTO permissionDTO
-//    ) {
-//        authTokenService.isTokenValid(token);
-//        PermissionDTO permissionDTO1 = permissionService.create(permissionDTO);
-//        return new ResponseData(permissionDTO1);
-//    }
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseData<PermissionClaimDTO> createPermission(
+            @RequestHeader(name = "X-AUTHID") String token,
+            @RequestBody PermissionClaimDTO claimDTO
+    ) {
+        authTokenService.isTokenValid(token);
+        PermissionClaimDTO createdClaimDTO = permissionClaimService.create(claimDTO);
+        return new ResponseData(createdClaimDTO);
+
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

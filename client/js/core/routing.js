@@ -7,5 +7,14 @@ app.config(function ($routeProvider) {
         .when("/second", {
             templateUrl: "views/second.html",
             controller: "secondController"
-        });
+        })
+        .when("/resourcetype", {
+            templateUrl: "views/resourcetype.html",
+            controller: "resourceTypeController"
+        })
+        .when("/login", {
+            templateUrl: "views/login.html",
+            controller: "loginController"
+        })
+    ;
 });
