@@ -1,7 +1,9 @@
 package org.shved.webacs.services.impl;
 
+import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IAuthTokenDAO;
+import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.exception.TokenException;
 import org.shved.webacs.model.AppUser;
@@ -24,11 +26,11 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
 
 
     @Autowired
+    ModelMapper modelMapper;
+    @Autowired
     private IAppUserDAO appUserDAO;
-
     @Autowired
     private IAuthTokenDAO authTokenDAO;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -66,21 +68,28 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
         try {
             authTokenDAO.deleteTokenByVal(token);
         } catch (Exception e) {
-            throw new TokenException("TOKEN DELETE");
+            throw new TokenException("TOKEN DELETE issue");
         }
     }
 
     @Override
-    public boolean isTokenValid(String tokenStr) {
-        AuthToken token = authTokenDAO.getAuthToken(tokenStr);
+    public boolean isTokenValid(String rawToken) {
+        AuthToken token = authTokenDAO.getAuthToken(rawToken);
 
         if (token == null) {
             throw new TokenException("TOKEN NOT FOUND");
         }
-
         handleTokenExpired(token);
+        return true;
+    }
 
-        return token != null;
+    @Override
+    public AppUserDTO getUserByToken(String rawToken) {
+        AuthToken token = authTokenDAO.getAuthToken(rawToken);
+        if (token == null) {
+            return null;
+        }
+        return modelMapper.map(token.getAppUser(), AppUserDTO.class);
     }
 
     private void handleTokenExpired(AuthToken token) {
@@ -88,6 +97,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
         expirty.add(Calendar.HOUR, -2);
 
         if (expirty.before(token.getLastUsed())) {
+            authTokenDAO.deleteTokenByVal(token.getToken());
             throw new TokenException("TOKEN EXPIRED");
         }
     }

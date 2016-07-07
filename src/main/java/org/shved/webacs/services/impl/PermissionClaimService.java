@@ -6,6 +6,8 @@ import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.dao.impl.PermissionClaimDAOImpl;
 import org.shved.webacs.dto.*;
+import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.services.IPermissionClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,18 +66,21 @@ public class PermissionClaimService implements IPermissionClaimService {
     // 2. verify claim already exists for permission for time period ( look only in not revoked , expired claims )
     // 3. how to check permissions
     @Override
-    public PermissionClaimDTO create(PermissionClaimDTO permissionClaimDTO) {
-        //any user can create claim
+    public PermissionClaimDTO create(PermissionDTO permissionDTO, AppUserDTO user) {
+        Permission claimedPermission = modelMapper.map(permissionDTO, Permission.class);
+        AppUser appUser = modelMapper.map(user, AppUser.class);
+        List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByPermissionByUserNotRevoked(claimedPermission, appUser);
+
         return null;
     }
 
     @Override
-    public void update(PermissionClaimDTO permissionClaimDTO) {
+    public void update(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
         //only creator can update claim
     }
 
     @Override
-    public void delete(PermissionClaimDTO permissionClaimDTO) {
+    public void delete(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
         // no one can delete claim ( yet )
     }
 

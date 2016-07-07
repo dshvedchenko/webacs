@@ -52,31 +52,34 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     }
 
     @Override
+    public List<PermissionClaim> findAllByPermissionByUserNotRevoked(Permission permission, AppUser appUser) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.conjunction(Restrictions.eq("permission", permission)
+                        , Restrictions.eq("user", appUser)
+                        , Restrictions.ne("claimState", ClaimState.REVOKED)
+                ));
+        return criteria.list();
+    }
+
+
+    @Override
     public List<PermissionClaim> findAllClaimed() {
-        ClaimState cl = new ClaimState();
-        cl.setId(0);
-        return findAllByClaimState(cl);
+        return findAllByClaimState(ClaimState.CLAIMED);
     }
 
     @Override
     public List<PermissionClaim> findAllApproved() {
-        ClaimState cl = new ClaimState();
-        cl.setId(1);
-        return findAllByClaimState(cl);
+        return findAllByClaimState(ClaimState.APPROVED);
     }
 
     @Override
     public List<PermissionClaim> findAllGranted() {
-        ClaimState cl = new ClaimState();
-        cl.setId(2);
-        return findAllByClaimState(cl);
+        return findAllByClaimState(ClaimState.GRANTED);
     }
 
     @Override
     public List<PermissionClaim> findAllRevoked() {
-        ClaimState cl = new ClaimState();
-        cl.setId(3);
-        return findAllByClaimState(cl);
+        return findAllByClaimState(ClaimState.REVOKED);
     }
 
     @Override

@@ -1,14 +1,22 @@
 package org.shved.webacs.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import com.sun.javafx.collections.MappingChange;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.dto.PermissionClaimDTO;
+import org.shved.webacs.dto.PermissionDTO;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -54,11 +62,11 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
     @Test
     @Transactional
     public void getClaimByIdTest() throws Exception {
-        String tokenStr = getTokenInfo();
+        String rawToken = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get("/api/v1/claim/1")
-                        .header("X-AUTHID", tokenStr)
+                        .header("X-AUTHID", rawToken)
                         .accept(contentType)
                         .contentType(contentType)
 
@@ -71,4 +79,43 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data.grantedAt", is("2016-06-10 10:20:00.000+0000")));
     }
+
+    @Test
+    @Transactional
+    public void getCreateClaimTest() throws Exception {
+        String rawToken = getTokenInfo();
+
+        PermissionDTO pdto = getPermissionDTOById(2L);
+
+        ResultActions response = mockMvc.perform(
+                post("/api/v1/claim")
+                        .header("X-AUTHID", rawToken)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(pdto))
+
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists());
+        PermissionClaimDTO pcdto = modelMapper.map(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data"), PermissionClaimDTO.class);
+    }
+
+    PermissionDTO getPermissionDTOById(Long id) throws Exception {
+        String rawToken = getTokenInfo();
+
+        ResultActions response = mockMvc.perform(
+                get("/api/v1/permission/" + 1)
+                        .header("X-AUTHID", rawToken)
+                        .accept(contentType)
+                        .contentType(contentType)
+
+        )
+                .andExpect(status().isOk());
+
+        Map rawPerm = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
+        PermissionDTO result = modelMapper.map(rawPerm, PermissionDTO.class);
+
+        return result;
+    }
+
 }

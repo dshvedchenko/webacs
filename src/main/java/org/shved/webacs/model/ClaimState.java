@@ -12,10 +12,25 @@ import javax.persistence.*;
 @Data
 public class ClaimState {
 
+    public static ClaimState CLAIMED;
+    public static ClaimState APPROVED;
+    public static ClaimState GRANTED;
+    public static ClaimState REVOKED;
+
+    static {
+        CLAIMED = new ClaimState();
+        CLAIMED.setId(0);
+        APPROVED = new ClaimState();
+        APPROVED.setId(1);
+        GRANTED = new ClaimState();
+        GRANTED.setId(2);
+        REVOKED = new ClaimState();
+        REVOKED.setId(3);
+    }
+
     @Id
     @Column(name = "id")
     private Integer id;
-
     @Column(name = "name")
     private String name;
 

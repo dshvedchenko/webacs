@@ -1,5 +1,6 @@
 package org.shved.webacs.services;
 
+import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.model.AuthToken;
 
@@ -11,5 +12,6 @@ public interface IAuthTokenService {
 
     boolean isTokenValid(String token);
 
+    AppUserDTO getUserByToken(String tokenRaw);
     void restLogout(String token);
 }

@@ -20,11 +20,11 @@ public interface IPermissionClaimService {
 
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
 
-    PermissionClaimDTO create(PermissionClaimDTO permissionClaimDTO);
+    PermissionClaimDTO create(PermissionDTO permissionClaimDTO, AppUserDTO user);
 
-    void update(PermissionClaimDTO permissionClaimDTO);
+    void update(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
 
-    void delete(PermissionClaimDTO permissionClaimDTO);
+    void delete(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
 
     void approve(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
 
