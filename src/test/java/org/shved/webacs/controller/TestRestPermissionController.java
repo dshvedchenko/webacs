@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.dto.ResourceDTO;
@@ -35,7 +36,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/permission/list")
+                get(RestEndpoints.API_V1_PERMISSIONS)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -56,7 +57,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/permission/" + 1)
+                get(RestEndpoints.API_V1_PERMISSIONS + "/" + 1)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -81,7 +82,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         respData.replace("description", "readers new description");
 
         response = mockMvc.perform(
-                put("/api/v1/permission/1")
+                put(RestEndpoints.API_V1_PERMISSIONS + "/1")
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -106,7 +107,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         permissionDTO.setDescription("descr 535");
 
         response = mockMvc.perform(
-                post("/api/v1/permission")
+                post(RestEndpoints.API_V1_PERMISSIONS)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -136,7 +137,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         permissionDTO.setDescription("descr 535");
 
         response = mockMvc.perform(
-                post("/api/v1/permission")
+                post(RestEndpoints.API_V1_PERMISSIONS)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -150,7 +151,7 @@ public class TestRestPermissionController extends AbstractAppTest {
         ;
 
         response = mockMvc.perform(
-                delete("/api/v1/permission/" + newPermId)
+                delete(RestEndpoints.API_V1_PERMISSIONS + "/" + newPermId)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -160,7 +161,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
     private Map getPermissionById(Long id, String tokenStr) throws Exception {
         ResultActions response = mockMvc.perform(
-                get("/api/v1/permission/" + id)
+                get(RestEndpoints.API_V1_PERMISSIONS + "/" + id)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -177,7 +178,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
     private Map getResourceById(Long id, String tokenStr) throws Exception {
         ResultActions response = mockMvc.perform(
-                get("/api/v1/resource/" + id)
+                get(RestEndpoints.API_V1_RESTYPES + id)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)

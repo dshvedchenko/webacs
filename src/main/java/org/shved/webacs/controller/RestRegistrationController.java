@@ -13,9 +13,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-
 import javax.validation.Valid;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * @author dshvedchenko on 6/17/16.
@@ -23,7 +24,7 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json")
-public class RestAuthController extends AbstractAPIV1Controller {
+public class RestRegistrationController extends AbstractAPIV1Controller {
 
     @Autowired
     IAuthTokenService authTokenService;
@@ -32,29 +33,17 @@ public class RestAuthController extends AbstractAPIV1Controller {
     IAppUserService appUserService;
 
 
-    //TODO add link to logout
-    @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ResponseData<AuthToken> login(
-            @RequestBody UserAuthDTO userLogin
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData<Boolean> register(
+            @RequestBody @Valid UserRegistrationDTO regInfo,
+            BindingResult result, WebRequest request, Errors errors
     ) {
         ResponseData rd = new ResponseData();
-        UserAuthDTO authRes = null;
-        authRes = authTokenService.restLogin(userLogin);
+        AppUser authRes = null;
+        authRes = appUserService.registerUser(regInfo);
 
-        rd.setData(authRes);
-        rd.add(linkTo(methodOn(RestAuthController.class).login(userLogin)).withSelfRel());
-        return rd;
-    }
-
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ResponseData<AuthToken> logout(
-            @RequestHeader(name = "X-AUTHID") String token
-    ) {
-        ResponseData rd = new ResponseData();
-        authTokenService.restLogout(token);
-
-        rd.setData("success");
-        rd.add(linkTo(methodOn(RestAuthController.class).logout(token)).withSelfRel());
+        rd.setData(true);
         return rd;
     }
 

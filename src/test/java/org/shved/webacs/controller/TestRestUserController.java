@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dao.IAppUserDAO;
-import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.model.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +29,6 @@ public class TestRestUserController extends AbstractAppTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private IAppUserDAO appUserDAO;
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
@@ -43,7 +39,7 @@ public class TestRestUserController extends AbstractAppTest {
     public void testGetUserById() throws Exception {
         String tokenStr = getTokenInfo();
 
-        mockMvc.perform(get("/api/v1/user/1")
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/1")
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
@@ -75,7 +71,7 @@ public class TestRestUserController extends AbstractAppTest {
 
         String tokenStr = getTokenInfo();
 
-        ResultActions resUserById = mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
+        ResultActions resUserById = mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
@@ -92,14 +88,14 @@ public class TestRestUserController extends AbstractAppTest {
         userRecord.replace("sysrole", EDIT_USER_SYSROLE_NEW);
         userRecord.replace("enabled", EDIT_USER_ENABLED_NEW);
 
-        mockMvc.perform(put("/api/v1/user/" + EDIT_USERS_ID)
+        mockMvc.perform(put(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType)
                 .content(new ObjectMapper().writeValueAsString(userRecord))
         ).andExpect(status().isAccepted());
 
-        mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
@@ -123,7 +119,6 @@ public class TestRestUserController extends AbstractAppTest {
         final SysRole NEW_USER_SYSROLE = SysRole.GENERIC;
         final Boolean NEW_USER_ENABLED = true;
         final String NEW_USER_PASSWORD = "2wsx3edc";
-        final String NEW_USER_PASSWORD_ENC = passwordEncoder.encode(NEW_USER_PASSWORD);
 
         String tokenStr = getTokenInfo();
 
@@ -138,7 +133,7 @@ public class TestRestUserController extends AbstractAppTest {
 
 
         ResultActions response = mockMvc.perform(
-                post("/api/v1/user")
+                post(RestEndpoints.API_V1_USERS)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -149,7 +144,7 @@ public class TestRestUserController extends AbstractAppTest {
         Integer newUserId = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(
-                get("/api/v1/user/" + newUserId)
+                get(RestEndpoints.API_V1_USERS + "/" + newUserId)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -170,14 +165,14 @@ public class TestRestUserController extends AbstractAppTest {
 
         String tokenStr = getTokenInfo();
 
-        mockMvc.perform(delete("/api/v1/user/" + EDIT_USERS_ID)
+        mockMvc.perform(delete(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType)
 
         ).andExpect(status().isAccepted());
 
-        mockMvc.perform(get("/api/v1/user/" + EDIT_USERS_ID)
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
@@ -185,5 +180,23 @@ public class TestRestUserController extends AbstractAppTest {
         ;
     }
 
+    @Transactional
+    @Test
+    public void testGetDisabled() throws Exception {
+        String tokenStr = getTokenInfo();
+
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "?enabled=false")
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.username", is("admin")))
+                .andExpect(jsonPath("$.data.lastname", is("admin")))
+                .andExpect(jsonPath("$.data.firstname", is("admin")))
+                .andExpect(jsonPath("$.data.email", is("admin@example.com")))
+                .andExpect(jsonPath("$.data.sysrole", is(0)));
+
+
+    }
 
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.config.AppConfig;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -77,7 +78,7 @@ public class AbstractAppTest {
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
         loginInfo.setPassword(PASSWORD);
-        ResultActions res = mockMvc.perform(post("/api/v1/login")
+        ResultActions res = mockMvc.perform(post(RestEndpoints.API_V1_LOGIN)
                 .content(this.json(loginInfo))
                 .accept(contentType)
                 .contentType(contentType))

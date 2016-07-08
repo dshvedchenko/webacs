@@ -5,14 +5,12 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.dto.ResourceDTO;
-import org.shved.webacs.dto.UserAuthDTO;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -48,7 +46,7 @@ public class TestRestResourceController extends AbstractAppTest {
 
 
         ResultActions response = mockMvc.perform(
-                post("/api/v1/resource")
+                post(RestEndpoints.API_V1_RESOURCES)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -72,7 +70,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                get(RestEndpoints.API_V1_RESOURCES + "/" + EXIST_RESOURCE_ID)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -98,7 +96,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                get(RestEndpoints.API_V1_RESOURCES + "/" + EXIST_RESOURCE_ID)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -117,7 +115,7 @@ public class TestRestResourceController extends AbstractAppTest {
         resourceClientBag.replace("ownerPermissionId", 3);
 
         ResultActions updateResponce = mockMvc.perform(
-                put("/api/v1/resource/" + EXIST_RESOURCE_ID)
+                put(RestEndpoints.API_V1_RESOURCES + "/" + EXIST_RESOURCE_ID)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -133,7 +131,7 @@ public class TestRestResourceController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/resource/type/" + EXIST_RESOURCE_TYPE_ID)
+                get(RestEndpoints.API_V1_RESOURCES + "/type/" + EXIST_RESOURCE_TYPE_ID)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -163,7 +161,7 @@ public class TestRestResourceController extends AbstractAppTest {
 
 
         ResultActions response = mockMvc.perform(
-                post("/api/v1/resource")
+                post(RestEndpoints.API_V1_RESOURCES)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -179,7 +177,7 @@ public class TestRestResourceController extends AbstractAppTest {
         Assert.assertNotNull(newResourceId);
 
         response = mockMvc.perform(
-                delete("/api/v1/resource/" + newResourceId)
+                delete(RestEndpoints.API_V1_RESOURCES + "/" + newResourceId)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -192,7 +190,7 @@ public class TestRestResourceController extends AbstractAppTest {
 
     private ResTypeDTO getResTypeDTOById(Integer resTypeId) throws Exception {
         ResultActions response = mockMvc.perform(
-                get("/api/v1/restype/" + resTypeId)
+                get(RestEndpoints.API_V1_RESTYPES + "/" + resTypeId)
                         .header("X-AUTHID", getTokenInfo())
                         .accept(contentType)
                         .contentType(contentType)

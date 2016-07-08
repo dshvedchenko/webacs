@@ -7,6 +7,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dao.IResTypeDAO;
 import org.shved.webacs.dto.ResTypeDTO;
@@ -50,7 +51,7 @@ public class TestResTypeController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         mockMvc.perform(
-                get("/api/v1/restype/list")
+                get(RestEndpoints.API_V1_RESTYPES)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -76,7 +77,7 @@ public class TestResTypeController extends AbstractAppTest {
 
         for (Map.Entry entry : resTypes.entrySet()) {
             mockMvc.perform(
-                    get("/api/v1/restype/" + entry.getKey())
+                    get(RestEndpoints.API_V1_RESTYPES + "/" + entry.getKey())
                             .header("X-AUTHID", tokenStr)
                             .accept(contentType)
                             .contentType(contentType)
@@ -98,7 +99,7 @@ public class TestResTypeController extends AbstractAppTest {
         rtdto.setName("Software");
 
         ResultActions createdResp = mockMvc.perform(
-                post("/api/v1/restype/")
+                post(RestEndpoints.API_V1_RESTYPES + "/")
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -118,7 +119,7 @@ public class TestResTypeController extends AbstractAppTest {
         rtdto.setName("Software");
 
         ResultActions createdResp = mockMvc.perform(
-                post("/api/v1/restype/")
+                post(RestEndpoints.API_V1_RESTYPES + "/")
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -134,7 +135,7 @@ public class TestResTypeController extends AbstractAppTest {
         rtdto.setName("Commercial Software");
 
         ResultActions editedResp = mockMvc.perform(
-                put("/api/v1/restype/" + newId)
+                put(RestEndpoints.API_V1_RESTYPES + "/" + newId)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)

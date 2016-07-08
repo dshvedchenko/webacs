@@ -58,42 +58,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Configuration
-    @Order(2)
-    public static class FormWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Override
-        public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/css/**"
-                    , "/js/**"
-                    , "/img/**"
-                    , "/lib/**"
-                    , "/assets/**"
-                    , "/resources/**"
-                    , "/static/**"
-                    , "/client/**"
-                    , "/"
-                    , "/register");
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeRequests()
-                    //.antMatchers("/api/**").permitAll()
-                    .antMatchers("/connect/**").permitAll()
-                    .antMatchers("/", "/user/registration").permitAll()
-                    .antMatchers("/admin/**").hasAuthority("ADMIN")
-                    .anyRequest().authenticated()
-                    .and() //Login Form configuration for all others
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .passwordParameter("acs_password")
-                    .usernameParameter("acs_username")
-                    .and() //Logout Form configuration
-                    .logout().permitAll();
-        }
-    }
+//    @Configuration
+//    @Order(2)
+//    public static class FormWebSecurityConfig extends WebSecurityConfigurerAdapter {
+//
+//        @Override
+//        public void configure(WebSecurity web) throws Exception {
+//            web.ignoring().antMatchers("/css/**"
+//                    , "/js/**"
+//                    , "/img/**"
+//                    , "/lib/**"
+//                    , "/assets/**"
+//                    , "/resources/**"
+//                    , "/static/**"
+//                    , "/client/**"
+//                    , "/"
+//                    , "/register");
+//        }
+//
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//            http.csrf().disable()
+//                    .authorizeRequests()
+//                    //.antMatchers("/api/**").permitAll()
+//                    .antMatchers("/connect/**").permitAll()
+//                    .antMatchers("/", "/user/registration").permitAll()
+//                    .antMatchers("/admin/**").hasAuthority("ADMIN")
+//                    .anyRequest().authenticated()
+//                    .and() //Login Form configuration for all others
+//                    .formLogin()
+//                    .loginPage("/login")
+//                    .permitAll()
+//                    .passwordParameter("acs_password")
+//                    .usernameParameter("acs_username")
+//                    .and() //Logout Form configuration
+//                    .logout().permitAll();
+//        }
+//    }
 
 }

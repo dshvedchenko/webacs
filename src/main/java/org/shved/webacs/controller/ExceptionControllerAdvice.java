@@ -29,30 +29,12 @@ import java.util.Locale;
  * @author dshvedchenko on 6/21/16.
  */
 @ControllerAdvice
-public class ExceptionController extends ResponseEntityExceptionHandler {
+public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
     @Autowired
     private MessageSource messageSource;
-
-//    @Autowired
-//    public ExceptionController(MessageSource messageSource) {
-//        this.messageSource = messageSource;
-//    }
-
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ResponseBody
-//    public ResponseEntity<Object> processValidationError( MethodArgumentNotValidException ex, WebRequest request) {
-//        BindingResult result = ex.getBindingResult();
-//        List<FieldError> fieldErrors = result.getFieldErrors();
-//
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-//        return handleExceptionInternal(ex, processFieldErrors(fieldErrors) ,headers,HttpStatus.UNAUTHORIZED, request);
-//    }
 
     @ExceptionHandler(AppException.class)
     @ResponseBody

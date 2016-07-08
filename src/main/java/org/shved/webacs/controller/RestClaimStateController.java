@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/claimstate", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/claimstates", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestClaimStateController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class RestClaimStateController {
     @Autowired
     IClaimStateService claimStateService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getById(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id
@@ -33,7 +33,7 @@ public class RestClaimStateController {
         return new ResponseData(claimStateService.getById(id));
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
     ) {

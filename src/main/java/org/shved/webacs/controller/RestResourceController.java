@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/resource", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/resources", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestResourceController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class RestResourceController {
     @Autowired
     IAuthTokenService authTokenService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<ResourceDTO> createUser(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -39,7 +39,7 @@ public class RestResourceController {
         return new ResponseData(createdRes);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> findById(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -50,7 +50,7 @@ public class RestResourceController {
         return new ResponseData(res);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateResource(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -70,7 +70,7 @@ public class RestResourceController {
         resourceService.deleteById(id);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
@@ -81,7 +81,7 @@ public class RestResourceController {
     }
 
     @Transactional
-    @RequestMapping(value = "/type/{typeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/type/{typeId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAllByResTypeId(
             @RequestHeader(name = "X-AUTHID") String token,

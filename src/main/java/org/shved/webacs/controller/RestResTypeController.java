@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/restype", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/restypes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestResTypeController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class RestResTypeController {
     @Autowired
     IResTypeService resTypeService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getById(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id
@@ -33,7 +33,7 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getById(id));
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
     ) {
@@ -41,7 +41,7 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getAll());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void update(
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id,
@@ -52,7 +52,7 @@ public class RestResTypeController {
         resTypeService.save(updatedItem);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseData<ResTypeDTO> create(
             @RequestHeader(name = "X-AUTHID") String token,
             @RequestBody ResTypeDTO updatedItem

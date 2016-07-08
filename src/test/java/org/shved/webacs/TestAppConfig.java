@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"org.shved.webacs.*"})
+@ComponentScan({"org.shved.webacs.controller"})
 public class TestAppConfig {
 }

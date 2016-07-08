@@ -45,7 +45,7 @@ public class TestClaimStateController extends AbstractAppTest {
         String tokenStr = getAuthToken();
 
         ResultActions claimStateList = mockMvc.perform(
-                get("/api/v1/claimstate/list")
+                get("/api/v1/claimstates")
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -74,7 +74,7 @@ public class TestClaimStateController extends AbstractAppTest {
         for (Map.Entry claimState : claimStates.entrySet()) {
 
             ResultActions claimStateList = mockMvc.perform(
-                    get("/api/v1/claimstate/" + claimState.getKey())
+                    get("/api/v1/claimstates/" + claimState.getKey())
                             .header("X-AUTHID", tokenStr)
                             .accept(contentType)
                             .contentType(contentType)

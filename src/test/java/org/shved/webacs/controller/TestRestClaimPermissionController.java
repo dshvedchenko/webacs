@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.sun.javafx.collections.MappingChange;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +39,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         String tokenStr = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/claim/list")
+                get(RestEndpoints.API_V1_CLAIMS)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -65,7 +66,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         String rawToken = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/claim/1")
+                get(RestEndpoints.API_V1_CLAIMS + "/1")
                         .header("X-AUTHID", rawToken)
                         .accept(contentType)
                         .contentType(contentType)
@@ -88,7 +89,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         PermissionDTO pdto = getPermissionDTOById(2L);
 
         ResultActions response = mockMvc.perform(
-                post("/api/v1/claim")
+                post(RestEndpoints.API_V1_CLAIMS)
                         .header("X-AUTHID", rawToken)
                         .accept(contentType)
                         .contentType(contentType)
@@ -104,7 +105,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         String rawToken = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get("/api/v1/permission/" + 1)
+                get(RestEndpoints.API_V1_PERMISSIONS + "/" + 1)
                         .header("X-AUTHID", rawToken)
                         .accept(contentType)
                         .contentType(contentType)

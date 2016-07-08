@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/claim", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/claims", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestPermissionClaimController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class RestPermissionClaimController {
     private IAuthTokenService authTokenService;
 
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<PermissionClaimDTO> createPermission(
             @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -48,7 +48,7 @@ public class RestPermissionClaimController {
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> findById(
             @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -60,7 +60,7 @@ public class RestPermissionClaimController {
     }
 
 //
-@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.ACCEPTED)
 public void updatePermissionClaim(
         @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -72,7 +72,7 @@ public void updatePermissionClaim(
     permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
 }
 
-    @RequestMapping(value = "/{id}/approve", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}/approve", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void approvePermissionClaim(
             @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -84,7 +84,7 @@ public void updatePermissionClaim(
         permissionClaimService.approve(claimDTO, authTokenService.getUserByToken(rawToken));
     }
 
-    @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void grantPermissionClaim(
             @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -96,7 +96,7 @@ public void updatePermissionClaim(
         permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
     }
 
-    @RequestMapping(value = "/{id}/revoke", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}/revoke", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void revokePermissionClaim(
             @RequestHeader(name = "X-AUTHID") String rawToken,
@@ -108,18 +108,7 @@ public void updatePermissionClaim(
         permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
     }
 
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public void deleteById(
-//            @RequestHeader(name = "X-AUTHID") String rawToken,
-//            @PathVariable Long id
-//    ) {
-//        authTokenService.isTokenValid(rawToken);
-//        permissionService.deleteById(id);
-//    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token

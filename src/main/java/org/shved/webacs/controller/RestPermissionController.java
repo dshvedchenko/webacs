@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/permission", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestPermissionController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class RestPermissionController {
     @Autowired
     private IAuthTokenService authTokenService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<ResourceDTO> createPermission(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -40,7 +40,7 @@ public class RestPermissionController {
         return new ResponseData(permissionDTO1);
     }
 
-@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 @ResponseStatus(HttpStatus.OK)
 public ResponseData<PermissionDTO> findById(
         @RequestHeader(name = "X-AUTHID") String token,
@@ -52,7 +52,7 @@ public ResponseData<PermissionDTO> findById(
 }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updatePermission(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -64,7 +64,7 @@ public ResponseData<PermissionDTO> findById(
         permissionService.update(permissionDTO);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteById(
             @RequestHeader(name = "X-AUTHID") String token,
@@ -74,7 +74,7 @@ public ResponseData<PermissionDTO> findById(
         permissionService.deleteById(id);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<ResourceDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
