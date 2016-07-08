@@ -6,12 +6,15 @@ import com.sun.javafx.collections.MappingChange;
 import org.junit.Before;
 import org.junit.Test;
 import org.shved.webacs.constants.RestEndpoints;
+import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -88,18 +91,22 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         String rawToken = getTokenInfo();
 
         PermissionDTO pdto = getPermissionDTOById(2L);
+        List<CreatePermissionClaimDTO> createClaimList = new LinkedList<>();
+        CreatePermissionClaimDTO createPermissionClaimDTO = new CreatePermissionClaimDTO();
+        createPermissionClaimDTO.setPermissionDTO(pdto);
+        createClaimList.add(createPermissionClaimDTO);
 
         ResultActions response = mockMvc.perform(
                 post(RestEndpoints.API_V1_CLAIMS)
                         .header("X-AUTHID", rawToken)
                         .accept(contentType)
                         .contentType(contentType)
-                        .content(new ObjectMapper().writeValueAsString(pdto))
+                        .content(new ObjectMapper().writeValueAsString(createClaimList))
 
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());
-        PermissionClaimDTO pcdto = modelMapper.map(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data"), PermissionClaimDTO.class);
+        List<PermissionClaimDTO> pcdto = modelMapper.map(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data"), List.class);
     }
 
     PermissionDTO getPermissionDTOById(Long id) throws Exception {

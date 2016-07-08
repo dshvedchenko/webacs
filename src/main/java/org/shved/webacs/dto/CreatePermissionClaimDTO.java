@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class CreatePermissionClaimDTO {
-    //PermissionDTO
+    PermissionDTO permissionDTO;
     //?startDate
     //endDate
 }

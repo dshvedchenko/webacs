@@ -18,6 +18,8 @@ public interface IPermissionClaimDAO {
 
     List<PermissionClaim> findAllByPermissionByUserNotRevoked(Permission permission, AppUser appUser);
 
+    List<PermissionClaim> findAllByUserNotRevoked(AppUser appUser);
+
     List<PermissionClaim> findAllClaimed();
 
     List<PermissionClaim> findAllApproved();
