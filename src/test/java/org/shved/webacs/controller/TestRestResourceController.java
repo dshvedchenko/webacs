@@ -80,7 +80,7 @@ public class TestRestResourceController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists())
                 .andExpect(jsonPath("$.data.id", is(1)))
                 .andExpect(jsonPath("$.data.name", is("xDep Calendar")))
-                .andExpect(jsonPath("$.data.resType", is("Calendar")))
+                .andExpect(jsonPath("$.data.resType.name", is("Calendar")))
                 .andExpect(jsonPath("$.data.detail", is("xDep shared calendar")));
 
     }

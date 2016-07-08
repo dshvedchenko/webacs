@@ -48,7 +48,7 @@ public class TestRestUserController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.lastname", is("admin")))
                 .andExpect(jsonPath("$.data.firstname", is("admin")))
                 .andExpect(jsonPath("$.data.email", is("admin@example.com")))
-                .andExpect(jsonPath("$.data.sysrole", is(0)));
+                .andExpect(jsonPath("$.data.sysrole", is("ADMIN")));
 
 
     }
@@ -176,7 +176,8 @@ public class TestRestUserController extends AbstractAppTest {
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.enabled", is(false)))
         ;
     }
 
@@ -190,11 +191,11 @@ public class TestRestUserController extends AbstractAppTest {
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.username", is("admin")))
-                .andExpect(jsonPath("$.data.lastname", is("admin")))
-                .andExpect(jsonPath("$.data.firstname", is("admin")))
-                .andExpect(jsonPath("$.data.email", is("admin@example.com")))
-                .andExpect(jsonPath("$.data.sysrole", is(0)));
+                .andExpect(jsonPath("$.data[0].username", is("fireoff")))
+                .andExpect(jsonPath("$.data[0].lastname", is("Alessio")))
+                .andExpect(jsonPath("$.data[0].firstname", is("Nina")))
+                .andExpect(jsonPath("$.data[0].email", is("ninaa@example.com")))
+                .andExpect(jsonPath("$.data[0].sysrole", is("GENERIC")));
 
 
     }

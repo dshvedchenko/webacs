@@ -108,6 +108,7 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     @Override
+    @Transactional
     public AppUserDTO getAppUserById(Long userId) {
         AppUser appUser = appUserDAO.findById(userId);
         if (appUser == null) throw new NotFoundException();

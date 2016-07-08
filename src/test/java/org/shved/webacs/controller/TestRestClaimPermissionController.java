@@ -83,6 +83,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
     @Transactional
+    //INPROGRESS TODO
     public void getCreateClaimTest() throws Exception {
         String rawToken = getTokenInfo();
 
