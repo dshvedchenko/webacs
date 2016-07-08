@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.ClaimStateDTO;
 import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.response.ResponseData;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/restypes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RestEndpoints.API_V1_RESTYPES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestResTypeController {
 
     @Autowired

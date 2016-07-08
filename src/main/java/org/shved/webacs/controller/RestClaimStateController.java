@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.ClaimStateDTO;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/claimstates", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RestEndpoints.API_V1_CLAIMSTATES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestClaimStateController {
 
     @Autowired

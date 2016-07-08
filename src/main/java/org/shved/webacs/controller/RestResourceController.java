@@ -1,6 +1,7 @@
 package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/resources", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RestEndpoints.API_V1_RESOURCES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestResourceController {
 
     @Autowired

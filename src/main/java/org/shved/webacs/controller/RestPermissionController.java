@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.model.Permission;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RestEndpoints.API_V1_PERMISSIONS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestPermissionController {
 
     @Autowired

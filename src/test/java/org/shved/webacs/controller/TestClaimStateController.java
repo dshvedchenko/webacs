@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.model.ClaimState;
@@ -28,13 +29,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 public class TestClaimStateController extends AbstractAppTest {
 
-
-    @Autowired
-    private IClaimStateDAO claimStateDAO;
-
-    @Autowired
-    private IClaimStateService claimStateService;
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
@@ -44,8 +38,8 @@ public class TestClaimStateController extends AbstractAppTest {
     public void listClaimStateTest() throws Exception {
         String tokenStr = getAuthToken();
 
-        ResultActions claimStateList = mockMvc.perform(
-                get("/api/v1/claimstates")
+        mockMvc.perform(
+                get(RestEndpoints.API_V1_CLAIMSTATES)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
@@ -73,8 +67,8 @@ public class TestClaimStateController extends AbstractAppTest {
 
         for (Map.Entry claimState : claimStates.entrySet()) {
 
-            ResultActions claimStateList = mockMvc.perform(
-                    get("/api/v1/claimstates/" + claimState.getKey())
+            mockMvc.perform(
+                    get(RestEndpoints.API_V1_CLAIMSTATES + "/" + claimState.getKey())
                             .header("X-AUTHID", tokenStr)
                             .accept(contentType)
                             .contentType(contentType)

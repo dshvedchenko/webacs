@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
@@ -22,7 +23,7 @@ import javax.validation.Valid;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = RestEndpoints.API_V1, consumes = "application/json", produces = "application/json")
 public class RestAuthController extends AbstractAPIV1Controller {
 
     @Autowired
