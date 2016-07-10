@@ -3,6 +3,8 @@ package org.shved.webacs.services;
 import org.shved.webacs.dto.*;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.PermissionClaim;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -26,9 +28,10 @@ public interface IPermissionClaimService {
 
     void delete(PermissionClaimDTO permissionClaimDTO, String username);
 
-    void approve(PermissionClaimDTO permissionClaimDTO, String username);
+    void approve(Long claimId, String username);
 
-    void grant(PermissionClaimDTO permissionClaimDTO, String username);
+    @Secured("ADMIN")
+    void grant(Long claimId, String username);
 
-    void revoke(PermissionClaimDTO permissionClaimDTO, String username);
+    void revoke(Long claimId, String username);
 }

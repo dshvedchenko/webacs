@@ -10,6 +10,22 @@ INSERT INTO app.appuser (
   , disabled_at
 )
 VALUES
+  ('internalworkflow', 'oijodenfoeiwjroiwejfoweiowfinoefinowefi', 'internal', 'system', 'admin@example.com', 0,
+   TRUE, NULL);
+
+SELECT setval('app.appuser_id_seq', 1000, TRUE);
+
+INSERT INTO app.appuser (
+  username
+  , password
+  , firstname
+  , lastname
+  , email
+  , sysrole
+  , enabled
+  , disabled_at
+)
+VALUES
   ('admin', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'admin', 'admin', 'admin@example.com', 0,
    TRUE, NULL)
   , ('johns', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'John', 'Salivan', 'johns@example.com', 1,
@@ -23,7 +39,7 @@ VALUES
   ,
   ('fireoff', '$2a$10$iaEVN7Mxm.81v1YiJGwUE.sdVVyBDRlItotRDgYVzTCk9abE8qGj.', 'Nina', 'Alessio', 'ninaa@example.com', 1,
    FALSE, now() - INTERVAL '3 week');
-
+;
 INSERT INTO app.restype (
   id,
   name

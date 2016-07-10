@@ -5,6 +5,7 @@ import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.exception.NotFoundException;
+import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.Resource;
 import org.shved.webacs.services.IResourceService;
@@ -72,6 +73,11 @@ public class ResourceServiceImpl implements IResourceService {
     @Override
     public List<ResourceDTO> getAllByResTypeId(Integer typeId) {
         return convertListResourcesToListResourceDTO(resourceDAO.findAllByResTypeId(typeId));
+    }
+
+    @Override
+    public boolean isOwnerOfResource(Resource resource, AppUser appUser) {
+        return resource.getOwnerPermission().getAppUsers().contains(appUser);
     }
 
     private List<ResourceDTO> convertListResourcesToListResourceDTO(List<Resource> resources) {

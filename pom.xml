@@ -13,6 +13,7 @@
         <h2.version>1.4.187</h2.version>
         <dbunit.version>2.2</dbunit.version>
         <jackson.version>2.7.5</jackson.version>
+        <flaywaydb.version>4.0.3</flaywaydb.version>
     </properties>
 
     <groupId>co.shved</groupId>
@@ -37,7 +38,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>4.0.1</version>
+                <version>${flaywaydb.version}</version>
                 <configuration>
                     <configFile>flyway.properties</configFile>
                 </configuration>

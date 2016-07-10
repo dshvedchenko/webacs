@@ -1,5 +1,7 @@
 package org.shved.webacs.controller;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
@@ -15,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,6 +27,8 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping(value = RestEndpoints.API_V1_CLAIMS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestPermissionClaimController extends AbstractAPIV1Controller {
+
+    Logger logger = LoggerFactory.logger(RestPermissionClaimController.class);
 
     @Autowired
     private IPermissionService permissionService;
@@ -75,7 +80,7 @@ public void updatePermissionClaim(
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.approve(claimDTO, getPrincipal());
+        permissionClaimService.approve(id, getPrincipal());
     }
 
     @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -85,17 +90,15 @@ public void updatePermissionClaim(
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.update(claimDTO, getPrincipal());
+        permissionClaimService.grant(id, getPrincipal());
     }
 
     @RequestMapping(value = "/{id}/revoke", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void revokePermissionClaim(
-            @RequestBody PermissionClaimDTO claimDTO,
-            //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.update(claimDTO, getPrincipal());
+        permissionClaimService.revoke(id, getPrincipal());
     }
 
     @RequestMapping(method = RequestMethod.GET)

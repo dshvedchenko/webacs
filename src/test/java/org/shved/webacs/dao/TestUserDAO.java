@@ -66,27 +66,6 @@ public class TestUserDAO extends AbstractRepositoryTest {
         Assert.assertEquals("3420394uw3423423423423423432", user.getPassword());
     }
 
-//    @Test
-//    public void deleteUser() {
-//        AppUser user = initUser();
-//        appUserDAO.save(user);
-//        logger.info("USER IN DB : " + user);
-//        appUserDAO.delete(user);
-//        AppUser findDeleted = appUserDAO.findById(user.getId());
-//        Assert.assertNull(findDeleted);
-//    }
-//
-//
-//    @Test
-//    public void deleteUserById() throws Exception {
-//        AppUser user = initUser();
-//        appUserDAO.save(user);
-//        logger.info("USER IN DB : " + user);
-//        appUserDAO.deleteById(user.getId());
-//
-//        AppUser findDeleted = appUserDAO.findById(user.getId());
-//        Assert.assertNull(findDeleted);
-//    }
 
     @Test
     @Transactional
@@ -126,14 +105,14 @@ public class TestUserDAO extends AbstractRepositoryTest {
     @Test
     public void getAllEnabledTest() {
         List<AppUser> lap = appUserDAO.findAllEnabled();
-        Assert.assertEquals(5, lap.size());
-        Assert.assertEquals("First should be Admin", (Long) 1L, lap.get(0).getId());
+        Assert.assertEquals(6, lap.size());
+        Assert.assertEquals("First should be Internal user for System Workflow", (Long) 1L, lap.get(0).getId());
     }
 
     @Test
     public void getAllDisabledTest() {
         List<AppUser> lap = appUserDAO.findAllDisabled();
         Assert.assertEquals(1, lap.size());
-        Assert.assertEquals("Fired Fireoff", (Long) 6L, lap.get(0).getId());
+        Assert.assertEquals("Fired Fireoff", (Long) 1006L, lap.get(0).getId());
     }
 }

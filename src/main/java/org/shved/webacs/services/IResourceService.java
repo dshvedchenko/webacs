@@ -1,6 +1,7 @@
 package org.shved.webacs.services;
 
 import org.shved.webacs.dto.ResourceDTO;
+import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Resource;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public interface IResourceService {
     List<ResourceDTO> getAll();
 
     List<ResourceDTO> getAllByResTypeId(Integer typeId);
+
+    boolean isOwnerOfResource(Resource resource, AppUser appUser);
 
 }

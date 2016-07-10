@@ -82,7 +82,7 @@ CREATE TABLE app.permission
   description CHARACTER VARYING(128),
   CONSTRAINT resource_role_pkey PRIMARY KEY (id),
   CONSTRAINT resource_role_resource_id_fkey FOREIGN KEY (resource_id)
-  REFERENCES app.appuser (id) MATCH SIMPLE
+  REFERENCES app.resource (id) MATCH SIMPLE
   ON UPDATE NO ACTION ON DELETE RESTRICT,
   CONSTRAINT permission_resource_id_title_key UNIQUE (resource_id, title)
 )

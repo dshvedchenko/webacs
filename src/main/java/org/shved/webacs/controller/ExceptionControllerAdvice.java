@@ -68,6 +68,12 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
         return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
     }
 
+    @ExceptionHandler(OperationIsNotAllowed.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleOperationIsNotAllowed(OperationIsNotAllowed ex, WebRequest request, HttpServletRequest httpServletRequest) {
+        return getDefaultErrorResponseEntity(ex, request, httpServletRequest);
+    }
+
     private ValidationErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
         ValidationErrorDTO dto = new ValidationErrorDTO();
 

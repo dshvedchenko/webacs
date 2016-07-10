@@ -4,11 +4,13 @@ import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IAppUserDAO;
+import org.shved.webacs.exception.OperationIsNotAllowed;
 import org.shved.webacs.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.openmbean.OpenDataException;
 import java.util.List;
 
 /**
@@ -44,6 +46,8 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUs
 
     @SuppressWarnings("unchecked")
     public void save(AppUser user) {
+        if (user.getId() != null && user.getId() < 1000)
+            throw new OperationIsNotAllowed("Can not modify internal users");
         persist(user);
     }
 

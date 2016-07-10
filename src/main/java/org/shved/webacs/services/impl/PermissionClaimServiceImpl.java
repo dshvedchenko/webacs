@@ -7,11 +7,9 @@ import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.dto.*;
 import org.shved.webacs.exception.AppException;
-import org.shved.webacs.model.AppUser;
-import org.shved.webacs.model.ClaimState;
-import org.shved.webacs.model.Permission;
-import org.shved.webacs.model.PermissionClaim;
+import org.shved.webacs.model.*;
 import org.shved.webacs.services.IPermissionClaimService;
+import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +38,9 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     IUserPermissionDAO userPermissionDAO;
 
     @Autowired
+    IResourceService resourceService;
+
+    @Autowired
     IAppUserDAO appUserDAO;
 
     @Autowired
@@ -61,22 +62,25 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     @Override
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
+
         return modelMapper.map(claim, PermissionClaimDTO.class);
     }
 
     @Override
+    @Secured("ADMIN")
+    @Transactional
     public List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO) {
-        return null;
+        Resource resource = modelMapper.map(resourceDTO, Resource.class);
+        return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByResource(resource));
     }
 
     @Override
     public List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO) {
-        return null;
+        Permission permission = modelMapper.map(permissionDTO, Permission.class);
+        return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByPermission(permission));
     }
 
     // TODO,
-    //
-    // 2. verify claim already exists for permission for time period ( look only in not revoked , expired claims )
     // 3. how to check permissions
     // 4. provide to user only list of permission that is not claimed to him already
     @Override
@@ -102,12 +106,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         return newClaims.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
     }
 
-    private boolean checkIsAlreadyClaimed(List<Permission> newClaimedPermissionList, List<PermissionClaim> activeUserClaims) {
-        List<Permission> aliveUserPermissions = activeUserClaims.stream().map(item -> item.getPermission()).collect(Collectors.toList());
-        aliveUserPermissions.retainAll(newClaimedPermissionList);
-        return aliveUserPermissions.size() > 0;
-    }
-
     @Override
     public void update(PermissionClaimDTO permissionClaimDTO, String username) {
         //only creator can update claim
@@ -119,24 +117,75 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    public void approve(PermissionClaimDTO permissionClaimDTO, String username) {
-        //only owner can approve claim
+    public void approve(Long claimId, String username) {
+        AppUser executiveUser = getAppUserFromUsername(username);
+        PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
+
+        if (permissionClaim.getClaimState() != ClaimState.CLAIMED)
+            throw new AppException("Wrong Claim state for Approval");
+
+        if (resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), executiveUser)) {
+            permissionClaim.setApprovedAt(new Date());
+            permissionClaim.setClaimState(ClaimState.APPROVED);
+            permissionClaim.setApprover(executiveUser);
+            UserPermission userPermission = new UserPermission();
+            userPermission.setClaim(permissionClaim);
+            userPermissionDAO.save(userPermission);
+            permissionClaimDAO.save(permissionClaim);
+        } else {
+            throw new AppException("Can not approve");
+        }
+
     }
 
     @Override
-    public void grant(PermissionClaimDTO permissionClaimDTO, String username) {
-        //only admin can approve claim
+    @Secured("ADMIN")
+    public void grant(Long claimId, String username) {
+        AppUser executiveUser = getAppUserFromUsername(username);
+        PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
+        if (permissionClaim.getClaimState() != ClaimState.APPROVED)
+            throw new AppException("Wrong Claim staet for GRANTING");
+
+        if (executiveUser.getSysrole() == SysRole.ADMIN) {
+            permissionClaim.setGrantedAt(new Date());
+            permissionClaim.setClaimState(ClaimState.GRANTED);
+            permissionClaim.setGranter(executiveUser);
+            userPermissionDAO.deleteByClaim(permissionClaim);
+            permissionClaimDAO.save(permissionClaim);
+        }
+        ;
     }
 
     @Override
-    public void revoke(PermissionClaimDTO permissionClaimDTO, String username) {
-        //only admin,owner can revoke claim
+    @Transactional
+    public void revoke(Long claimId, String username) {
+        AppUser executiveUser = getAppUserFromUsername(username);
+        PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
+
+        if (permissionClaim.getClaimState() != ClaimState.GRANTED)
+            throw new AppException("Wrong Claim staet for REVOKING");
+
+        if (executiveUser.getSysrole() == SysRole.ADMIN || resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), executiveUser)) {
+            permissionClaim.setRevokedAt(new Date());
+            permissionClaim.setClaimState(ClaimState.REVOKED);
+            permissionClaim.setRevoker(executiveUser);
+            userPermissionDAO.deleteByClaim(permissionClaim);
+            permissionClaimDAO.save(permissionClaim);
+        }
+        ;
+
     }
 
     private List<PermissionClaimDTO> convertListPermissionClaimsToPermissionClaimDTO(List<PermissionClaim> permissionClaimList) {
         List<PermissionClaimDTO> permissions = null;
         permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
         return permissions;
+    }
+
+    private boolean checkIsAlreadyClaimed(List<Permission> newClaimedPermissionList, List<PermissionClaim> activeUserClaims) {
+        List<Permission> aliveUserPermissions = activeUserClaims.stream().map(item -> item.getPermission()).collect(Collectors.toList());
+        aliveUserPermissions.retainAll(newClaimedPermissionList);
+        return aliveUserPermissions.size() > 0;
     }
 
     private AppUser getAppUserFromUsername(String username) {
