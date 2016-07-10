@@ -73,6 +73,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     }
 
     @Override
+    @Transactional
     public boolean isTokenValid(String rawToken) {
         AuthToken token = authTokenDAO.getAuthToken(rawToken);
 
@@ -84,6 +85,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     }
 
     @Override
+    @Transactional
     public AppUserDTO getUserByToken(String rawToken) {
         AuthToken token = authTokenDAO.getAuthToken(rawToken);
         if (token == null) {

@@ -34,14 +34,12 @@ public class ResTypeDAOImpl extends AbstractDao<Integer, ResType> implements IRe
 
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional
     public void save(ResType resType) {
         persist(resType);
         getSession().flush();
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional
     @Override
     public void deleteById(Integer id) {
         getSession().delete(getSession().get(ResType.class, id));

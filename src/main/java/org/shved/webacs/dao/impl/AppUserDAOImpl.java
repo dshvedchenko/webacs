@@ -18,7 +18,6 @@ import java.util.List;
 public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUserDAO {
 
     @SuppressWarnings("unchecked")
-    @Transactional
     public List<AppUser> findAllAppUsers() {
         Criteria criteria = createEntityCriteria(AppUser.class);
         return (List<AppUser>) criteria.setFetchMode("permission", FetchMode.JOIN).list();
@@ -39,13 +38,11 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUs
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional
     public AppUser findById(Long id) {
         return getByKey(id, AppUser.class);
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional
     public void save(AppUser user) {
         persist(user);
     }

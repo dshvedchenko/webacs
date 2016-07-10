@@ -19,7 +19,6 @@ import java.util.Optional;
 /**
  * @author dshvedchenko on 6/17/16.
  */
-@Transactional(propagation = Propagation.SUPPORTS)
 @Repository
 public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements IAuthTokenDAO {
 

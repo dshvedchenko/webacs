@@ -17,10 +17,6 @@ public class MessageConverterConfig {
         return converter;
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
 
 }

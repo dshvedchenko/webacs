@@ -25,7 +25,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"/WEB-INF/spring.properties"})
-@ComponentScan({"org.shved.webacs.dao", "org.shved.webacs.dao.impl"})
+@ComponentScan({"org.shved.webacs.dao"})
 public class HibernateConfig {
     @Autowired
     Environment env;

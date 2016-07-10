@@ -56,7 +56,6 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
         return criteria.list();
     }
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deleteByClaim(PermissionClaim claim) {
         getSession().delete(findByClaim(claim));
     }

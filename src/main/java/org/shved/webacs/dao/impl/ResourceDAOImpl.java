@@ -32,14 +32,12 @@ public class ResourceDAOImpl extends AbstractDao<Long, Resource> implements IRes
 
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional
     public void save(Resource resource) {
         persist(resource);
         getSession().flush();
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional
     @Override
     public void deleteById(Long id) {
         getSession().delete(getSession().get(Resource.class, id));

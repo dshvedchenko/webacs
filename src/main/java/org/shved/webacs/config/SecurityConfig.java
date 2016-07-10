@@ -1,18 +1,22 @@
 package org.shved.webacs.config;
 
+import org.shved.webacs.security.JwtAuthenticationEntryPoint;
+import org.shved.webacs.security.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author dshvedchenko on 6/14/16.
@@ -24,76 +28,65 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JwtAuthenticationEntryPoint getUnauthorizedHandler() {
+        return new JwtAuthenticationEntryPoint();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    @Configuration
-    @Order(1)
-    public static class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
+        // ideas from https://github.com/szerhusenBC/jwt-spring-security-demo/blob/master/src/main/java/org/zerhusen/config/WebSecurityConfig.java
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/api/**").permitAll()
+            http
+                    .csrf().disable()
+                    .exceptionHandling().authenticationEntryPoint(getUnauthorizedHandler()).and()
 
-//                    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-//                    .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
-//                    .antMatchers(HttpMethod.GET, "/api/**").authenticated()
-//                    .antMatchers(HttpMethod.POST, "/api/**").authenticated()
-//                    .antMatchers(HttpMethod.DELETE, "/api/**").authenticated()
-//                    .anyRequest().hasAnyAuthority("ADMIN", "GENERIC")
-//                    .and()
-//                    .httpBasic()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                    .authorizeRequests()
+                    .antMatchers(
+                            HttpMethod.GET,
+                            "/",
+                            "/*.html",
+                            "/favicon.ico",
+                            "/client/**",
+                            "/**/*.html",
+                            "/**/*.css",
+                            "/**/*.js"
+                    ).permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/v1/login").anonymous()
+                    .antMatchers(HttpMethod.POST, "/api/v1/register").anonymous()
+                    .antMatchers("/api/**")
+                    .authenticated()
+
             ;
+            http.addFilterBefore(getTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            http.headers().cacheControl();
         }
+
+    @Bean(name = "tokenAuthenticationFilter")
+    public TokenAuthenticationFilter getTokenAuthenticationFilter() throws Exception {
+        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();
+        restTokenAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        return restTokenAuthenticationFilter;
     }
 
-//    @Configuration
-//    @Order(2)
-//    public static class FormWebSecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//        @Override
-//        public void configure(WebSecurity web) throws Exception {
-//            web.ignoring().antMatchers("/css/**"
-//                    , "/js/**"
-//                    , "/img/**"
-//                    , "/lib/**"
-//                    , "/assets/**"
-//                    , "/resources/**"
-//                    , "/static/**"
-//                    , "/client/**"
-//                    , "/"
-//                    , "/register");
-//        }
-//
-//        @Override
-//        protected void configure(HttpSecurity http) throws Exception {
-//            http.csrf().disable()
-//                    .authorizeRequests()
-//                    //.antMatchers("/api/**").permitAll()
-//                    .antMatchers("/connect/**").permitAll()
-//                    .antMatchers("/", "/user/registration").permitAll()
-//                    .antMatchers("/admin/**").hasAuthority("ADMIN")
-//                    .anyRequest().authenticated()
-//                    .and() //Login Form configuration for all others
-//                    .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .passwordParameter("acs_password")
-//                    .usernameParameter("acs_username")
-//                    .and() //Logout Form configuration
-//                    .logout().permitAll();
-//        }
-//    }
+
 
 }
