@@ -19,6 +19,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @author dshvedchenko on 7/8/16.
@@ -43,15 +44,16 @@ public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFil
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String authToken = httpRequest.getHeader(this.tokenHeader);
-        if (authToken == null) {
+        Optional<String> authToken = Optional.ofNullable(httpRequest.getHeader(this.tokenHeader));
+        if (!authToken.isPresent()) {
             SecurityContextHolder.getContext().setAuthentication(null);
         } else {
-            String username = getUsernameByToken(authToken);
+
+            String username = getUsernameByToken(authToken.get());
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (authTokenService.isTokenValid(authToken)) {
+                if (authTokenService.isTokenValid(authToken.get())) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                     SecurityContextHolder.getContext().setAuthentication(authentication);

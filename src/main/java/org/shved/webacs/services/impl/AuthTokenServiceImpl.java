@@ -9,7 +9,12 @@ import org.shved.webacs.exception.TokenException;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.services.IAuthTokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +30,7 @@ import java.util.UUID;
 public class AuthTokenServiceImpl implements IAuthTokenService {
 
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthTokenServiceImpl.class);
     @Autowired
     ModelMapper modelMapper;
     @Autowired
@@ -33,6 +39,13 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     private IAuthTokenDAO authTokenDAO;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Scheduled(fixedRate = HALF_AN_HOUR_IN_MILLISECONDS)
+    @Transactional
+    public void evictExpiredTokens() {
+        logger.info("Evicting expired tokens");
+        authTokenDAO.deleteTokensIssuedBefore(getValidPoint());
+    }
 
     @Override
     @Transactional
@@ -57,8 +70,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     }
 
     Date getValidPoint() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, -1);
+        Calendar cal = getTimePointForExpiredTokens();
         return cal.getTime();
     }
 
@@ -95,13 +107,18 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     }
 
     private void handleTokenExpired(AuthToken token) {
-        Calendar expirty = Calendar.getInstance();
-        expirty.add(Calendar.HOUR, -2);
+        Calendar expirty = getTimePointForExpiredTokens();
 
         if (expirty.before(token.getLastUsed())) {
             authTokenDAO.deleteTokenByVal(token.getToken());
             throw new TokenException("TOKEN EXPIRED");
         }
+    }
+
+    private Calendar getTimePointForExpiredTokens() {
+        Calendar expirty = Calendar.getInstance();
+        expirty.add(Calendar.MINUTE, -30);
+        return expirty;
     }
 
     private AuthToken generateNewAuthToken(AppUser appUser) {

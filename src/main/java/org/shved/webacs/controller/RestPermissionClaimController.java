@@ -12,6 +12,7 @@ import org.shved.webacs.services.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = RestEndpoints.API_V1_CLAIMS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestPermissionClaimController {
+public class RestPermissionClaimController extends AbstractAPIV1Controller {
 
     @Autowired
     private IPermissionService permissionService;
@@ -40,11 +41,9 @@ public class RestPermissionClaimController {
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<PermissionClaimDTO> createPermission(
-            @RequestHeader(name = "X-AUTHID") String rawToken,
             @RequestBody List<CreatePermissionClaimDTO> createClaimList
     ) {
-        authTokenService.isTokenValid(rawToken);
-        List<PermissionClaimDTO> createdClaimListDTO = permissionClaimService.create(createClaimList, authTokenService.getUserByToken(rawToken));
+        List<PermissionClaimDTO> createdClaimListDTO = permissionClaimService.create(createClaimList, getPrincipal());
         return new ResponseData(createdClaimListDTO);
     }
 
@@ -52,10 +51,8 @@ public class RestPermissionClaimController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> findById(
-            @RequestHeader(name = "X-AUTHID") String rawToken,
             @PathVariable Long id
     ) {
-        authTokenService.isTokenValid(rawToken);
         PermissionClaimDTO res = permissionClaimService.getById(id);
         return new ResponseData(res);
     }
@@ -64,57 +61,47 @@ public class RestPermissionClaimController {
 @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.ACCEPTED)
 public void updatePermissionClaim(
-        @RequestHeader(name = "X-AUTHID") String rawToken,
         @RequestBody PermissionClaimDTO claimDTO,
         //TODO - consume id !!!
         @PathVariable("id") Long id
 ) {
-    authTokenService.isTokenValid(rawToken);
-    permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
+    permissionClaimService.update(claimDTO, getPrincipal());
 }
 
     @RequestMapping(value = "/{id}/approve", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void approvePermissionClaim(
-            @RequestHeader(name = "X-AUTHID") String rawToken,
             @RequestBody PermissionClaimDTO claimDTO,
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        authTokenService.isTokenValid(rawToken);
-        permissionClaimService.approve(claimDTO, authTokenService.getUserByToken(rawToken));
+        permissionClaimService.approve(claimDTO, getPrincipal());
     }
 
     @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void grantPermissionClaim(
-            @RequestHeader(name = "X-AUTHID") String rawToken,
             @RequestBody PermissionClaimDTO claimDTO,
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        authTokenService.isTokenValid(rawToken);
-        permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
+        permissionClaimService.update(claimDTO, getPrincipal());
     }
 
     @RequestMapping(value = "/{id}/revoke", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void revokePermissionClaim(
-            @RequestHeader(name = "X-AUTHID") String rawToken,
             @RequestBody PermissionClaimDTO claimDTO,
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        authTokenService.isTokenValid(rawToken);
-        permissionClaimService.update(claimDTO, authTokenService.getUserByToken(rawToken));
+        permissionClaimService.update(claimDTO, getPrincipal());
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAll(
-            @RequestHeader(name = "X-AUTHID") String token
     ) {
-        authTokenService.isTokenValid(token);
         List<PermissionClaimDTO> list = permissionClaimService.getAll();
         return new ResponseData(list);
     }

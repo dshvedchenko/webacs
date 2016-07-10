@@ -2,14 +2,14 @@ package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import com.sun.javafx.collections.MappingChange;
 import org.junit.Before;
 import org.junit.Test;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +25,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+
 /**
  * @author dshvedchenko on 7/5/16.
  */
 public class TestRestClaimPermissionController extends AbstractAppTest {
 
-
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
     @Test
     @Transactional
+    //   @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getAllClaimsTest() throws Exception {
         String tokenStr = getTokenInfo();
 
@@ -65,6 +61,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
     @Transactional
+//    @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getClaimByIdTest() throws Exception {
         String rawToken = getTokenInfo();
 
@@ -86,7 +83,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
     @Transactional
-    //INPROGRESS TODO
+//    @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getCreateClaimTest() throws Exception {
         String rawToken = getTokenInfo();
 
@@ -102,7 +99,6 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                         .accept(contentType)
                         .contentType(contentType)
                         .content(new ObjectMapper().writeValueAsString(createClaimList))
-
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());

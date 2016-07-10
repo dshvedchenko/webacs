@@ -20,15 +20,15 @@ public interface IPermissionClaimService {
 
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
 
-    List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList, AppUserDTO user);
+    List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList, String username);
 
-    void update(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
+    void update(PermissionClaimDTO permissionClaimDTO, String username);
 
-    void delete(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
+    void delete(PermissionClaimDTO permissionClaimDTO, String username);
 
-    void approve(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
+    void approve(PermissionClaimDTO permissionClaimDTO, String username);
 
-    void grant(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
+    void grant(PermissionClaimDTO permissionClaimDTO, String username);
 
-    void revoke(PermissionClaimDTO permissionClaimDTO, AppUserDTO user);
+    void revoke(PermissionClaimDTO permissionClaimDTO, String username);
 }

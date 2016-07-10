@@ -11,6 +11,8 @@ import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,16 +31,13 @@ public class RestUserController {
     IAuthTokenService authTokenService;
 
     /**
-     * @param token
      * @param userId
      * @return
      */
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseData<AppUserDTO> getUserById(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId
     ) {
-        authTokenService.isTokenValid(token);
         AppUserDTO appUserDTO = appUserService.getAppUserById(userId);
         ResponseData rd = new ResponseData();
         rd.setData(appUserDTO);
@@ -49,23 +48,20 @@ public class RestUserController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveUser(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId,
             @RequestBody AppUserDTO appUserDTO
     ) {
-        authTokenService.isTokenValid(token);
         appUserDTO.setId(userId);
         appUserService.handleSaveEditedAppUser(appUserDTO);
     }
     //create
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<AuthToken> createUser(
-            @RequestHeader(name = "X-AUTHID") String token,
             @RequestBody UserCreationDTO userCreationDTO
     ) {
-        authTokenService.isTokenValid(token);
         AppUser appUser = appUserService.createAppUserByAdmin(userCreationDTO);
         ResponseData rd = new ResponseData();
         rd.setData(appUser);
@@ -76,18 +72,14 @@ public class RestUserController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "userId") Long userId
     ) {
-        authTokenService.isTokenValid(token);
         appUserService.deleteById(userId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseData<AppUserDTO> getAll(
-            @RequestHeader(name = "X-AUTHID") String token
     ) {
-        authTokenService.isTokenValid(token);
         List<AppUserDTO> listUsers = appUserService.getAllEnabled();
         ResponseData rd = new ResponseData();
         rd.setData(listUsers);
@@ -96,9 +88,7 @@ public class RestUserController {
 
     @RequestMapping(params = "enabled=false", method = RequestMethod.GET)
     public ResponseData<AppUserDTO> getAllDisabled(
-            @RequestHeader(name = "X-AUTHID") String token
     ) {
-        authTokenService.isTokenValid(token);
         List<AppUserDTO> listUsers = appUserService.getAllDisabled();
         return new ResponseData(listUsers);
     }

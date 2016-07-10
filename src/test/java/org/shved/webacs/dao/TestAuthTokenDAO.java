@@ -9,6 +9,7 @@ import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.AuthToken;
 import org.shved.webacs.services.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
@@ -67,6 +68,30 @@ public class TestAuthTokenDAO extends AbstractRepositoryTest {
         AuthToken token2 = authTokenDAO.getAuthToken(tokenStr);
         Assert.assertNull(token2);
 
+    }
+
+    @Test
+    @Transactional
+    public void evictTokens() {
+        AppUser user = appUserDAO.findByUsername("admin");
+        AuthToken token = new AuthToken();
+        String tokenStr = UUID.randomUUID().toString();
+        token.setAppUser(user);
+        token.setToken(tokenStr);
+        token.setLastUsed(new Date());
+        authTokenDAO.save(token);
+
+        token = new AuthToken();
+        tokenStr = UUID.randomUUID().toString();
+        token.setAppUser(user);
+        token.setToken(tokenStr);
+        token.setLastUsed(new Date());
+        authTokenDAO.save(token);
+
+        authTokenDAO.deleteTokensIssuedBefore(new Date());
+
+        AuthToken token2 = authTokenDAO.findNonExpiredByUserId(user.getId(), new Date());
+        Assert.assertNull(token2);
     }
 
 }

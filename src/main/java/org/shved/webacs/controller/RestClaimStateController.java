@@ -30,7 +30,6 @@ public class RestClaimStateController {
             @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id
     ) {
-        authTokenService.isTokenValid(token);
         return new ResponseData(claimStateService.getById(id));
     }
 
@@ -38,7 +37,6 @@ public class RestClaimStateController {
     public ResponseData<ClaimStateDTO> getAll(
             @RequestHeader(name = "X-AUTHID") String token
     ) {
-        authTokenService.isTokenValid(token);
         return new ResponseData(claimStateService.getAll());
     }
 }

@@ -5,16 +5,10 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.shved.webacs.constants.RestEndpoints;
-import org.shved.webacs.dao.IClaimStateDAO;
 import org.shved.webacs.dto.UserAuthDTO;
-import org.shved.webacs.model.ClaimState;
-import org.shved.webacs.services.IClaimStateService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;

@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.Filter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -33,6 +35,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+
 
 /**
  * @author dshvedchenko on 6/21/16.
@@ -42,19 +46,23 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class AbstractAppTest {
     public static final String PASSWORD = "1qaz2wsx";
+    protected String userName = "admin";
     protected MediaType contentType = MediaType.APPLICATION_JSON;
     protected HttpMessageConverter mappingJackson2HttpMessageConverter;
     @Autowired
     protected WebApplicationContext webApplicationContext;
     protected MockMvc mockMvc;
-    protected String userName = "admin";
     @Autowired
     ModelMapper modelMapper;
 
-
     @Before
     public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = webAppContextSetup(webApplicationContext)
+                //- adding it enables filter
+                // but conflicts with @WithMockUser - as latest set SecurityContext
+                // removing @WithMockUser - enables full Filter functionality
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
     }
 
     @Autowired

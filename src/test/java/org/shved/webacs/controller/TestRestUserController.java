@@ -29,11 +29,6 @@ public class TestRestUserController extends AbstractAppTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
     @Transactional
     @Test
     public void testGetUserById() throws Exception {
@@ -49,10 +44,7 @@ public class TestRestUserController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.firstname", is("admin")))
                 .andExpect(jsonPath("$.data.email", is("admin@example.com")))
                 .andExpect(jsonPath("$.data.sysrole", is("ADMIN")));
-
-
     }
-
 
     @Transactional
     @Test
@@ -196,8 +188,5 @@ public class TestRestUserController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data[0].firstname", is("Nina")))
                 .andExpect(jsonPath("$.data[0].email", is("ninaa@example.com")))
                 .andExpect(jsonPath("$.data[0].sysrole", is("GENERIC")));
-
-
     }
-
 }

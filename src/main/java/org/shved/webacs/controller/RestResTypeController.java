@@ -27,38 +27,30 @@ public class RestResTypeController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getById(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id
     ) {
-        authTokenService.isTokenValid(token);
         return new ResponseData(resTypeService.getById(id));
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getAll(
-            @RequestHeader(name = "X-AUTHID") String token
     ) {
-        authTokenService.isTokenValid(token);
         return new ResponseData(resTypeService.getAll());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void update(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id,
             @RequestBody ResTypeDTO updatedItem
     ) {
-        authTokenService.isTokenValid(token);
         updatedItem.setId(id);
         resTypeService.save(updatedItem);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseData<ResTypeDTO> create(
-            @RequestHeader(name = "X-AUTHID") String token,
             @RequestBody ResTypeDTO updatedItem
     ) {
-        authTokenService.isTokenValid(token);
         ResTypeDTO rtdto = resTypeService.save(updatedItem);
         return new ResponseData<>(rtdto);
     }

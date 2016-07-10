@@ -2,6 +2,7 @@ package org.shved.webacs.services.impl;
 
 import lombok.Data;
 import org.modelmapper.ModelMapper;
+import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.dto.*;
@@ -12,6 +13,11 @@ import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.services.IPermissionClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +38,9 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
 
     @Autowired
     IUserPermissionDAO userPermissionDAO;
+
+    @Autowired
+    IAppUserDAO appUserDAO;
 
     @Autowired
     ModelMapper modelMapper;
@@ -72,9 +81,9 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     // 4. provide to user only list of permission that is not claimed to him already
     @Override
     @Transactional
-    public List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> createClaims, AppUserDTO user) {
+    public List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> createClaims, String username) {
         List<Permission> newClaimedPermissionList = createClaims.stream().map(item -> modelMapper.map(item.getPermissionDTO(), Permission.class)).collect(Collectors.toList());
-        AppUser appUser = modelMapper.map(user, AppUser.class);
+        AppUser appUser = getAppUserFromUsername(username);
         List<PermissionClaim> activeUserClaims = permissionClaimDAO.findAllByUserNotRevoked(appUser);
         if (checkIsAlreadyClaimed(newClaimedPermissionList, activeUserClaims))
             throw new AppException("Permissions already claimed");
@@ -100,27 +109,27 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    public void update(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
+    public void update(PermissionClaimDTO permissionClaimDTO, String username) {
         //only creator can update claim
     }
 
     @Override
-    public void delete(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
+    public void delete(PermissionClaimDTO permissionClaimDTO, String username) {
         // no one can delete claim ( yet )
     }
 
     @Override
-    public void approve(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
+    public void approve(PermissionClaimDTO permissionClaimDTO, String username) {
         //only owner can approve claim
     }
 
     @Override
-    public void grant(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
+    public void grant(PermissionClaimDTO permissionClaimDTO, String username) {
         //only admin can approve claim
     }
 
     @Override
-    public void revoke(PermissionClaimDTO permissionClaimDTO, AppUserDTO user) {
+    public void revoke(PermissionClaimDTO permissionClaimDTO, String username) {
         //only admin,owner can revoke claim
     }
 
@@ -128,5 +137,9 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         List<PermissionClaimDTO> permissions = null;
         permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
         return permissions;
+    }
+
+    private AppUser getAppUserFromUsername(String username) {
+        return appUserDAO.findByUsername(username);
     }
 }

@@ -42,6 +42,14 @@ public class AuthTokenDAOImpl extends AbstractDao<String, AuthToken> implements 
     }
 
     @Override
+    public void deleteTokensIssuedBefore(Date expirationDate) {
+        getSession().createQuery("delete from AuthToken a where a.lastUsed < :expirationDate")
+                .setDate("expirationDate", expirationDate)
+                .executeUpdate();
+        getSession().flush();
+    }
+
+    @Override
     public void updateToken(String token) {
         AuthToken authToken = getAuthToken(token);
         if (token != null) {
