@@ -7,7 +7,9 @@ import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
 import org.shved.webacs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -126,7 +128,7 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
         PermissionClaim pc = new PermissionClaim();
         Permission permission = permissionDAO.findAllPermissions().get(0);
         AppUser au = appUserDAO.findAllAppUsers().get(0);
-        ClaimState cs = claimStateDAO.getById(0);
+        ClaimState cs = ClaimState.CLAIMED;
         pc.setApprover(au);
         pc.setGranter(au);
         pc.setUser(au);
@@ -139,5 +141,158 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
         userPermissionDAO.save(up);
 
         Assert.assertNotNull(up.getId());
+    }
+
+    @Test
+    public void recalculateNewEffectiveUserPermissions_skipClaimedTest() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.CLAIMED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+        UserPermission up = new UserPermission();
+        permissionClaimDAO.save(pc);
+        up.setClaim(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNull(up_recalculated);
+    }
+
+    @Test
+    @Transactional
+    public void recalculateNewEffectiveUserPermissionsGrantedTest() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.GRANTED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+        permissionClaimDAO.save(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNotNull(up_recalculated);
+    }
+
+    @Test
+    @Transactional
+    public void recalculateNewEffectiveUserPermissionsGranted_Start_and_End_Date_SET_Test() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.GRANTED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+
+        pc.setStartAt(getDateWithCorrections(-10));
+        pc.setEndAt(getDateWithCorrections(+10));
+
+        permissionClaimDAO.save(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNotNull(up_recalculated);
+    }
+
+
+    @Test
+    @Transactional
+    public void recalculateNewEffectiveUserPermissionsGranted_Start_SET_Test() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.GRANTED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+
+        pc.setStartAt(getDateWithCorrections(-10));
+
+        permissionClaimDAO.save(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNotNull(up_recalculated);
+    }
+
+    @Test
+    @Transactional
+    public void recalculateNewEffectiveUserPermissionsGranted_END_SET_Test() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.GRANTED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+
+        pc.setEndAt(getDateWithCorrections(+10));
+
+        permissionClaimDAO.save(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNotNull(up_recalculated);
+    }
+
+    @Test
+    @Transactional
+    public void recalculateNewEffectiveUserPermissionsGranted_END_SET_in_PAST_Test() {
+        PermissionClaim pc = new PermissionClaim();
+        Permission permission = permissionDAO.findAllPermissions().get(0);
+        AppUser au = appUserDAO.findAllAppUsers().get(0);
+        ClaimState cs = ClaimState.GRANTED;
+        pc.setApprover(au);
+        pc.setGranter(au);
+        pc.setUser(au);
+        pc.setPermission(permission);
+        pc.setClaimedAt(new Date());
+        pc.setClaimState(cs);
+
+        pc.setEndAt(getDateWithCorrections(-10));
+
+        permissionClaimDAO.save(pc);
+
+        userPermissionDAO.recalculateNewEffectiveUserPermissions();
+
+        UserPermission up_recalculated = userPermissionDAO.findByClaim(pc);
+
+        Assert.assertNull(up_recalculated);
+    }
+
+    public Date getDateWithCorrections(int correctedMinutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, correctedMinutes);
+        return cal.getTime();
     }
 }

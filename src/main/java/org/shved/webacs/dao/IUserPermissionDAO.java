@@ -31,4 +31,8 @@ public interface IUserPermissionDAO {
 
     void delete(UserPermission userPermission);
 
+
+    void recalculateNewEffectiveUserPermissions();
+
+    void deleteExpiringRevokedUserPermissions();
 }

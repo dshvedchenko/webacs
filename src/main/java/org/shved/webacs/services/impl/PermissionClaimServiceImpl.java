@@ -176,6 +176,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
 
     }
 
+
     private List<PermissionClaimDTO> convertListPermissionClaimsToPermissionClaimDTO(List<PermissionClaim> permissionClaimList) {
         List<PermissionClaimDTO> permissions = null;
         permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());

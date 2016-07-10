@@ -66,6 +66,32 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
     }
 
     @Override
+    public void recalculateNewEffectiveUserPermissions() {
+        getSession().createSQLQuery("INSERT INTO app.user_permission(permission_id, user_id, claim_id) \n" +
+                "SELECT \n" +
+                "  c.permission_id,\n" +
+                "  c.user_id,\n" +
+                "  c.id\n" +
+                "FROM app.permission_claim c\n" +
+                "LEFT JOIN app.user_permission up ON c.id = up.claim_id\n" +
+                "WHERE up.id IS NULL\n" +
+                " AND c.state_id = 2 " +
+                " AND (now() BETWEEN c.start_at AND c.end_at AND c.start_at IS NOT NULL AND c.end_at IS NOT NULL " +
+                "                          OR now() > c.start_at AND c.start_at IS NOT NULL AND c.end_at IS NULL  " +
+                "                          OR now() < c.end_at AND c.end_at IS NOT NULL AND c.start_at IS NULL" +
+                "                          OR c.start_at IS NULL AND c.end_at IS NULL)").executeUpdate();
+    }
+
+    @Override
+    public void deleteExpiringRevokedUserPermissions() {
+        getSession().createSQLQuery("DELETE FROM app.user_permission up\n" +
+                "USING app.permission_claim c\n" +
+                "WHERE up.claim_id = c.id\n" +
+                " AND (now() > c.end_at AND c.end_at IS NOT NULL " +
+                "      OR c.state_id = 3)").executeUpdate();
+    }
+
+    @Override
     public UserPermission findByClaim(PermissionClaim claim) {
         Criteria criteria = getSession().createCriteria(UserPermission.class)
                 .add(Restrictions.eq("claim", claim));
