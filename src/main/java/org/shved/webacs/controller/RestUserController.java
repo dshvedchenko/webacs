@@ -87,7 +87,7 @@ public class RestUserController {
     }
 
     @RequestMapping(params = "enabled=false", method = RequestMethod.GET)
-    public ResponseData<AppUserDTO> getAllDisabled(
+    public ResponseData<List<AppUserDTO>> getAllDisabled(
     ) {
         List<AppUserDTO> listUsers = appUserService.getAllDisabled();
         return new ResponseData(listUsers);
