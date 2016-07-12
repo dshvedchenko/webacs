@@ -16,5 +16,13 @@ app.config(function ($routeProvider) {
             templateUrl: "views/login.html",
             controller: "loginController"
         })
+        .when("/userregister", {
+            templateUrl: "views/userregister.html",
+            controller: "userRegisterController"
+        })
+        .when("/logout", {
+            templateUrl: "views/logout.html",
+            controller: "logoutController"
+        })
     ;
 });

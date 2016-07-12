@@ -14,8 +14,7 @@ describe('My first controller', function () {
 
     it('should return token', function () {
 
-        onSuccess = function (token) {
-            resultToken = token
+        onSuccess = function (resultToken) {
             expect(resultToken).toEqual('122345332')
         }
 
@@ -24,7 +23,7 @@ describe('My first controller', function () {
                 "data": {"token": "122345332"}
             });
 
-        coreService.handleLogin({'username': 'admin', 'password': '12345'}, onSuccess)
+        coreService.login({'username': 'admin', 'password': '12345'}, onSuccess)
         httpBackend.flush();
     })
 

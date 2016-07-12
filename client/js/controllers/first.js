@@ -5,19 +5,7 @@ app.controller('firstController', function ($scope, coreService, $http, $rootSco
 
 
     setToken = function () {
-        var config = {
-            headers: {
-                'X-AUTHID': $rootScope.token,
-                'Content-Type': 'application/json'
-            }
-        }
-        $http({
-            method: 'GET',
-            url: backend_server + "/api/v1/user/list",
-            data: '',
-            headers: config.headers
-
-        })
+        $http.get(backend_server + "/api/v1/users")
             .then(
                 function ok(response) {
                     $scope.userInfo = response.data.data

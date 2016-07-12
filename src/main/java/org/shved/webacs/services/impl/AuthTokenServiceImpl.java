@@ -53,6 +53,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
     public UserAuthDTO restLogin(UserAuthDTO userLogin) {
         UserAuthDTO result = new UserAuthDTO();
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
+        if (appUser == null) throw new TokenException();
 
         if (passwordEncoder.matches(userLogin.getPassword(), appUser.getPassword())) {
             AuthToken token = null;

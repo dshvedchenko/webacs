@@ -65,6 +65,8 @@ public class AppUserServiceImpl implements IAppUserService {
     public AppUser registerUser(UserRegistrationDTO newUser) {
 
         AppUser appUser = modelMapper.map(newUser, AppUser.class);
+        isNewUserValid(appUser);
+
         appUser.setSysrole(SysRole.GENERIC);
         appUser.setEnabled(true);
 
@@ -144,6 +146,9 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     private void isNewUserValid(AppUser newUser) {
+        if (newUser.getUsername().length() == 0) throw new AppException();
+        if (newUser.getPassword().length() == 0) throw new AppException();
+
         if (emailExist(newUser.getEmail()))
             throw new EmailExistsException();
 

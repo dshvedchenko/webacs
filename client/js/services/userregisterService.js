@@ -1,4 +1,4 @@
-app.service('coreService', function ($rootScope, $http) {
+app.service('userregisterService', function ($rootScope, $http) {
     this.counter = 0;
     this.shares = 2000;
 
@@ -7,14 +7,13 @@ app.service('coreService', function ($rootScope, $http) {
         return this.counter++;
     }
 
-    this.login = function (data, onSuccess, onError) {
-        $http.post(backend_server + "/api/v1/login", data)
+    this.register = function (data, onSuccess, onError) {
+        $http.post(backend_server + "/api/v1/register", data)
             .then(
                 function ok(response) {
-                    onSuccess(response.data.data.token)
+                    onSuccess(response.data.data)
                 },
                 function error(response) {
-                    $rootScope.token = undefined
                     onError(response.data.error)
                 }
             )

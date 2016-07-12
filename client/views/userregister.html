@@ -1,0 +1,28 @@
+<table>
+    <tr>
+        <td>Username : <input type="text" ng-model="username"/></td>
+    </tr>
+    <tr>
+        <td ng-class="{'has-error': !isFormValid()}">Password : <input type="password" ng-model="password"/></td>
+    </tr>
+    <tr>
+        <td ng-class="{'has-error': !isFormValid()}">Confirm Password : <input type="password"
+                                                                               ng-model="confirm_password"/></td>
+    </tr>
+    <tr>
+        <td>FirstName : <input type="text" ng-model="firstname"/></td>
+    </tr>
+    <tr>
+        <td>LastName : <input type="text" ng-model="lastname"/></td>
+    </tr>
+    <tr>
+        <td>Email : <input type="email" ng-model="email"/></td>
+    </tr>
+</table>
+
+
+<br/>
+Register :
+<button ng-click="register()" ng-disabled="!isFormValid()">Register</button>
+<br/>
+<div ng-show="registerError">{{registerError}}</div>

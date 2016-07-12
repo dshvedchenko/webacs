@@ -22,8 +22,8 @@ import javax.validation.Valid;
  * @author dshvedchenko on 6/17/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = RestEndpoints.API_V1, consumes = "application/json", produces = "application/json")
+//@CrossOrigin(origins = "*")
+//@RequestMapping(value = RestEndpoints.API_V1, consumes = "application/json", produces = "application/json")
 public class RestAuthController extends AbstractAPIV1Controller {
 
     @Autowired

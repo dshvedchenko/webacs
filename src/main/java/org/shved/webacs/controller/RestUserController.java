@@ -30,10 +30,6 @@ public class RestUserController {
     @Autowired
     IAuthTokenService authTokenService;
 
-    /**
-     * @param userId
-     * @return
-     */
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseData<AppUserDTO> getUserById(
             @PathVariable(value = "userId") Long userId
@@ -44,7 +40,6 @@ public class RestUserController {
         return rd;
     }
 
-    //edit - save
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveUser(
@@ -54,7 +49,6 @@ public class RestUserController {
         appUserDTO.setId(userId);
         appUserService.handleSaveEditedAppUser(appUserDTO);
     }
-    //create
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +62,6 @@ public class RestUserController {
         return rd;
     }
 
-    //delete
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(
