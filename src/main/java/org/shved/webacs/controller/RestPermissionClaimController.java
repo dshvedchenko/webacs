@@ -63,12 +63,10 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
     }
 
 //
-@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.ACCEPTED)
 public void updatePermissionClaim(
-        @RequestBody PermissionClaimDTO claimDTO,
-        //TODO - consume id !!!
-        @PathVariable("id") Long id
+        @RequestBody PermissionClaimDTO claimDTO
 ) {
     permissionClaimService.update(claimDTO);
 }

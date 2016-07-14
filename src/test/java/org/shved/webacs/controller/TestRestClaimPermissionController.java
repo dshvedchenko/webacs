@@ -145,7 +145,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         claim.setStartAt(verifyDate);
         Long claimId = claim.getId();
         response = mockMvc.perform(
-                put(RestEndpoints.API_V1_CLAIMS + "/" + claimId)
+                put(RestEndpoints.API_V1_CLAIMS)
                         .header(Auth.AUTH_TOKEN_NAME, rawToken)
                         .accept(contentType)
                         .contentType(contentType)
