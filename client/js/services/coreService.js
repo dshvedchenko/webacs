@@ -19,4 +19,18 @@ app.service('coreService', function ($rootScope, $http) {
                 }
             )
     }
+
+    this.logout = function (onSuccess, onError) {
+
+        $http.post(backend_server + "/api/v1/logout", {})
+            .then(
+                function ok(response) {
+                    onSuccess(undefined)
+                },
+                function error(response) {
+                    $rootScope.token = undefined
+                    onError(response.data.error)
+                }
+            )
+    }
 });

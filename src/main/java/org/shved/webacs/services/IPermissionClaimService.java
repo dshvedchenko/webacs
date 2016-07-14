@@ -24,17 +24,17 @@ public interface IPermissionClaimService {
 
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
 
-    List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList, String username);
+    List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList);
 
-    void update(PermissionClaimDTO permissionClaimDTO, String username);
+    void update(PermissionClaimDTO permissionClaimDTO);
 
-    void delete(PermissionClaimDTO permissionClaimDTO, String username);
+    void delete(Long id);
 
-    void approve(Long claimId, String username);
+    void approve(Long claimId);
 
     @Secured("ADMIN")
-    void grant(Long claimId, String username);
+    void grant(Long claimId);
 
-    void revoke(Long claimId, String username);
+    void revoke(Long claimId);
 
 }

@@ -1,18 +1,20 @@
 package org.shved.webacs.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +23,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 
 /**
@@ -39,7 +41,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
         ResultActions response = mockMvc.perform(
                 get(RestEndpoints.API_V1_CLAIMS)
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
 
@@ -67,7 +69,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
         ResultActions response = mockMvc.perform(
                 get(RestEndpoints.API_V1_CLAIMS + "/1")
-                        .header("X-AUTHID", rawToken)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
                         .accept(contentType)
                         .contentType(contentType)
 
@@ -95,7 +97,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
         ResultActions response = mockMvc.perform(
                 post(RestEndpoints.API_V1_CLAIMS)
-                        .header("X-AUTHID", rawToken)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
                         .accept(contentType)
                         .contentType(contentType)
                         .content(new ObjectMapper().writeValueAsString(createClaimList))
@@ -105,12 +107,80 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         List<PermissionClaimDTO> pcdto = modelMapper.map(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data"), List.class);
     }
 
+
+    @Test
+    @Transactional
+//    @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
+    public void getUpdateClaimTest() throws Exception {
+        final Date verifyDate = new Date();
+        String rawToken = getTokenInfo();
+
+        PermissionDTO pdto = getPermissionDTOById(2L);
+        List<CreatePermissionClaimDTO> createClaimList = new LinkedList<>();
+        CreatePermissionClaimDTO createPermissionClaimDTO = new CreatePermissionClaimDTO();
+        createPermissionClaimDTO.setPermissionDTO(pdto);
+        createClaimList.add(createPermissionClaimDTO);
+
+        ResultActions response = mockMvc.perform(
+                post(RestEndpoints.API_V1_CLAIMS)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(createClaimList))
+        )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data").exists());
+        List<PermissionClaimDTO> permissionClaimDTOList = jsonMapper
+                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data").toString()
+                        , new TypeReference<List<PermissionClaimDTO>>() {
+                        }
+                );
+
+        PermissionClaimDTO claim = permissionClaimDTOList.get(0);
+
+        Assert.assertNotNull(claim);
+
+        //
+        claim.setEndAt(verifyDate);
+        claim.setStartAt(verifyDate);
+        Long claimId = claim.getId();
+        response = mockMvc.perform(
+                put(RestEndpoints.API_V1_CLAIMS + "/" + claimId)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
+                        .accept(contentType)
+                        .contentType(contentType)
+                        .content(new ObjectMapper().writeValueAsString(claim))
+        )
+                .andExpect(status().isAccepted())
+        ;
+
+        response = mockMvc.perform(
+                get(RestEndpoints.API_V1_CLAIMS + "/" + claimId)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
+                        .accept(contentType)
+        )
+                .andExpect(status().isOk())
+        ;
+        //TODO Convert result to PermissionClaimDTO and verify, now it is Map,
+        //ModelMapper can not handle JSONDATES , jsonMapper wants json on input and not MapString representation
+//        PermissionClaimDTO updatedClaimFromRest = jsonMapper
+//                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data")
+//                        , PermissionClaimDTO.class
+//                );
+//
+//        Assert.assertEquals(claimId, updatedClaimFromRest.getId());
+//        Assert.assertEquals(verifyDate, updatedClaimFromRest.getStartAt());
+//        Assert.assertEquals(verifyDate, updatedClaimFromRest.getEndAt());
+    }
+
+
+
     PermissionDTO getPermissionDTOById(Long id) throws Exception {
         String rawToken = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
                 get(RestEndpoints.API_V1_PERMISSIONS + "/" + 1)
-                        .header("X-AUTHID", rawToken)
+                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
                         .accept(contentType)
                         .contentType(contentType)
 

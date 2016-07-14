@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import lombok.Getter;
 import org.junit.Assert;
@@ -53,7 +54,9 @@ public class AbstractAppTest {
     protected WebApplicationContext webApplicationContext;
     protected MockMvc mockMvc;
     @Autowired
-    ModelMapper modelMapper;
+    protected ModelMapper modelMapper;
+
+    protected ObjectMapper jsonMapper = new ObjectMapper();
 
     @Before
     public void setup() throws Exception {

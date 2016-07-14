@@ -45,10 +45,10 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseData<PermissionClaimDTO> createPermission(
+    public ResponseData<PermissionClaimDTO> createPermissionClaim(
             @RequestBody List<CreatePermissionClaimDTO> createClaimList
     ) {
-        List<PermissionClaimDTO> createdClaimListDTO = permissionClaimService.create(createClaimList, getPrincipal());
+        List<PermissionClaimDTO> createdClaimListDTO = permissionClaimService.create(createClaimList);
         return new ResponseData(createdClaimListDTO);
     }
 
@@ -70,8 +70,17 @@ public void updatePermissionClaim(
         //TODO - consume id !!!
         @PathVariable("id") Long id
 ) {
-    permissionClaimService.update(claimDTO, getPrincipal());
+    permissionClaimService.update(claimDTO);
 }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deletePermissionClaim(
+            //TODO - consume id !!!
+            @PathVariable("id") Long id
+    ) {
+        permissionClaimService.delete(id);
+    }
 
     @RequestMapping(value = "/{id}/approve", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -80,7 +89,7 @@ public void updatePermissionClaim(
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.approve(id, getPrincipal());
+        permissionClaimService.approve(id);
     }
 
     @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -90,7 +99,7 @@ public void updatePermissionClaim(
             //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.grant(id, getPrincipal());
+        permissionClaimService.grant(id);
     }
 
     @RequestMapping(value = "/{id}/revoke", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -98,7 +107,7 @@ public void updatePermissionClaim(
     public void revokePermissionClaim(
             @PathVariable("id") Long id
     ) {
-        permissionClaimService.revoke(id, getPrincipal());
+        permissionClaimService.revoke(id);
     }
 
     @RequestMapping(method = RequestMethod.GET)

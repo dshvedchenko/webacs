@@ -12,8 +12,9 @@ app.controller('loginController', function ($scope, coreService, $http, $rootSco
     }
 
     onSuccess = function (token) {
-        $http.defaults.headers.common['X-AUTHID'] = token
+        // $http.defaults.headers.common['X-AUTHID'] = token
         $rootScope.loggedin = true
+        $rootScope.token = token
         $location.path("/first")
     }
 
