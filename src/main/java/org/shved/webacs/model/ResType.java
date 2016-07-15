@@ -22,6 +22,7 @@ public class ResType {
     private String name;
 
     public void update(ResType updatedItem) {
+        getName();
         setName(updatedItem.getName());
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.TypeRef;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shved.webacs.constants.Auth;
@@ -85,7 +86,6 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
     @Transactional
-//    @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getCreateClaimTest() throws Exception {
         String rawToken = getTokenInfo();
 
@@ -104,15 +104,28 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());
-        List<PermissionClaimDTO> pcdto = modelMapper.map(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data"), List.class);
+        List<PermissionClaimDTO> permissionClaimDTOList = jsonMapper
+                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data").toString()
+                        , new TypeReference<List<PermissionClaimDTO>>() {
+                        }
+                );
+
+        PermissionClaimDTO claim = permissionClaimDTOList.get(0);
+
+        Assert.assertEquals(2L, claim.getPermission().getId().longValue());
+        Assert.assertEquals("admin", claim.getUser().getUsername());
+
     }
 
 
     @Test
     @Transactional
-//    @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getUpdateClaimTest() throws Exception {
-        final Date verifyDate = new Date();
+        final Date verifyStartDate = new Date();
+
+        final Date verifyEndDate = new Date();
+        verifyEndDate.setTime(verifyStartDate.getTime() + 100000L);
+
         String rawToken = getTokenInfo();
 
         PermissionDTO pdto = getPermissionDTOById(2L);
@@ -140,9 +153,10 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
         Assert.assertNotNull(claim);
 
-        //
-        claim.setEndAt(verifyDate);
-        claim.setStartAt(verifyDate);
+
+        claim.setEndAt(verifyEndDate);
+        claim.setStartAt(verifyStartDate);
+
         Long claimId = claim.getId();
         response = mockMvc.perform(
                 put(RestEndpoints.API_V1_CLAIMS)
@@ -161,16 +175,15 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         )
                 .andExpect(status().isOk())
         ;
-        //TODO Convert result to PermissionClaimDTO and verify, now it is Map,
-        //ModelMapper can not handle JSONDATES , jsonMapper wants json on input and not MapString representation
-//        PermissionClaimDTO updatedClaimFromRest = jsonMapper
-//                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data")
-//                        , PermissionClaimDTO.class
-//                );
-//
-//        Assert.assertEquals(claimId, updatedClaimFromRest.getId());
-//        Assert.assertEquals(verifyDate, updatedClaimFromRest.getStartAt());
-//        Assert.assertEquals(verifyDate, updatedClaimFromRest.getEndAt());
+
+//TODO https://github.com/jayway/JsonPath#jsonprovider-spi
+        PermissionClaimDTO updatedClaimFromRest = JsonPath
+                .parse(response.andReturn().getResponse().getContentAsString())
+                .read("$.data", PermissionClaimDTO.class);
+
+        Assert.assertEquals(verifyStartDate, updatedClaimFromRest.getStartAt());
+        Assert.assertEquals(verifyEndDate, updatedClaimFromRest.getEndAt());
+
     }
 
 
@@ -179,7 +192,7 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         String rawToken = getTokenInfo();
 
         ResultActions response = mockMvc.perform(
-                get(RestEndpoints.API_V1_PERMISSIONS + "/" + 1)
+                get(RestEndpoints.API_V1_PERMISSIONS + "/" + id)
                         .header(Auth.AUTH_TOKEN_NAME, rawToken)
                         .accept(contentType)
                         .contentType(contentType)

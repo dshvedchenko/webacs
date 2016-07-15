@@ -74,7 +74,6 @@ public void updatePermissionClaim(
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deletePermissionClaim(
-            //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
         permissionClaimService.delete(id);
@@ -83,8 +82,6 @@ public void updatePermissionClaim(
     @RequestMapping(value = "/{id}/approve", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void approvePermissionClaim(
-            @RequestBody PermissionClaimDTO claimDTO,
-            //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
         permissionClaimService.approve(id);
@@ -93,8 +90,6 @@ public void updatePermissionClaim(
     @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void grantPermissionClaim(
-            @RequestBody PermissionClaimDTO claimDTO,
-            //TODO - consume id !!!
             @PathVariable("id") Long id
     ) {
         permissionClaimService.grant(id);
