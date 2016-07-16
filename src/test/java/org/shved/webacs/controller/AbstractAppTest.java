@@ -1,10 +1,17 @@
 package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonProvider;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
+import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -28,6 +35,8 @@ import javax.servlet.Filter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -58,6 +67,31 @@ public class AbstractAppTest {
 
     protected ObjectMapper jsonMapper = new ObjectMapper();
 
+    @BeforeClass
+    public static void initApps() {
+
+        Configuration.setDefaults(new Configuration.Defaults() {
+
+            private final JsonProvider jsonProvider = new JacksonJsonProvider();
+            private final MappingProvider mappingProvider = new JacksonMappingProvider();
+
+            @Override
+            public JsonProvider jsonProvider() {
+                return jsonProvider;
+            }
+
+            @Override
+            public MappingProvider mappingProvider() {
+                return mappingProvider;
+            }
+
+            @Override
+            public Set<Option> options() {
+                return EnumSet.noneOf(Option.class);
+            }
+        });
+    }
+
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext)
@@ -66,6 +100,8 @@ public class AbstractAppTest {
                 // removing @WithMockUser - enables full Filter functionality
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
+
+
     }
 
     @Autowired
@@ -98,5 +134,6 @@ public class AbstractAppTest {
 
         return JsonPath.read(res.andReturn().getResponse().getContentAsString(), "$.data.token");
     }
+
 
 }

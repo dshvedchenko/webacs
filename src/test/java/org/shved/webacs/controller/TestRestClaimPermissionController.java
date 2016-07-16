@@ -50,13 +50,13 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data", hasSize(14)))
-                .andExpect(jsonPath("$.data[0].approver.username", is("billk")))
-                .andExpect(jsonPath("$.data[0].user.username", is("ninaa")))
+                .andExpect(jsonPath("$.data[0].approver.username", is("admin")))
+                .andExpect(jsonPath("$.data[0].user.username", is("billk")))
                 .andExpect(jsonPath("$.data[0].claimedAt", is("2016-06-10 09:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].grantedAt", is("2016-06-10 10:20:00.000+0000")))
-                .andExpect(jsonPath("$.data[13].approver.username", is("admin")))
-                .andExpect(jsonPath("$.data[13].user.username", is("billk")))
+                .andExpect(jsonPath("$.data[13].approver.username", is("billk")))
+                .andExpect(jsonPath("$.data[13].user.username", is("ninaa")))
                 .andExpect(jsonPath("$.data[13].claimedAt", is("2016-06-10 09:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[13].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[13].grantedAt", is("2016-06-10 10:20:00.000+0000")));
@@ -104,11 +104,13 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());
-        List<PermissionClaimDTO> permissionClaimDTOList = jsonMapper
-                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data").toString()
-                        , new TypeReference<List<PermissionClaimDTO>>() {
-                        }
-                );
+
+        TypeRef<List<PermissionClaimDTO>> permissionCLaimListType = new TypeRef<List<PermissionClaimDTO>>() {
+        };
+
+        List<PermissionClaimDTO> permissionClaimDTOList = JsonPath
+                .parse(response.andReturn().getResponse().getContentAsString())
+                .read("$.data", permissionCLaimListType);
 
         PermissionClaimDTO claim = permissionClaimDTOList.get(0);
 
@@ -143,11 +145,13 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());
-        List<PermissionClaimDTO> permissionClaimDTOList = jsonMapper
-                .readValue(JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data").toString()
-                        , new TypeReference<List<PermissionClaimDTO>>() {
-                        }
-                );
+
+        TypeRef<List<PermissionClaimDTO>> permissionCLaimListType = new TypeRef<List<PermissionClaimDTO>>() {
+        };
+
+        List<PermissionClaimDTO> permissionClaimDTOList = JsonPath
+                .parse(response.andReturn().getResponse().getContentAsString())
+                .read("$.data", permissionCLaimListType);
 
         PermissionClaimDTO claim = permissionClaimDTOList.get(0);
 
