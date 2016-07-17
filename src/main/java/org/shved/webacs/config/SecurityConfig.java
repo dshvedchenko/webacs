@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/**").permitAll() // needed for browser preflight checks
+                    .antMatchers(HttpMethod.OPTIONS, "/api/v1/**").anonymous() // needed for browser preflight checks
                     .antMatchers(
                             HttpMethod.GET,
                             "/",

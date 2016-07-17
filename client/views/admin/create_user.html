@@ -1,0 +1,45 @@
+<table>
+    <tr>
+        <td>Username</td>
+        <td><input type="text" ng-model="data.username"/></td>
+    </tr>
+    <tr>
+        <td ng-class="{'has-error': !isFormValid()}">Password</td>
+        <td><input type="password" ng-model="data.password"/></td>
+    </tr>
+    <tr>
+        <td ng-class="{'has-error': !isFormValid()}">Confirm Password</td>
+        <td><input type="password"
+                   ng-model="data.confirm_password"/></td>
+    </tr>
+    <tr>
+        <td>FirstName</td>
+        <td><input type="text" ng-model="data.firstname"/></td>
+    </tr>
+    <tr>
+        <td>LastName</td>
+        <td><input type="text" ng-model="data.lastname"/></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="email" ng-model="data.email"/></td>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <td>
+            <select name="roleSelect" id="roleSelect"
+                    ng-options="role.name for role in validRoles track by role.id"
+                    ng-model="data.sysrole"
+            ></select>
+        </td>
+    </tr>
+    <tr>
+        <td>Register</td>
+        <td>
+            <button ng-click="register()" ng-disabled="!isFormValid()">Register</button>
+        </td>
+    </tr>
+</table>
+<hr/>
+
+<div ng-show="registerError">{{registerError}}</div>

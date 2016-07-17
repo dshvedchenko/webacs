@@ -64,7 +64,6 @@ public class TestAuthController extends AbstractAppTest {
     public void testLogout() throws Exception {
         UserAuthDTO loginInfo = new UserAuthDTO();
         loginInfo.setUsername(userName);
-        loginInfo.setPassword("eeeee");
         mockMvc.perform(post("/api/v1/logout")
                 .content(this.json(loginInfo))
                 .accept(contentType)

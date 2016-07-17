@@ -1,6 +1,7 @@
 package org.shved.webacs.controller;
 
 import org.shved.webacs.constants.RestEndpoints;
+import org.shved.webacs.dto.LoggedUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
@@ -35,13 +36,12 @@ public class RestAuthController extends AbstractAPIV1Controller {
 
     //TODO add link to logout
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ResponseData<AuthToken> login(
+    public ResponseData<LoggedUserDTO> login(
             @RequestBody UserAuthDTO userLogin
-    ) {
+    ) throws InterruptedException {
         ResponseData rd = new ResponseData();
-        UserAuthDTO authRes = null;
+        LoggedUserDTO authRes = null;
         authRes = authTokenService.restLogin(userLogin);
-
         rd.setData(authRes);
         rd.add(linkTo(methodOn(RestAuthController.class).login(userLogin)).withSelfRel());
         return rd;
@@ -53,7 +53,6 @@ public class RestAuthController extends AbstractAPIV1Controller {
     ) {
         ResponseData rd = new ResponseData();
         authTokenService.restLogout(token);
-
         rd.setData("success");
         rd.add(linkTo(methodOn(RestAuthController.class).logout(token)).withSelfRel());
         return rd;

@@ -13,4 +13,5 @@ public class RestEndpoints {
     public static final String API_V1_CLAIMS = API_V1 + "/claims";
     public static final String API_V1_CLAIMSTATES = API_V1 + "/claimstates";
     public static final String API_V1_LOGIN = API_V1 + "/login";
+    public static final String API_V1_SYSROLES = API_V1 + "/sysroles";
 }

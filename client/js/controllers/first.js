@@ -1,10 +1,11 @@
-app.controller('firstController', function ($scope, coreService, $http, $rootScope) {
+app.controller('firstController', function ($scope, coreService, sessionService, $http, $rootScope) {
     $scope.token = ''
-    $scope.userInfo = {}
+    $scope.userInfo = []
     $scope.rt = coreService
+    // $scope.isAdmin = sessionService.isAdmin()
 
 
-    setToken = function () {
+    fillData = function () {
         $http.get(backend_server + "/api/v1/users")
             .then(
                 function ok(response) {
@@ -15,9 +16,10 @@ app.controller('firstController', function ($scope, coreService, $http, $rootSco
 
     $scope.handleClick = function (evt) {
         console.log(evt)
-        $scope.userInfo.pop();
+        var index = $scope.userInfo.indexOf(evt)
+        $scope.userInfo.splice(index, 1)
     }
 
-    setToken()
+    fillData()
 
 })

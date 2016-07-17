@@ -47,22 +47,24 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     IContextUserService contextUserService;
 
     @Override
+    @Secured("ADMIN")
     public List<PermissionClaimDTO> getAll() {
-        //only admin can get list of all claims
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllPermissionClaim();
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
+    @Secured("ADMIN")
     public List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO) {
-        // only admin can see by claimstates
-        return null;
+        ClaimState claimState = modelMapper.map(claimStateDTO, ClaimState.class);
+        return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByClaimState(claimState));
     }
 
     @Override
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
-
+        AppUser appUser = contextUserService.getContextUser();
+        //TODO
         return modelMapper.map(claim, PermissionClaimDTO.class);
     }
 

@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IAuthTokenDAO;
 import org.shved.webacs.dto.AppUserDTO;
+import org.shved.webacs.dto.LoggedUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
 import org.shved.webacs.exception.TokenException;
 import org.shved.webacs.model.AppUser;
@@ -50,8 +51,8 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
 
     @Override
     @Transactional
-    public UserAuthDTO restLogin(UserAuthDTO userLogin) {
-        UserAuthDTO result = new UserAuthDTO();
+    public LoggedUserDTO restLogin(UserAuthDTO userLogin) {
+        LoggedUserDTO result = new LoggedUserDTO();
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
         if (appUser == null) throw new TokenException();
 
@@ -65,6 +66,7 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
             }
             authTokenDAO.save(token);
             result.setToken(token.getToken());
+            result.setSysrole(appUser.getSysrole());
             result.setUsername(userLogin.getUsername());
         }
         if (result.getToken() == null) throw new TokenException();

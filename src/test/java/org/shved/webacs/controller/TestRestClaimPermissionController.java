@@ -180,7 +180,6 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(status().isOk())
         ;
 
-//TODO https://github.com/jayway/JsonPath#jsonprovider-spi
         PermissionClaimDTO updatedClaimFromRest = JsonPath
                 .parse(response.andReturn().getResponse().getContentAsString())
                 .read("$.data", PermissionClaimDTO.class);

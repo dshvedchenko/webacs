@@ -1,6 +1,5 @@
 app.service('coreService', function ($rootScope, $http) {
     this.counter = 0;
-    this.shares = 2000;
 
     this.getHelloMessage = function () {
         console.log(this.counter)
@@ -8,8 +7,9 @@ app.service('coreService', function ($rootScope, $http) {
     }
 
     this.login = function (data, onSuccess, onError) {
-        $http.post(backend_server + "/api/v1/login", data)
-            .then(
+
+        var post = $http.post(backend_server + "/api/v1/login", data);
+        post.then(
                 function ok(response) {
                     onSuccess(response.data.data.token)
                 },
@@ -17,19 +17,32 @@ app.service('coreService', function ($rootScope, $http) {
                     $rootScope.token = undefined
                     onError(response.data.error)
                 }
-            )
+        );
+        post.then(
+            function setSession(response) {
+                $rootScope.isAdmin = response.data.data.sysrole === "ADMIN"
+                $rootScope.token = response.data.data.token
+            }
+        );
+
     }
 
     this.logout = function (onSuccess, onError) {
 
-        $http.post(backend_server + "/api/v1/logout", {})
-            .then(
+        var post = $http.post(backend_server + "/api/v1/logout", {});
+        post.then(
                 function ok(response) {
                     onSuccess(undefined)
                 },
                 function error(response) {
-                    $rootScope.token = undefined
+
                     onError(response.data.error)
+                }
+        );
+        post.then(
+            function clearSession(response) {
+                delete $rootScope.token
+                delete $rootScope.isAdmin
                 }
             )
     }

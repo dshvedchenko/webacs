@@ -4,10 +4,6 @@ app.config(function ($routeProvider) {
             templateUrl: "views/first.html",
             controller: "firstController"
         })
-        .when("/second", {
-            templateUrl: "views/second.html",
-            controller: "secondController"
-        })
         .when("/resourcetype", {
             templateUrl: "views/resourcetype.html",
             controller: "resourceTypeController"
@@ -23,6 +19,10 @@ app.config(function ($routeProvider) {
         .when("/logout", {
             templateUrl: "views/logout.html",
             controller: "logoutController"
+        })
+        .when("/users/create", {
+            templateUrl: "views/admin/create_user.html",
+            controller: "adminCreateUserController"
         })
     ;
 });

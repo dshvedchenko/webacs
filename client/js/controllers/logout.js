@@ -17,4 +17,6 @@ app.controller('logoutController', function ($scope, $http, $rootScope, $locatio
         console.log('logged out error')
     };
 
+    $scope.logout()
+
 })
