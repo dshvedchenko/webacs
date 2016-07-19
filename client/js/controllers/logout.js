@@ -1,22 +1,18 @@
-app.controller('logoutController', function ($scope, $http, $rootScope, $location, coreService) {
+app.controller('logoutController', function ($scope, $http, $rootScope, $location, sessionService) {
 
-    //$location.path("/login")
-
-    $scope.logout = function () {
-        coreService.logout(onSuccess, onError)
-
+    function logout() {
+        sessionService.logout(onSuccess, onError)
+        $location.path("/login")
     };
 
     onSuccess = function () {
         console.log('logged out')
-        delete $rootScope.token
-        $rootScope.loggedin = undefined
     };
 
     onError = function () {
         console.log('logged out error')
     };
 
-    $scope.logout()
+    logout()
 
 })

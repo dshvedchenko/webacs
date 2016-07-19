@@ -1,7 +1,49 @@
-app.service('sessionService', function ($rootScope, $http) {
+app.service('sessionService', function ($rootScope, $http, ENDPOINT_URI) {
 
     this.isAdmin = function () {
         return $rootScope.isAdmin
+    }
+
+    this.login = function (data, onSuccess, onError) {
+
+        var post = $http.post(ENDPOINT_URI + "/login", data);
+        post.then(
+            function ok(response) {
+                onSuccess(response.data.data.token)
+            },
+            function error(response) {
+                $rootScope.token = undefined
+                onError(response.data.error)
+            }
+        );
+        post.then(
+            function setSession(response) {
+                $rootScope.isAdmin = response.data.data.sysrole === "ADMIN"
+                $rootScope.token = response.data.data.token
+            }
+        );
+
+    }
+
+    this.logout = function (onSuccess, onError) {
+        if ($rootScope.token === undefined) return;
+        var post = $http.post(ENDPOINT_URI + "/logout", {});
+        post.then(
+            function ok(response) {
+                onSuccess(undefined)
+            },
+            function error(response) {
+
+                onError(response.data.error)
+            }
+        );
+        post.then(
+            function clearSession(response) {
+                delete $rootScope.token
+                delete $rootScope.isAdmin
+                delete $rootScope.loggedin
+            }
+        )
     }
 
 })

@@ -139,6 +139,7 @@ public class AppUserServiceImpl implements IAppUserService {
 
     private void applyAppUserDTO2AppUserByAdmin(AppUserDTO appUserDTO, AppUser appUser) {
         appUser.setEnabled(appUserDTO.isEnabled());
+        appUser.setDisabled_at(appUser.getEnabled() ? null : new Date());
         appUser.setEmail(appUserDTO.getEmail());
         appUser.setSysrole(appUserDTO.getSysrole());
         appUser.setFirstname(appUserDTO.getFirstname());

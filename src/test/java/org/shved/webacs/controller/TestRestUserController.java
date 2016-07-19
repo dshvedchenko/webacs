@@ -34,7 +34,7 @@ public class TestRestUserController extends AbstractAppTest {
     public void testGetUserById() throws Exception {
         String tokenStr = getTokenInfo();
 
-        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/1")
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/1001")
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType))
@@ -49,7 +49,7 @@ public class TestRestUserController extends AbstractAppTest {
     @Transactional
     @Test
     public void editUserTest() throws Exception {
-        final Long EDIT_USERS_ID = 2L;
+        final Long EDIT_USERS_ID = 1002L;
         final String EDIT_USER_USERNAME = "johns";
         final String EDIT_USER_LASTNAME = "Salivan";
         final String EDIT_USER_FIRSTNAME = "John";
@@ -80,7 +80,7 @@ public class TestRestUserController extends AbstractAppTest {
         userRecord.replace("sysrole", EDIT_USER_SYSROLE_NEW);
         userRecord.replace("enabled", EDIT_USER_ENABLED_NEW);
 
-        mockMvc.perform(put(RestEndpoints.API_V1_USERS + "/" + EDIT_USERS_ID)
+        mockMvc.perform(put(RestEndpoints.API_V1_USERS)
                 .header("X-AUTHID", tokenStr)
                 .accept(contentType)
                 .contentType(contentType)
@@ -153,7 +153,7 @@ public class TestRestUserController extends AbstractAppTest {
     @Transactional
     @Test
     public void deleteUserTest() throws Exception {
-        final Long EDIT_USERS_ID = 2L;
+        final Long EDIT_USERS_ID = 1002L;
 
         String tokenStr = getTokenInfo();
 

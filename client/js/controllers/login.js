@@ -1,4 +1,4 @@
-app.controller('loginController', function ($scope, coreService, $http, $rootScope, $location) {
+app.controller('loginController', function ($scope, sessionService, $http, $rootScope, $location) {
     $scope.username = ''
     $scope.password = ''
     $scope.loginError = ''
@@ -8,14 +8,13 @@ app.controller('loginController', function ($scope, coreService, $http, $rootSco
             username: angular.copy($scope.username),
             password: angular.copy($scope.password)
         }
-        coreService.login(data, onSuccess, onError)
+        sessionService.login(data, onSuccess, onError)
     }
 
     onSuccess = function (token) {
-        // $http.defaults.headers.common['X-AUTHID'] = token
         $rootScope.loggedin = true
         $rootScope.token = token
-        $location.path("/first")
+        $location.path("/")
     }
 
     onError = function (error) {

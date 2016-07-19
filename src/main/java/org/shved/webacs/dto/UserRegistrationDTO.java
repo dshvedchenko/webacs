@@ -19,8 +19,8 @@ public class UserRegistrationDTO {
     private String password;
 
     private String confirmPassword;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
 
     @Pattern(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}", message = "Invalid email address.")
     private String email;

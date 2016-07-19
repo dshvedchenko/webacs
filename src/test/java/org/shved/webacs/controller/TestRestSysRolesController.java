@@ -34,10 +34,10 @@ public class TestRestSysRolesController extends AbstractAppTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data", hasSize(2)))
-                .andExpect(jsonPath("$.data[0].id", is(0)))
-                .andExpect(jsonPath("$.data[0].name", is("ADMIN")))
-                .andExpect(jsonPath("$.data[1].id", is(1)))
-                .andExpect(jsonPath("$.data[1].name", is("GENERIC")))
+                //  .andExpect(jsonPath("$.data[0].id", is(0)))
+                .andExpect(jsonPath("$.data[0]", is("ADMIN")))
+                //  .andExpect(jsonPath("$.data[1].id", is(1)))
+                .andExpect(jsonPath("$.data[1]", is("GENERIC")))
         ;
     }
 }

@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author dshvedchenko on 7/17/16.
@@ -24,19 +26,17 @@ public class RestSysRolesController {
     ModelMapper modelMapper;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseData<List<SysRoleDTO>> getListOfSysRoles(
+    public ResponseData<List<String>> getListOfSysRoles(
     ) {
         ResponseData rd = new ResponseData();
-        List<SysRoleDTO> rolesInfo = new LinkedList<>();
-        SysRoleDTO sysRoleDTO = new SysRoleDTO();
-        sysRoleDTO.setId(SysRole.ADMIN.ordinal());
-        sysRoleDTO.setName("ADMIN");
-        rolesInfo.add(sysRoleDTO);
-
-        sysRoleDTO = new SysRoleDTO();
-        sysRoleDTO.setId(SysRole.GENERIC.ordinal());
-        sysRoleDTO.setName("GENERIC");
-        rolesInfo.add(sysRoleDTO);
+        List<String> rolesInfo = Arrays.asList(SysRole.values()).stream()
+                .map(item -> {
+//                    SysRoleDTO s = new SysRoleDTO();
+//                    s.setName(item.name());
+//                    s.setId(item.ordinal());
+                    return item.name();
+                })
+                .collect(Collectors.toList());
 
         rd.setData(rolesInfo);
         return rd;

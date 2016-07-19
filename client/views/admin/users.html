@@ -1,0 +1,115 @@
+<p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
+</p>
+<div class="item" ng-repeat="item in users | filter : usernameFilter "
+     ng-click="setEditedItem(item)"
+     ng-class="{'active':isCurrentItem(item.id)}"
+>
+    {{item.username}} # {{item.sysrole}}
+</div>
+
+<div ng-if="!isEditing">
+    <hr/>
+    <form class="create-form" role="form" ng-submit="createUser(newUser)" novalidate>
+        <table>
+            <tr>
+                <td>Username</td>
+                <td><input type="text" ng-model="newUser.username"/></td>
+            </tr>
+            <tr>
+                <td ng-class="{'has-error': !isFormValid(newUser)}">Password</td>
+                <td><input type="password" ng-model="newUser.password"/></td>
+            </tr>
+            <tr>
+                <td ng-class="{'has-error': !isFormValid(newUser)}">Confirm Password</td>
+                <td><input type="password"
+                           ng-model="newUser.confirm_password"/></td>
+            </tr>
+            <tr>
+                <td>FirstName</td>
+                <td><input type="text" ng-model="newUser.firstname"/></td>
+            </tr>
+            <tr>
+                <td>LastName</td>
+                <td><input type="text" ng-model="newUser.lastname"/></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" ng-model="newUser.email"/></td>
+            </tr>
+            <tr>
+                <td>Enabled</td>
+                <td><input type="checkbox" checked ng-model="newUser.enabled"/></td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    <select name="roleSelect" id="roleSelect"
+                            ng-model="newUser.sysrole"
+                    >
+                        <option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Register</td>
+                <td>
+                    <button type="submit" ng-disabled="!isFormValid(newUser)">Create user</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr/>
+</div>
+<div ng-if="isEditing">
+    <hr/>
+    <h4>Editing {{editedItem.username}}</h4>
+    <form class="update-form" role="form" ng-submit="updateItem(editedItem)" novalidate>
+        <table>
+            <tr>
+                <td>Username</td>
+                <td><input type="text" ng-model="editedItem.username"/></td>
+            </tr>
+            <tr>
+                <td>FirstName</td>
+                <td><input type="text" ng-model="editedItem.firstname"/></td>
+            </tr>
+            <tr>
+                <td>LastName</td>
+                <td><input type="text" ng-model="editedItem.lastname"/></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" ng-model="editedItem.email"/></td>
+            </tr>
+            <tr>
+                <td>Enabled</td>
+                <td><input type="checkbox" ng-model="editedItem.enabled"/></td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    <select name="roleSelect"
+                            ng-model="editedItem.sysrole"
+                    >
+                        <option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" ng-click="cancelEditing()">Cancel</button>
+                </td>
+                <td>
+                    <button type="submit">Update user
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr/>
+</div>
+</div>
+
+
+<div ng-show="registerError">{{registerError}}</div>

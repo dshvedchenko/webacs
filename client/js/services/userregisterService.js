@@ -1,4 +1,4 @@
-app.service('userregisterService', function ($rootScope, $http) {
+app.service('userregisterService', function ($rootScope, $http, ENDPOINT_URI) {
     this.counter = 0;
     this.shares = 2000;
 
@@ -8,7 +8,7 @@ app.service('userregisterService', function ($rootScope, $http) {
     }
 
     this.register = function (data, onSuccess, onError) {
-        $http.post(backend_server + "/api/v1/register", data)
+        $http.post(ENDPOINT_URI + "/api/v1/register", data)
             .then(
                 function ok(response) {
                     onSuccess(response.data.data)

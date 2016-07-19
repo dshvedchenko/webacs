@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>A sample</title>
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
-    <script src="js/config.js"></script>
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-route/angular-route.js"></script>
     <script src="js/core/app.js"></script>
@@ -16,12 +15,11 @@
     <script src="js/services/userregisterService.js"></script>
     <script src="js/services/adminService.js"></script>
     <!-- controllers -->
-    <script src="js/controllers/first.js"></script>
-    <script src="js/controllers/resourcetype.js"></script>
     <script src="js/controllers/login.js"></script>
     <script src="js/controllers/logout.js"></script>
     <script src="js/controllers/userregister.js"></script>
-    <script src="js/controllers/admin/create_user.js"></script>
+    <script src="js/controllers/admin/resourcetype.js"></script>
+    <script src="js/controllers/admin/users.js"></script>
 </head>
 <body>
 <div ng-app="app">
@@ -32,13 +30,12 @@
         </div>
         <div ng-switch-when="true">
             <a href="#/logout">Logout</a>
-            <a href="#/first">First Controller</a>
+
             <div ngShow="isAdmin">
-                <a href="#/users/list">Users list</a>
-                <a href="#/users/create">Create Users</a>
-                <a href="#/users/edit">Edit Users</a>
+                <a href="#/admin/users">Admin Users</a>
                 <a href="#/resourcetype">Resource Types</a>
             </div>
+
         </div>
     </div>
     <div ng-view></div>

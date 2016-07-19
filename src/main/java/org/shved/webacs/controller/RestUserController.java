@@ -40,13 +40,11 @@ public class RestUserController {
         return rd;
     }
 
-    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveUser(
-            @PathVariable(value = "userId") Long userId,
             @RequestBody AppUserDTO appUserDTO
     ) {
-        appUserDTO.setId(userId);
         appUserService.handleSaveEditedAppUser(appUserDTO);
     }
 

@@ -1,4 +1,5 @@
 app.controller('userRegisterController', function ($scope, userregisterService, $http, $rootScope, $location) {
+
     $scope.username = '';
     $scope.password = '';
     $scope.confirm_password = '';

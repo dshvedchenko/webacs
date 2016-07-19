@@ -46,8 +46,8 @@ public class TestUserRegistrationController extends AbstractAppTest {
         regInfo.setUsername(username);
         regInfo.setPassword("1qaz2wsx");
         regInfo.setEmail(email);
-        regInfo.setFirstName("UserJ");
-        regInfo.setLastName("UserF");
+        regInfo.setFirstname("UserJ");
+        regInfo.setLastname("UserF");
 
         ResultActions res = mockMvc.perform(post(RestEndpoints.API_V1_REGISTER)
                 .content(this.json(regInfo))
