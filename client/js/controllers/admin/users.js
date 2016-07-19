@@ -1,6 +1,5 @@
-app.controller('adminUserController', function ($scope, appUserService, authService, $http, $rootScope, $location, $timeout) {
+app.controller('adminUserController', function ($scope, appUserService, authService, $http, $rootScope, $location, errorService) {
     $scope.users = [];
-    $scope.errorBox = '';
     $scope.isEditing = false;
     $scope.created = ''
 
@@ -10,8 +9,8 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
 
     appUserService.getValidRoles(
         null,
-        function (error) {
-            $scope.errorBox = error
+        function (response) {
+            errorService.setError(response.data.error)
         }
     )
 
@@ -20,6 +19,9 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
             .then(
                 function (data) {
                     $scope.users = data.data;
+                },
+                function (response) {
+                    errorService.setError(response.data.error)
                 }
             )
     }
@@ -38,10 +40,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
                     getAllUsers();
                 },
                 function (response) {
-                    $scope.errorBox = response.data.error.message;
-                    $timeout(function () {
-                        $scope.errorBox = undefined;
-                    }, 5000)
+                    errorService.setError(response.data.error)
                 }
             )
     }

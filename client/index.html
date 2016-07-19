@@ -10,7 +10,9 @@
     <script src="js/core/app.js"></script>
     <script src="js/core/routing.js"></script>
     <script src="js/core/authinterceptor.js"></script>
-    <!-- services -->
+    <!-- ui services -->
+    <script src="js/services/errorService.js"></script>
+    <!-- core -->
     <script src="js/services/authService.js"></script>
     <script src="js/services/userRegisterService.js"></script>
     <script src="js/services/appUserService.js"></script>
@@ -31,6 +33,7 @@
 </head>
 <body>
 <div ng-app="app">
+    <div class="has-error" ng-show="errorBox">{{errorBox}}</div>
     <div ng-switch on="loggedin">
         <div ng-switch-when="undefined">
             <a href="#/login">Login</a>
