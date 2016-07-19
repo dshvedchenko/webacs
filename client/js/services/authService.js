@@ -1,4 +1,4 @@
-app.service('sessionService', function ($rootScope, $http, ENDPOINT_URI) {
+app.service('authService', function ($rootScope, $http, ENDPOINT_URI) {
 
     this.isAdmin = function () {
         return $rootScope.isAdmin

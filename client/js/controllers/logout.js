@@ -1,7 +1,7 @@
-app.controller('logoutController', function ($scope, $http, $rootScope, $location, sessionService) {
+app.controller('logoutController', function ($scope, $http, $rootScope, $location, authService) {
 
     function logout() {
-        sessionService.logout(onSuccess, onError)
+        authService.logout(onSuccess, onError)
         $location.path("/login")
     };
 

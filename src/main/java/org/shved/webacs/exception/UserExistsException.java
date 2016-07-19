@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.CONFLICT)
 public class UserExistsException extends AppException {
     public UserExistsException() {
-        super();
+        super("USERNAME Already taken");
     }
 
     public UserExistsException(String message, Throwable e) {

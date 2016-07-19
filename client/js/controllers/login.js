@@ -1,4 +1,4 @@
-app.controller('loginController', function ($scope, sessionService, $http, $rootScope, $location) {
+app.controller('loginController', function ($scope, authService, $http, $rootScope, $location) {
     $scope.username = ''
     $scope.password = ''
     $scope.loginError = ''
@@ -8,7 +8,7 @@ app.controller('loginController', function ($scope, sessionService, $http, $root
             username: angular.copy($scope.username),
             password: angular.copy($scope.password)
         }
-        sessionService.login(data, onSuccess, onError)
+        authService.login(data, onSuccess, onError)
     }
 
     onSuccess = function (token) {

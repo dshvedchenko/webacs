@@ -1,13 +1,19 @@
+<div class="has-error" ng-show="errorBox">{{errorBox}}</div>
 <p>
 <div class="commands" ng-click="setCreation()">Create new User</div></p>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
-<div class="item" ng-repeat="item in users | filter : usernameFilter "
-     ng-click="setEditedItem(item)"
-     ng-class="{'active':isCurrentItem(item.id)}"
->
-    {{item.username}} # {{item.sysrole}}
-</div>
+<table>
+    <tr ng-repeat="item in users | filter : usernameFilter "
+        ng-click="setEditedItem(item)"
+        ng-class="{'active':isCurrentItem(item.id)}">
+        <td>{{ item.id }}</td>
+        <td>{{ item.username }}</td>
+        <td>{{ item.firstname }}</td>
+        <td>{{ item.lastname }}</td>
+        <td>{{ item.email}}</td>
+    </tr>
+</table>
 
 <div ng-if="isCreation">
     <hr/>
@@ -112,6 +118,3 @@
     <hr/>
 </div>
 </div>
-
-
-<div ng-show="errorBox">{{errorBox}}</div>

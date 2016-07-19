@@ -6,20 +6,28 @@
     <link rel="stylesheet" href="css/main.css" type="text/css"/>
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-route/angular-route.js"></script>
+    <!-- core -->
     <script src="js/core/app.js"></script>
     <script src="js/core/routing.js"></script>
     <script src="js/core/authinterceptor.js"></script>
     <!-- services -->
-    <script src="js/services/coreService.js"></script>
-    <script src="js/services/sessionService.js"></script>
-    <script src="js/services/userregisterService.js"></script>
-    <script src="js/services/adminService.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/services/userRegisterService.js"></script>
+    <script src="js/services/appUserService.js"></script>
+    <script src="js/services/claimService.js"></script>
+    <script src="js/services/resourceTypeService.js"></script>
+    <script src="js/services/resourceService.js"></script>
+    <script src="js/services/permissionService.js"></script>
+    <script src="js/services/userPermissionService.js"></script>
     <!-- controllers -->
     <script src="js/controllers/login.js"></script>
     <script src="js/controllers/logout.js"></script>
     <script src="js/controllers/userregister.js"></script>
     <script src="js/controllers/admin/resourcetype.js"></script>
     <script src="js/controllers/admin/users.js"></script>
+    <script src="js/controllers/admin/resource.js"></script>
+    <script src="js/controllers/userpermission.js"></script>
+    <script src="js/controllers/claims.js"></script>
 </head>
 <body>
 <div ng-app="app">

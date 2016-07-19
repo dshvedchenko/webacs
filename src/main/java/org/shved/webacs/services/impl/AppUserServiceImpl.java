@@ -131,6 +131,7 @@ public class AppUserServiceImpl implements IAppUserService {
         if (appUser == null) throw new AppException();
 
         if (isEmailUsedByAnotherUser(appUser, appUserDTO.getEmail())) throw new EmailExistsException();
+        if (userExist(appUserDTO.getUsername())) throw new UserExistsException();
 
         applyAppUserDTO2AppUserByAdmin(appUserDTO, appUser);
 
@@ -138,6 +139,8 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     private void applyAppUserDTO2AppUserByAdmin(AppUserDTO appUserDTO, AppUser appUser) {
+        if (appUser.getId() != appUserDTO.getId()) throw new AppException("user id must match");
+        appUser.setUsername(appUserDTO.getUsername());
         appUser.setEnabled(appUserDTO.isEnabled());
         appUser.setDisabled_at(appUser.getEnabled() ? null : new Date());
         appUser.setEmail(appUserDTO.getEmail());

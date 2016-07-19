@@ -1,4 +1,4 @@
-app.service('adminService', function ($rootScope, $http, ENDPOINT_URI) {
+app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
     this.counter = 0;
     $rootScope.validRoles = [];
     var service = this,

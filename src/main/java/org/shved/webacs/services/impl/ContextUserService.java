@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author dshvedchenko on 7/14/16.
  */
 @Service
-public class ContextuserService implements IContextUserService {
+public class ContextUserService implements IContextUserService {
 
     @Autowired
     IAppUserDAO appUserDAO;

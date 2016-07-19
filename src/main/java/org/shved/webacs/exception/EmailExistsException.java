@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.CONFLICT)
 public class EmailExistsException extends AppException {
     public EmailExistsException() {
-        super();
+        super("EMAIL already taken");
     }
 
     public EmailExistsException(String message, Throwable e) {

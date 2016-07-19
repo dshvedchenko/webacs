@@ -1,14 +1,14 @@
-app.controller('adminUserController', function ($scope, adminService, sessionService, $http, $rootScope, $location) {
+app.controller('adminUserController', function ($scope, appUserService, authService, $http, $rootScope, $location, $timeout) {
     $scope.users = [];
     $scope.errorBox = '';
     $scope.isEditing = false;
     $scope.created = ''
 
-    if (!sessionService.isLogged()) {
+    if (!authService.isLogged()) {
         $location.path("/")
     }
 
-    adminService.getValidRoles(
+    appUserService.getValidRoles(
         null,
         function (error) {
             $scope.errorBox = error
@@ -16,7 +16,7 @@ app.controller('adminUserController', function ($scope, adminService, sessionSer
     )
 
     function getAllUsers() {
-        adminService.all()
+        appUserService.all()
             .then(
                 function (data) {
                     $scope.users = data.data;
@@ -26,8 +26,25 @@ app.controller('adminUserController', function ($scope, adminService, sessionSer
 
     function createUser(item) {
         var data = angular.copy(item);
-        adminService.createUser(data, onSuccess, onError)
+        appUserService.createUser(data, onSuccess, onError)
+
     };
+
+    function updateItem(item) {
+        var data = angular.copy(item)
+        appUserService.updateItem(data)
+            .then(
+                function ok(response) {
+                    getAllUsers();
+                },
+                function (response) {
+                    $scope.errorBox = response.data.error.message;
+                    $timeout(function () {
+                        $scope.errorBox = undefined;
+                    }, 5000)
+                }
+            )
+    }
 
     function getNewUserForView() {
         $scope.newUser = {
@@ -77,18 +94,9 @@ app.controller('adminUserController', function ($scope, adminService, sessionSer
     }
 
     function setCreation() {
+        cancelEditing();
         $scope.isCreation = true;
         getNewUserForView();
-    }
-
-    function updateItem(item) {
-        var data = angular.copy(item)
-        adminService.updateItem(data)
-            .then(
-                function ok(response) {
-                    getAllUsers();
-                }
-            )
     }
 
     getAllUsers();
