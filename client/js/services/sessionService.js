@@ -4,6 +4,10 @@ app.service('sessionService', function ($rootScope, $http, ENDPOINT_URI) {
         return $rootScope.isAdmin
     }
 
+    this.isLogged = function () {
+        return $rootScope.token !== undefined;
+    }
+
     this.login = function (data, onSuccess, onError) {
 
         var post = $http.post(ENDPOINT_URI + "/login", data);

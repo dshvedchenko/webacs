@@ -1,3 +1,5 @@
+<p>
+<div class="commands" ng-click="setCreation()">Create new User</div></p>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
 <div class="item" ng-repeat="item in users | filter : usernameFilter "
@@ -7,7 +9,7 @@
     {{item.username}} # {{item.sysrole}}
 </div>
 
-<div ng-if="!isEditing">
+<div ng-if="isCreation">
     <hr/>
     <form class="create-form" role="form" ng-submit="createUser(newUser)" novalidate>
         <table>
@@ -112,4 +114,4 @@
 </div>
 
 
-<div ng-show="registerError">{{registerError}}</div>
+<div ng-show="errorBox">{{errorBox}}</div>

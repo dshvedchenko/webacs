@@ -1,8 +1,12 @@
-app.controller('adminUserController', function ($scope, adminService, $http, $rootScope, $location) {
+app.controller('adminUserController', function ($scope, adminService, sessionService, $http, $rootScope, $location) {
     $scope.users = [];
     $scope.errorBox = '';
     $scope.isEditing = false;
     $scope.created = ''
+
+    if (!sessionService.isLogged()) {
+        $location.path("/")
+    }
 
     adminService.getValidRoles(
         null,
@@ -40,6 +44,7 @@ app.controller('adminUserController', function ($scope, adminService, $http, $ro
 
     onSuccess = function (data) {
         $scope.created = 'CREATED'
+        getAllUsers()
     };
 
     onError = function (data) {
@@ -62,12 +67,17 @@ app.controller('adminUserController', function ($scope, adminService, $http, $ro
     function setEditedItem(user) {
         $scope.editedItem = angular.copy(user);
         $scope.isEditing = true;
+        $scope.isCreation = false;
         $scope.newUser = null;
     }
 
     function cancelEditing() {
         $scope.editedItem = null;
         $scope.isEditing = false;
+    }
+
+    function setCreation() {
+        $scope.isCreation = true;
         getNewUserForView();
     }
 
@@ -82,7 +92,6 @@ app.controller('adminUserController', function ($scope, adminService, $http, $ro
     }
 
     getAllUsers();
-    getNewUserForView();
 
     $scope.editedItem = null;
     $scope.updateItem = updateItem;
@@ -92,4 +101,5 @@ app.controller('adminUserController', function ($scope, adminService, $http, $ro
     $scope.isFormValid = isFormValid;
     $scope.createUser = createUser;
     $scope.getAllUsers = getAllUsers;
+    $scope.setCreation = setCreation;
 });
