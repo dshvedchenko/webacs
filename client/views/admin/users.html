@@ -11,6 +11,7 @@
         <td>{{ item.firstname }}</td>
         <td>{{ item.lastname }}</td>
         <td>{{ item.email}}</td>
+        <td>{{ item.sysrole}}</td>
     </tr>
 </table>
 
@@ -51,9 +52,10 @@
                 <td>Role</td>
                 <td>
                     <select name="roleSelect" id="roleSelect"
+                            ng-options="role for role in validRoles"
                             ng-model="newUser.sysrole"
                     >
-                        <option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>
+                        <!--<option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>-->
                     </select>
                 </td>
             </tr>
@@ -96,9 +98,10 @@
                 <td>Role</td>
                 <td>
                     <select name="roleSelect"
+                            ng-options="role for role in validRoles"
                             ng-model="editedItem.sysrole"
                     >
-                        <option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>
+                        <!--<option ng-repeat="option in validRoles" value="{{option}}">{{option}}</option>-->
 
                     </select>
                 </td>

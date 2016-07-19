@@ -131,7 +131,7 @@ public class AppUserServiceImpl implements IAppUserService {
         if (appUser == null) throw new AppException();
 
         if (isEmailUsedByAnotherUser(appUser, appUserDTO.getEmail())) throw new EmailExistsException();
-        if (userExist(appUserDTO.getUsername())) throw new UserExistsException();
+        if (isUsernameUsedByAnotherUser(appUser, appUserDTO.getUsername())) throw new UserExistsException();
 
         applyAppUserDTO2AppUserByAdmin(appUserDTO, appUser);
 
@@ -175,6 +175,12 @@ public class AppUserServiceImpl implements IAppUserService {
 
     private boolean isEmailUsedByAnotherUser(AppUser currUser, String email) {
         AppUser anotherUser = appUserDAO.findByEmail(email);
+        if (anotherUser == null) return false;
+        return currUser.getId() != anotherUser.getId();
+    }
+
+    private boolean isUsernameUsedByAnotherUser(AppUser currUser, String newUsername) {
+        AppUser anotherUser = appUserDAO.findByUsername(newUsername);
         if (anotherUser == null) return false;
         return currUser.getId() != anotherUser.getId();
     }

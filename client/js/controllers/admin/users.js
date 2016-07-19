@@ -28,7 +28,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
 
     function createUser(item) {
         var data = angular.copy(item);
-        appUserService.createUser(data, onSuccess, onError)
+        appUserService.createUser(data, onSuccessCreation, onErrorCreation)
 
     };
 
@@ -58,12 +58,13 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         };
     }
 
-    onSuccess = function (data) {
+    onSuccessCreation = function (data) {
         $scope.created = 'CREATED'
-        getAllUsers()
+        finishCreation();
+        getAllUsers();
     };
 
-    onError = function (data) {
+    onErrorCreation = function (data) {
         $scope.errorBox = data
     };
 
@@ -96,6 +97,10 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         cancelEditing();
         $scope.isCreation = true;
         getNewUserForView();
+    }
+
+    function finishCreation() {
+        $scope.isCreation = false;
     }
 
     getAllUsers();

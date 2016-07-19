@@ -20,5 +20,9 @@ app.config(function ($routeProvider) {
             templateUrl: "views/admin/users.html",
             controller: "adminUserController"
         })
+        .when("/claims", {
+            templateUrl: "views/claims.html",
+            controller: "claimController"
+        })
     ;
 });

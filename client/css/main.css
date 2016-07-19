@@ -4,7 +4,9 @@ body {
 
 .has-error {
     color: red;
-    background-color: yellow;
+    background-color: orange;
+    border-color: black;
+    padding: 20px;
 }
 
 .active {

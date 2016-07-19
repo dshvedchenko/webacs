@@ -29,7 +29,7 @@
     <script src="js/controllers/admin/users.js"></script>
     <script src="js/controllers/admin/resource.js"></script>
     <script src="js/controllers/userpermission.js"></script>
-    <script src="js/controllers/claims.js"></script>
+    <script src="js/controllers/claim.js"></script>
 </head>
 <body>
 <div ng-app="app">
@@ -41,7 +41,7 @@
         </div>
         <div ng-switch-when="true">
             <a href="#/logout">Logout</a>
-
+            <a href="#/claims">Claims</a>
             <div ngShow="isAdmin">
                 <a href="#/admin/users">Admin Users</a>
                 <a href="#/resourcetype">Resource Types</a>
