@@ -63,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http
                     .csrf().disable()
                     .exceptionHandling().authenticationEntryPoint(getUnauthorizedHandler()).and()
-
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                     .authorizeRequests()
                     .antMatchers(HttpMethod.OPTIONS, "/api/v1/**").anonymous() // needed for browser preflight checks

@@ -8,7 +8,7 @@ app.service('userregisterService', function ($rootScope, $http, ENDPOINT_URI) {
     }
 
     this.register = function (data, onSuccess, onError) {
-        $http.post(ENDPOINT_URI + "/api/v1/register", data)
+        $http.post(ENDPOINT_URI + "/register", data)
             .then(
                 function ok(response) {
                     onSuccess(response.data.data)

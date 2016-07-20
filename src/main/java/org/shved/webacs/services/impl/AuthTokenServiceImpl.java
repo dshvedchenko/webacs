@@ -56,7 +56,9 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
         AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
         if (appUser == null) throw new TokenException();
 
-        if (passwordEncoder.matches(userLogin.getPassword(), appUser.getPassword())) {
+        boolean allowedToLogin = isAllowedToLogin(userLogin, appUser);
+
+        if (allowedToLogin) {
             AuthToken token = null;
             token = authTokenDAO.findNonExpiredByUserId(appUser.getId(), getValidPoint());
             if (token == null) {
@@ -71,6 +73,10 @@ public class AuthTokenServiceImpl implements IAuthTokenService {
         }
         if (result.getToken() == null) throw new TokenException();
         return result;
+    }
+
+    private boolean isAllowedToLogin(UserAuthDTO userLogin, AppUser appUser) {
+        return passwordEncoder.matches(userLogin.getPassword(), appUser.getPassword()) && appUser.getEnabled();
     }
 
     Date getValidPoint() {

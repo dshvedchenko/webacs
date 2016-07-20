@@ -27,7 +27,6 @@ public class RestClaimStateController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getById(
-            @RequestHeader(name = "X-AUTHID") String token,
             @PathVariable(value = "id") Integer id
     ) {
         return new ResponseData(claimStateService.getById(id));
@@ -35,7 +34,6 @@ public class RestClaimStateController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getAll(
-            @RequestHeader(name = "X-AUTHID") String token
     ) {
         return new ResponseData(claimStateService.getAll());
     }

@@ -1,5 +1,6 @@
 <p>
-<div class="commands" ng-click="setCreation()">Create new User</div></p>
+<div class="commands" ng-click="setCreation()" ng-show="isAdmin">Create new User</div></p>
+<div class="commands" ng-click="getAllUsers()">Refresh</div></p>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
 <table>

@@ -61,6 +61,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
+    @Transactional
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
         AppUser appUser = contextUserService.getContextUser();
@@ -69,7 +70,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Secured("ADMIN")
     @Transactional
     public List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
@@ -132,7 +132,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         PermissionClaim currentPermissionClaim = permissionClaimDAO.findById(id);
         Boolean ownerOfClaim = contextUser == currentPermissionClaim.getUser();
         Boolean deleteAllowedInState = currentPermissionClaim.getClaimState() == ClaimState.CLAIMED;
-        if (ownerOfClaim && deleteAllowedInState) {
+        if (ownerOfClaim && deleteAllowedInState /* ADMINs also need ability to delete claims */) {
             permissionClaimDAO.deleteById(id);
         } else {
             throw new AppException("DELETE REJECTED in state " + currentPermissionClaim.getClaimState());

@@ -13,7 +13,7 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
             )
     }
 
-    this.createUser = function (data, onSuccess, onError) {
+    service.createUser = function (data, onSuccess, onError) {
         $http.post(ENDPOINT_URI + path, data)
             .then(
                 function ok(response) {
@@ -25,7 +25,7 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
             )
     }
 
-    this.getValidRoles = function (onSuccess, onError) {
+    service.getValidRoles = function (onSuccess, onError) {
         if ($rootScope.validRoles.length === 0) {
             $http.get(ENDPOINT_URI + "/sysroles")
                 .then(
@@ -40,11 +40,11 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
         }
     }
 
-    this.updateItem = function (data) {
+    service.updateItem = function (data) {
         return $http.put(ENDPOINT_URI + path, data);
     }
 
-    this.deleteItem = function (id) {
+    service.deleteItem = function (id) {
         return $http.delete(ENDPOINT_URI + path + "/" + id);
     }
 });

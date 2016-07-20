@@ -35,8 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
-    @Transactional
-    //   @WithMockUser(username = "admin", authorities = {"GENERIC", "ADMIN"})
     public void getAllClaimsTest() throws Exception {
         String tokenStr = getTokenInfo();
 
