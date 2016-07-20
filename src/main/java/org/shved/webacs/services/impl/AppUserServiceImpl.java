@@ -41,6 +41,7 @@ public class AppUserServiceImpl implements IAppUserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public List<AppUserDTO> getAll() {
         List<AppUser> appUsers = appUserDAO.findAllAppUsers();
         return getAppUserDtoList(appUsers);

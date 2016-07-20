@@ -34,7 +34,9 @@ OIDS = FALSE
 ALTER TABLE app.appuser
   OWNER TO acs_app;
 COMMENT ON COLUMN app.appuser.password IS 'to store as md5/sha256 hash, and need to use Apache Shiro';
-
+CREATE UNIQUE INDEX app_user_enabled_email
+  ON app.appuser (email)
+  WHERE (enabled);
 
 CREATE TRIGGER update_appuser_updated_at BEFORE UPDATE ON app.appuser FOR EACH ROW EXECUTE PROCEDURE app.update_updated_at_column();
 -- DROP TABLE app.resource;

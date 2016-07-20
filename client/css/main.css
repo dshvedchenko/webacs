@@ -9,8 +9,13 @@ body {
     padding: 20px;
 }
 
-.active {
+.activerow {
     color: red;
+}
+
+.disabledrow {
+    text-decoration: line-through;
+    color: #666666;
 }
 
 .commands {

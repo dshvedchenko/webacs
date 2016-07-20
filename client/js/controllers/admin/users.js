@@ -38,6 +38,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
             .then(
                 function ok(response) {
                     getAllUsers();
+                    leaveEditing();
                 },
                 function (response) {
                     errorService.setError(response.data.error)
@@ -88,13 +89,13 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         $scope.newUser = null;
     }
 
-    function cancelEditing() {
+    function leaveEditing() {
         $scope.editedItem = null;
         $scope.isEditing = false;
     }
 
     function setCreation() {
-        cancelEditing();
+        leaveEditing();
         $scope.isCreation = true;
         getNewUserForView();
     }
@@ -107,7 +108,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
 
     $scope.editedItem = null;
     $scope.updateItem = updateItem;
-    $scope.cancelEditing = cancelEditing;
+    $scope.leaveEditing = leaveEditing;
     $scope.setEditedItem = setEditedItem;
     $scope.isCurrentItem = isCurrentItem;
     $scope.isFormValid = isFormValid;

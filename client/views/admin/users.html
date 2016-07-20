@@ -3,15 +3,19 @@
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
 <table>
+    <tr>
+        <th>uid</th>
+        <th>username</th>
+        <th>Firstname</th>
+        <th>LastName</th>
+    </tr>
     <tr ng-repeat="item in users | filter : usernameFilter "
         ng-click="setEditedItem(item)"
-        ng-class="{'active':isCurrentItem(item.id)}">
+        ng-class="{'activerow':isCurrentItem(item.id), 'disabledrow':!item.enabled}">
         <td>{{ item.id }}</td>
         <td>{{ item.username }}</td>
         <td>{{ item.firstname }}</td>
         <td>{{ item.lastname }}</td>
-        <td>{{ item.email}}</td>
-        <td>{{ item.sysrole}}</td>
     </tr>
 </table>
 
@@ -108,7 +112,7 @@
             </tr>
             <tr>
                 <td>
-                    <button type="button" ng-click="cancelEditing()">Cancel</button>
+                    <button type="button" ng-click="leaveEditing()">Cancel</button>
                 </td>
                 <td>
                     <button type="submit">Update user

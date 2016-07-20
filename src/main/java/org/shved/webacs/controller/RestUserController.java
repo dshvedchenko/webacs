@@ -71,7 +71,7 @@ public class RestUserController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseData<AppUserDTO> getAll(
     ) {
-        List<AppUserDTO> listUsers = appUserService.getAllEnabled();
+        List<AppUserDTO> listUsers = appUserService.getAll();
         ResponseData rd = new ResponseData();
         rd.setData(listUsers);
         return rd;

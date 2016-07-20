@@ -1,16 +1,14 @@
 package org.shved.webacs.dao.impl;
 
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.exception.OperationIsNotAllowed;
 import org.shved.webacs.model.AppUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.openmbean.OpenDataException;
 import java.util.List;
 
 /**
@@ -70,6 +68,18 @@ public class AppUserDAOImpl extends AbstractDao<Long, AppUser> implements IAppUs
 
     @Override
     public AppUser findByEmail(String email) {
-        return findByStringProperty("email", email);
+        Criteria criteria = getSession().createCriteria(AppUser.class);
+        criteria.add(
+                Restrictions.and(
+                        Restrictions.eq("email", email).ignoreCase(),
+                        Restrictions.eq("enabled", true)
+                )
+        );
+        Object userObj = criteria.uniqueResult();
+        AppUser appUser = null;
+        if (userObj != null) {
+            appUser = (AppUser) userObj;
+        }
+        return appUser;
     }
 }
