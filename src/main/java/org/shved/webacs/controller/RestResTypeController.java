@@ -38,12 +38,10 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getAll());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public void update(
-            @PathVariable(value = "id") Integer id,
             @RequestBody ResTypeDTO updatedItem
     ) {
-        updatedItem.setId(id);
         resTypeService.save(updatedItem);
     }
 

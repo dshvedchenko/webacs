@@ -17,18 +17,16 @@
     <script src="js/services/userRegisterService.js"></script>
     <script src="js/services/appUserService.js"></script>
     <script src="js/services/claimService.js"></script>
-    <script src="js/services/resourceTypeService.js"></script>
+    <script src="js/services/restypesService.js"></script>
     <script src="js/services/resourceService.js"></script>
     <script src="js/services/permissionService.js"></script>
-    <script src="js/services/userPermissionService.js"></script>
     <!-- controllers -->
     <script src="js/controllers/login.js"></script>
     <script src="js/controllers/logout.js"></script>
     <script src="js/controllers/userregister.js"></script>
-    <script src="js/controllers/admin/resourcetype.js"></script>
+    <script src="js/controllers/admin/restypes.js"></script>
     <script src="js/controllers/admin/users.js"></script>
     <script src="js/controllers/admin/resource.js"></script>
-    <script src="js/controllers/userpermission.js"></script>
     <script src="js/controllers/claim.js"></script>
 </head>
 <body>
@@ -44,7 +42,7 @@
             <a href="#/claims">Claims</a>
             <div ng-show="isAdmin">
                 <a href="#/admin/users">Admin Users</a>
-                <a href="#/resourcetype">Resource Types</a>
+                <a href="#/admin/restypes">Resource Types</a>
             </div>
 
         </div>

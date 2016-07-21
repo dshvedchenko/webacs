@@ -1,0 +1,66 @@
+<p>
+<div class="commands" ng-click="setCreation()" ng-show="isAdmin">Create new Resource Type</div></p>
+<div class="commands" ng-click="getAll()">Refresh</div></p>
+<p><label for="nameFilter">Filter by username : </label><input id="nameFilter" type="text" ng-model="nameFilter">
+</p>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+    </tr>
+    <tr ng-repeat="item in items | filter : nameFilter "
+        ng-click="setEditedItem(item)"
+        ng-class="{'activerow':isCurrentItem(item.id)"
+    >
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+
+    </tr>
+</table>
+
+<div ng-if="isCreation">
+    <hr/>
+    <form class="create-form" role="form" ng-submit="createItem(newItem)" novalidate>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" ng-model="newItem.name"/></td>
+            </tr>
+            <tr>
+                <td>Register</td>
+                <td>
+                    <button type="submit" ng-disabled="!isFormValid(newItem)">Create Resource type</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr/>
+</div>
+<div ng-if="isEditing">
+    <hr/>
+    <h4>Editing {{editedItem.name}}</h4>
+    <form class="update-form" role="form" ng-submit="updateItem(editedItem)" novalidate>
+        <table>
+            <tr>
+                <td>Id</td>
+                <td><input type="text" ng-model="editedItem.id" readonly/></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" ng-model="editedItem.name"/></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button type="button" ng-click="leaveEditing()">Cancel</button>
+                </td>
+                <td>
+                    <button type="submit">Update ResourceType
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr/>
+</div>
+</div>

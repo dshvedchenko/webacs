@@ -4,7 +4,8 @@
         ng-click="setEditedItem(item)"
     >
         <td>{{ item.id }}</td>
-        <td>{{ item.user }}</td>
-        <td>{{ item.permission }}</td>
+        <td>{{ item.user.username }}</td>
+        <td>{{ item.permission.title }}</td>
+        <td>{{ item.permission.resource.name }}</td>
     </tr>
 </table>

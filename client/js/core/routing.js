@@ -1,9 +1,5 @@
 app.config(function ($routeProvider) {
     $routeProvider
-        .when("/resourcetype", {
-            templateUrl: "views/resourcetype.html",
-            controller: "resourceTypeController"
-        })
         .when("/login", {
             templateUrl: "views/login.html",
             controller: "loginController"
@@ -23,6 +19,10 @@ app.config(function ($routeProvider) {
         .when("/claims", {
             templateUrl: "views/claims.html",
             controller: "claimController"
+        })
+        .when("/admin/restypes", {
+            templateUrl: "views/admin/restypes.html",
+            controller: "restypesController"
         })
     ;
 });

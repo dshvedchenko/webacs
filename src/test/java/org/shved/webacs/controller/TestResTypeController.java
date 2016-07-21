@@ -135,7 +135,7 @@ public class TestResTypeController extends AbstractAppTest {
         rtdto.setName("Commercial Software");
 
         ResultActions editedResp = mockMvc.perform(
-                put(RestEndpoints.API_V1_RESTYPES + "/" + newId)
+                put(RestEndpoints.API_V1_RESTYPES)
                         .header("X-AUTHID", tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
