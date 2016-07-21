@@ -79,7 +79,7 @@ public class AppUser {
         if (this.getClass() != getClass()) return false;
         AppUser inputObj = (AppUser) obj;
 
-        if (this.getId() != inputObj.getId()) return false;
+        if (this.getId().longValue() != inputObj.getId().longValue()) return false;
 
         return true;
     }

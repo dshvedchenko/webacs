@@ -122,32 +122,33 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     private void secureFilterAppUserDTO(AppUserDTO appUserDTO) {
-        //  appUserDTO.setPassword(null);
+        //  appUserNewInfoDTO.setPassword(null);
     }
 
     @Transactional
     @Override
-    public void handleSaveEditedAppUser(AppUserDTO appUserDTO) {
-        AppUser appUser = appUserDAO.findById(appUserDTO.getId());
+    public void handleSaveEditedAppUser(AppUserDTO appUserNewInfoDTO) {
+        AppUser appUserNewInfo = modelMapper.map(appUserNewInfoDTO, AppUser.class);
+        AppUser appUser = appUserDAO.findById(appUserNewInfoDTO.getId());
         if (appUser == null) throw new AppException();
 
-        if (isEmailUsedByAnotherUser(appUser, appUserDTO.getEmail())) throw new EmailExistsException();
-        if (isUsernameUsedByAnotherUser(appUser, appUserDTO.getUsername())) throw new UserExistsException();
+        if (isEmailUsedByAnotherUser(appUser, appUserNewInfo.getEmail())) throw new EmailExistsException();
+        if (isUsernameUsedByAnotherUser(appUser, appUserNewInfo.getUsername())) throw new UserExistsException();
 
-        applyAppUserDTO2AppUserByAdmin(appUserDTO, appUser);
+        applyAppUserDTO2AppUserByAdmin(appUserNewInfo, appUser);
 
         appUserDAO.save(appUser);
     }
 
-    private void applyAppUserDTO2AppUserByAdmin(AppUserDTO appUserDTO, AppUser appUser) {
-        if (appUser.getId() != appUserDTO.getId()) throw new AppException("user id must match");
-        appUser.setUsername(appUserDTO.getUsername());
-        appUser.setEnabled(appUserDTO.isEnabled());
+    private void applyAppUserDTO2AppUserByAdmin(AppUser appUserNewInfo, AppUser appUser) {
+        if (!appUser.getId().equals(appUserNewInfo.getId())) throw new AppException("user id must match");
+        appUser.setUsername(appUserNewInfo.getUsername());
+        appUser.setEnabled(appUserNewInfo.getEnabled());
         appUser.setDisabled_at(appUser.getEnabled() ? null : new Date());
-        appUser.setEmail(appUserDTO.getEmail());
-        appUser.setSysrole(appUserDTO.getSysrole());
-        appUser.setFirstname(appUserDTO.getFirstname());
-        appUser.setLastname(appUserDTO.getLastname());
+        appUser.setEmail(appUserNewInfo.getEmail());
+        appUser.setSysrole(appUserNewInfo.getSysrole());
+        appUser.setFirstname(appUserNewInfo.getFirstname());
+        appUser.setLastname(appUserNewInfo.getLastname());
     }
 
     private void isNewUserValid(AppUser newUser) {

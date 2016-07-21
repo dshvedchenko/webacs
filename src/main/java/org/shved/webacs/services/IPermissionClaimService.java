@@ -14,14 +14,18 @@ import java.util.List;
  */
 public interface IPermissionClaimService {
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAll();
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO);
 
     PermissionClaimDTO getById(Long id);
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO);
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
 
     List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList);
@@ -32,7 +36,7 @@ public interface IPermissionClaimService {
 
     void approve(Long claimId);
 
-    @Secured("ADMIN")
+    @PreAuthorize("hasAuthority('ADMIN')")
     void grant(Long claimId);
 
     void revoke(Long claimId);

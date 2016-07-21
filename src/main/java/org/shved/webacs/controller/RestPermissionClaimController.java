@@ -22,7 +22,7 @@ import java.util.List;
  * @author dshvedchenko on 6/26/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD})
 @RequestMapping(value = RestEndpoints.API_V1_CLAIMS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestPermissionClaimController {
 
@@ -102,9 +102,19 @@ public class RestPermissionClaimController {
         permissionClaimService.revoke(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    //@ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAll(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAll();
+        return new ResponseData(list);
+    }
+
+    @PreAuthorize("hasAuthority('GENERIC')")
+    @RequestMapping(value = "/own", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getOwnClaims(
     ) {
         List<PermissionClaimDTO> list = permissionClaimService.getAll();
         return new ResponseData(list);

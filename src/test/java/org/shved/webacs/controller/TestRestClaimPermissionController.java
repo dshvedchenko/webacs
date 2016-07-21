@@ -12,6 +12,7 @@ import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestRestClaimPermissionController extends AbstractAppTest {
 
     @Test
+    @Transactional
+    //@WithMockUser(value = "admin")
     public void getAllClaimsTest() throws Exception {
         String tokenStr = getTokenInfo();
 
@@ -42,19 +45,17 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 get(RestEndpoints.API_V1_CLAIMS)
                         .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
-                        .contentType(contentType)
-
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data", hasSize(14)))
-                .andExpect(jsonPath("$.data[0].approver.username", is("admin")))
-                .andExpect(jsonPath("$.data[0].user.username", is("billk")))
+                .andExpect(jsonPath("$.data[0].approver.username", is("billk")))
+                .andExpect(jsonPath("$.data[0].user.username", is("ninaa")))
                 .andExpect(jsonPath("$.data[0].claimedAt", is("2016-06-10 09:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].grantedAt", is("2016-06-10 10:20:00.000+0000")))
-                .andExpect(jsonPath("$.data[13].approver.username", is("billk")))
-                .andExpect(jsonPath("$.data[13].user.username", is("ninaa")))
+                .andExpect(jsonPath("$.data[13].approver.username", is("admin")))
+                .andExpect(jsonPath("$.data[13].user.username", is("billk")))
                 .andExpect(jsonPath("$.data[13].claimedAt", is("2016-06-10 09:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[13].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[13].grantedAt", is("2016-06-10 10:20:00.000+0000")));

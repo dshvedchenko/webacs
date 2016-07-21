@@ -13,6 +13,7 @@ import org.shved.webacs.services.IPermissionClaimService;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,14 +48,12 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     IContextUserService contextUserService;
 
     @Override
-    @Secured("ADMIN")
     public List<PermissionClaimDTO> getAll() {
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllPermissionClaim();
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
-    @Secured("ADMIN")
     public List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO) {
         ClaimState claimState = modelMapper.map(claimStateDTO, ClaimState.class);
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByClaimState(claimState));
@@ -162,7 +161,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Secured("ADMIN")
     public void grant(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);

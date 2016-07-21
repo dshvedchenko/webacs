@@ -185,8 +185,8 @@ public class TestRestUserController extends AbstractAppTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].username", is("fireoff")))
                 .andExpect(jsonPath("$.data[0].lastname", is("Alessio")))
-                .andExpect(jsonPath("$.data[0].firstname", is("Nina")))
-                .andExpect(jsonPath("$.data[0].email", is("ninaa@example.com")))
+                .andExpect(jsonPath("$.data[0].firstname", is("Franchesco")))
+                .andExpect(jsonPath("$.data[0].email", is("franna@example.com")))
                 .andExpect(jsonPath("$.data[0].sysrole", is("GENERIC")));
     }
 }

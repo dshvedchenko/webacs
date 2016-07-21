@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IAuthTokenDAO;
 import org.shved.webacs.dto.UserAuthDTO;
@@ -62,16 +63,36 @@ public class TestAuthController extends AbstractAppTest {
 
     @Test
     public void testLogout() throws Exception {
-        UserAuthDTO loginInfo = new UserAuthDTO();
-        loginInfo.setUsername(userName);
+        String tokenStr = getTokenInfo();
         mockMvc.perform(post("/api/v1/logout")
-                .content(this.json(loginInfo))
+                .header(Auth.AUTH_TOKEN_NAME, tokenStr)
+                .content("")
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+        ;
+    }
+
+    @Test
+    public void testDoubleLogout() throws Exception {
+        String tokenStr = getTokenInfo();
+        mockMvc.perform(post("/api/v1/logout")
+                .header(Auth.AUTH_TOKEN_NAME, tokenStr)
+                .content("")
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+        ;
+        mockMvc.perform(post("/api/v1/logout")
+                .header(Auth.AUTH_TOKEN_NAME, tokenStr)
+                .content("")
                 .accept(contentType)
                 .contentType(contentType))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().contentType(contentType))
         ;
     }
-
 
 }
