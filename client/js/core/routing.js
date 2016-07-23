@@ -28,5 +28,9 @@ app.config(function ($routeProvider) {
             templateUrl: "views/admin/resources.html",
             controller: "resourcesController"
         })
+        .when("/admin/permissions", {
+            templateUrl: "views/admin/permissions.html",
+            controller: "permissionsController"
+        })
     ;
 });

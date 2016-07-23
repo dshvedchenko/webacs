@@ -25,13 +25,13 @@ app.controller('loginController', function ($scope, authService, $http, $rootSco
     $scope.logingAsAdmin = function () {
         $scope.username = 'admin';
         $scope.password = '1qaz2wsx';
-        handleLogin();
+        $scope.handleLogin();
     };
 
     $scope.logingAsUser1 = function () {
         $scope.username = 'johns';
         $scope.password = '1qaz2wsx';
-        handleLogin();
+        $scope.handleLogin();
     };
 
 })
