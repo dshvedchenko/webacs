@@ -14,7 +14,7 @@ describe('authService : ', function () {
         httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should return token', function () {
+    it('good login should return token', function () {
 
         onSuccess = function (resultToken) {
             expect(resultToken).toEqual('122345332')
@@ -27,7 +27,7 @@ describe('authService : ', function () {
 
         authService.login({'username': 'admin', 'password': '12345'}, onSuccess)
         httpBackend.flush();
-    })
+    });
 
     it('should clear token', function () {
         $rootScope.token = '12345w334344';
@@ -43,6 +43,25 @@ describe('authService : ', function () {
         httpBackend.flush();
 
         expect($rootScope.token).toBeUndefined()
-    })
+    });
 
+    it('admin session should report isAdmin true', function () {
+        $rootScope.isAdmin = true;
+        expect(authService.isAdmin()).toEqual(true);
+    });
+
+    it('non admin session should report isAdmin false', function () {
+        $rootScope.isAdmin = false;
+        expect(authService.isAdmin()).toEqual(false);
+    });
+
+    it('when rootScope.token defined means logged in', function () {
+        $rootScope.token = '23455';
+        expect(authService.isLogged()).toEqual(true);
+    });
+
+    it('non admin session should report isAdmin false', function () {
+
+        expect(authService.isLogged()).toEqual(false);
+    });
 })
