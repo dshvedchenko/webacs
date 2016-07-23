@@ -22,4 +22,16 @@ app.controller('loginController', function ($scope, authService, $http, $rootSco
         errorService.setError(error)
     }
 
+    $scope.logingAsAdmin = function () {
+        $scope.username = 'admin';
+        $scope.password = '1qaz2wsx';
+        handleLogin();
+    };
+
+    $scope.logingAsUser1 = function () {
+        $scope.username = 'johns';
+        $scope.password = '1qaz2wsx';
+        handleLogin();
+    };
+
 })

@@ -13,7 +13,6 @@ public class ResourceDTO {
     private ResTypeDTO resType;
     private String name;
     private String detail;
-    private Long ownerPermissionId;
     private PermissionTitleDTO ownerPermission;
 
 }

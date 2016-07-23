@@ -46,7 +46,7 @@ public class RestResourceController {
         return new ResponseData(res);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateResource(
             @RequestBody ResourceDTO resourceDTO

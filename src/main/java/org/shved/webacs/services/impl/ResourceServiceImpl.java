@@ -56,12 +56,21 @@ public class ResourceServiceImpl implements IResourceService {
     public void updateResource(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         Resource toSave = resourceDAO.findById(resource.getId());
-        Permission newOwnerPermission = permissionDAO.findById(resourceDTO.getOwnerPermissionId());
+
+        setNewOwnerPermission(resourceDTO, toSave);
+
         toSave.setDetail(resource.getDetail());
         toSave.setResType(resource.getResType());
-        //TODO resolve trouble with storing such entities from REST
-        toSave.updateOwnerPermission(newOwnerPermission);
         resourceDAO.save(toSave);
+    }
+
+    private void setNewOwnerPermission(ResourceDTO resourceDTO, Resource toSave) {
+        Long newOwnerPermissionId = resourceDTO.getOwnerPermission() == null ? null : resourceDTO.getOwnerPermission().getId();
+        Permission newOwnerPermission = null;
+        if (newOwnerPermissionId != null) {
+            newOwnerPermission = permissionDAO.findById(newOwnerPermissionId);
+            toSave.updateOwnerPermission(newOwnerPermission);
+        }
     }
 
     @Override
