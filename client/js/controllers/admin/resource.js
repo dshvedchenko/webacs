@@ -43,8 +43,7 @@ app.controller('resourcesController',
 
         function createItem(item) {
             var data = angular.copy(item);
-            resourcesService.create(data, onSuccessCreation, onErrorCreation)
-
+            resourcesService.create(data, onSuccessCreation, onErrorCreation);
         };
 
         function deleteItem(item) {
@@ -84,7 +83,7 @@ app.controller('resourcesController',
 
         onSuccessCreation = function (data) {
             $scope.created = 'CREATED'
-            finishCreation();
+            leaveCreation();
             getAll();
         };
 
