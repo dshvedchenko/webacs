@@ -43,6 +43,7 @@ public class ResTypeDAOImpl extends AbstractDao<Integer, ResType> implements IRe
     @Override
     public void deleteById(Integer id) {
         getSession().delete(getSession().get(ResType.class, id));
+        getSession().flush();
     }
 
 

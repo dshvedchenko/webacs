@@ -34,11 +34,6 @@ public class TestAuthController extends AbstractAppTest {
     @Autowired
     private IAuthTokenService authTokenService;
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
     @Test
     public void testLogin() throws Exception {
 

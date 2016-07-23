@@ -17,11 +17,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 public class TestRestSysRolesController extends AbstractAppTest {
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
     @Test
     public void checkSysRoleEndpoint() throws Exception {
         String tokenStr = getTokenInfo();

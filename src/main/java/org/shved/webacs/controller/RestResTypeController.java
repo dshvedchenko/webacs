@@ -9,6 +9,7 @@ import org.shved.webacs.services.IClaimStateService;
 import org.shved.webacs.services.IResTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -32,12 +33,21 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getById(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteById(
+            @PathVariable(value = "id") Integer id
+    ) {
+        resTypeService.deleteById(id);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseData<ClaimStateDTO> getAll(
     ) {
         return new ResponseData(resTypeService.getAll());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public void update(
             @RequestBody ResTypeDTO updatedItem
@@ -45,6 +55,7 @@ public class RestResTypeController {
         resTypeService.save(updatedItem);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseData<ResTypeDTO> create(
             @RequestBody ResTypeDTO updatedItem

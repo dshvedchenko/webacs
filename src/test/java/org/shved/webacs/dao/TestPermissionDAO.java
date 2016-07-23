@@ -78,7 +78,7 @@ public class TestPermissionDAO extends AbstractRepositoryTest {
     @Test
     public void findByResource() {
         Resource resource = resourceDAO.findAllResources().get(0);
-        List<Permission> permissions = permissionDAO.findAllByResource(resource);
+        List<Permission> permissions = permissionDAO.findAllByResourceId(resource.getId());
         Assert.assertNotNull(permissions);
         Assert.assertTrue(permissions.size() > 0);
     }

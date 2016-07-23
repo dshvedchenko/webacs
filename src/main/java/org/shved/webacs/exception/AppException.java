@@ -14,7 +14,7 @@ public class AppException extends RuntimeException {
     }
 
     public AppException(String message, Throwable e) {
-        super(message, e);
+        super(String.format(message + " [ %s ]", e.getMessage()), e);
     }
 
     public AppException(String message) {

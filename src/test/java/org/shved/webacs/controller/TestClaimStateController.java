@@ -23,10 +23,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 public class TestClaimStateController extends AbstractAppTest {
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
 
     @Test
     public void listClaimStateTest() throws Exception {

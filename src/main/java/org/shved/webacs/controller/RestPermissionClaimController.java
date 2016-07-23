@@ -29,17 +29,7 @@ public class RestPermissionClaimController {
     Logger logger = LoggerFactory.logger(RestPermissionClaimController.class);
 
     @Autowired
-    private IPermissionService permissionService;
-
-    @Autowired
     private IPermissionClaimService permissionClaimService;
-
-    @Autowired
-    private IAppUserService appUserService;
-
-    @Autowired
-    private IAuthTokenService authTokenService;
-
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

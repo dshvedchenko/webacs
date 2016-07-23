@@ -1,12 +1,11 @@
 package org.shved.webacs.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.shved.webacs.constants.RestEndpoints;
+import org.shved.webacs.dto.ResourceCreationDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IResourceService;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,9 +31,9 @@ public class RestResourceController {
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<ResourceDTO> createUser(
-            @RequestBody ResourceDTO resourceDTO
+            @RequestBody ResourceCreationDTO newResource
     ) {
-        ResourceDTO createdRes = resourceService.create(resourceDTO);
+        ResourceDTO createdRes = resourceService.create(newResource);
         return new ResponseData(createdRes);
     }
 

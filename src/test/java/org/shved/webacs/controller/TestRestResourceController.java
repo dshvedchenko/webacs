@@ -26,12 +26,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class TestRestResourceController extends AbstractAppTest {
 
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
-
     @Transactional
     @Test
     public void createResourceTest() throws Exception {

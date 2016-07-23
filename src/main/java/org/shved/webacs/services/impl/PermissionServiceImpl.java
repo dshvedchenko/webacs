@@ -5,6 +5,7 @@ import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
 import org.shved.webacs.dto.PermissionDTO;
+import org.shved.webacs.dto.PermissionTitleDTO;
 import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.model.Permission;
@@ -32,7 +33,6 @@ public class PermissionServiceImpl implements IPermissionService {
     ModelMapper modelMapper;
 
     @Override
-    @Transactional
     public PermissionDTO create(PermissionDTO permissionDTO) {
         Permission permission = modelMapper.map(permissionDTO, Permission.class);
         permissionDAO.save(permission);
@@ -72,7 +72,8 @@ public class PermissionServiceImpl implements IPermissionService {
     }
 
     @Override
-    public List<PermissionDTO> getAllByResourceId(Long resourceId) {
-        return null;
+    public List<PermissionTitleDTO> getAllByResourceId(Long resourceId) {
+        List<Permission> permissions = permissionDAO.findAllByResourceId(resourceId);
+        return permissions.stream().map((permission -> modelMapper.map(permission, PermissionTitleDTO.class))).collect(Collectors.toList());
     }
 }

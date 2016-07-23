@@ -28,15 +28,6 @@ public class TestUserRegistrationController extends AbstractAppTest {
     @Autowired
     private IAppUserDAO appUserDAO;
 
-    @Autowired
-    private IAuthTokenService authTokenService;
-
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
-
-
     @Test
     @Transactional
     public void testRegisterUser() throws Exception {

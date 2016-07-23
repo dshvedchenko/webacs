@@ -13,8 +13,10 @@ import org.shved.webacs.model.Resource;
 import org.shved.webacs.services.IClaimStateService;
 import org.shved.webacs.services.IResTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +35,7 @@ public class ResTypeServiceImpl implements IResTypeService {
     @Override
     public List<ResTypeDTO> getAll() {
         List<ResType> list = resTypeDAO.findAll();
+
         if (list == null || list != null && list.size() == 0) throw new NotFoundException("empty ResType storage");
         return list.stream().map(item -> modelMapper.map(item, ResTypeDTO.class)).collect(Collectors.toList());
     }
@@ -47,7 +50,11 @@ public class ResTypeServiceImpl implements IResTypeService {
 
     @Override
     public void deleteById(Integer id) {
-        resTypeDAO.deleteById(id);
+        try {
+            resTypeDAO.deleteById(id);
+        } catch (Exception e) {
+            throw new AppException("error during delete resource type", e);
+        }
     }
 
 

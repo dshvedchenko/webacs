@@ -48,18 +48,19 @@ public class PermissionDAOImpl extends AbstractDao<Long, Permission> implements 
         return criteria.list();
     }
 
-    @Override
-    public List<Permission> findAllByAppUser(AppUser appUser) {
-        Criteria criteria = getSession().createCriteria(Permission.class)
-                .createCriteria("userPermission")
-                .add(Restrictions.eq("user", appUser));
-        return criteria.list();
-    }
+//    @Override
+//    public List<Permission> findAllByAppUser(AppUser appUser) {
+//        Criteria criteria = getSession().createCriteria(Permission.class)
+//                .createCriteria("userPermission")
+//                .add(Restrictions.eq("user", appUser));
+//        return criteria.list();
+//    }
 
     @Override
-    public List<Permission> findAllByResource(Resource resource) {
+    public List<Permission> findAllByResourceId(Long resourceId) {
         Criteria criteria = getSession().createCriteria(Permission.class)
-                .add(Restrictions.eq("resource", resource));
+                .createAlias("resource", "r")
+                .add(Restrictions.eq("r.id", resourceId));
         return criteria.list();
     }
 }

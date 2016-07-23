@@ -72,7 +72,7 @@ VALUES
     WHERE name = 'xDep Calendar'), 'Reader', 'readers'),
   ((SELECT id
     FROM app.resource
-    WHERE name = 'xDep Calendar'), 'Owner', 'owners'),
+    WHERE name = 'xDep Calendar'), 'Schedule Owner', 'owners'),
   ((SELECT id
     FROM app.resource
     WHERE name = 'xDep wiki space'), 'Reader', 'readers'),
@@ -81,7 +81,7 @@ VALUES
     WHERE name = 'xDep wiki space'), 'Editor', 'editors'),
   ((SELECT id
     FROM app.resource
-    WHERE name = 'xDep wiki space'), 'Owner', 'owners'),
+    WHERE name = 'xDep wiki space'), 'Doc Owner', 'owners'),
   ((SELECT id
     FROM app.resource
     WHERE name = 'Large RestRoom'), 'Visitor', 'room visitor'),
@@ -90,12 +90,12 @@ VALUES
     WHERE name = 'Large RestRoom'), 'Coordinator', 'room coordinator'),
   ((SELECT id
     FROM app.resource
-    WHERE name = 'Large RestRoom'), 'Owner', 'owners');
+    WHERE name = 'Large RestRoom'), 'LR Owner', 'owners');
 
 UPDATE app.resource res
 SET owner_permission_id = rr.id
 FROM app.permission rr
-WHERE res.id = rr.resource_id AND rr.title = 'Owner';
+WHERE res.id = rr.resource_id AND rr.description = 'owners';
 
 INSERT INTO app.claim_state (
   id

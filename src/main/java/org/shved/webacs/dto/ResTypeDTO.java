@@ -9,4 +9,5 @@ import lombok.Data;
 public class ResTypeDTO {
     private Integer id;
     private String name;
+    private boolean removable;
 }

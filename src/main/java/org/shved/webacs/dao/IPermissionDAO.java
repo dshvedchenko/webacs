@@ -22,8 +22,9 @@ public interface IPermissionDAO {
 
     List<Permission> findAllByTitle(String title);
 
-    List<Permission> findAllByAppUser(AppUser appUser);
+    // List<Permission> findAllByAppUser(AppUser appUser);
 
-    List<Permission> findAllByResource(Resource resource);
+    // List<Permission> findAllByResource(Resource resource);
+    List<Permission> findAllByResourceId(Long resourceId);
 
 }

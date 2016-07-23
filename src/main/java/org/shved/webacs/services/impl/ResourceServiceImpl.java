@@ -3,7 +3,11 @@ package org.shved.webacs.services.impl;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
+import org.shved.webacs.dto.PermissionDTO;
+import org.shved.webacs.dto.PermissionTitleDTO;
+import org.shved.webacs.dto.ResourceCreationDTO;
 import org.shved.webacs.dto.ResourceDTO;
+import org.shved.webacs.exception.AppException;
 import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.Permission;
@@ -33,7 +37,7 @@ public class ResourceServiceImpl implements IResourceService {
 
     @Override
     @Transactional()
-    public ResourceDTO create(ResourceDTO resourceDTO) {
+    public ResourceDTO create(ResourceCreationDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         resourceDAO.save(resource);
         return modelMapper.map(resource, ResourceDTO.class);
@@ -62,7 +66,11 @@ public class ResourceServiceImpl implements IResourceService {
 
     @Override
     public void deleteById(Long id) {
-        resourceDAO.deleteById(id);
+        try {
+            resourceDAO.deleteById(id);
+        } catch (Exception e) {
+            throw new AppException("could not delete resource ", e);
+        }
     }
 
     @Override
@@ -81,7 +89,9 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     private List<ResourceDTO> convertListResourcesToListResourceDTO(List<Resource> resources) {
-        return resources.stream().map(item -> modelMapper.map(item, ResourceDTO.class)).collect(Collectors.toList());
+        return resources.stream().map(item ->
+                modelMapper.map(item, ResourceDTO.class)
+        ).collect(Collectors.toList());
     }
 
 }
