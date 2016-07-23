@@ -1,11 +1,12 @@
 describe('authService : ', function () {
-    var authService, httpBackend, resultToken, ENDPOINT_URI;
+    var authService, httpBackend, ENDPOINT_URI, $rootScope;
     beforeEach(module('app'));
 
-    beforeEach(inject(function (_authService_, $httpBackend, _ENDPOINT_URI_) {
+    beforeEach(inject(function (_authService_, $httpBackend, _ENDPOINT_URI_, _$rootScope_) {
         authService = _authService_
         httpBackend = $httpBackend
         ENDPOINT_URI = _ENDPOINT_URI_;
+        $rootScope = _$rootScope_;
     }));
 
     afterEach(function () {
@@ -26,6 +27,22 @@ describe('authService : ', function () {
 
         authService.login({'username': 'admin', 'password': '12345'}, onSuccess)
         httpBackend.flush();
+    })
+
+    it('should clear token', function () {
+        $rootScope.token = '12345w334344';
+
+        function onSuccess(data) {
+            expect(data).toBeUndefined()
+        }
+
+        httpBackend.expect('POST', ENDPOINT_URI + "/logout")
+            .respond({});
+
+        authService.logout(onSuccess)
+        httpBackend.flush();
+
+        expect($rootScope.token).toBeUndefined()
     })
 
 })

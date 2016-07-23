@@ -172,7 +172,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.8</version>
+            <version>1.16.10</version>
         </dependency>
 
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
