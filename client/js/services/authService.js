@@ -17,7 +17,7 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI) {
             },
             function error(response) {
                 $rootScope.token = undefined
-                onError(response.data.error)
+                onError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
             }
         );
         post.then(

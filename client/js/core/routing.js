@@ -24,5 +24,9 @@ app.config(function ($routeProvider) {
             templateUrl: "views/admin/restypes.html",
             controller: "restypesController"
         })
+        .when("/admin/resources", {
+            templateUrl: "views/admin/resources.html",
+            controller: "resourcesController"
+        })
     ;
 });

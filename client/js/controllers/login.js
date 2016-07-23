@@ -1,4 +1,4 @@
-app.controller('loginController', function ($scope, authService, $http, $rootScope, $location) {
+app.controller('loginController', function ($scope, authService, $http, $rootScope, $location, errorService) {
     $scope.username = ''
     $scope.password = ''
     $scope.loginError = ''
@@ -19,6 +19,7 @@ app.controller('loginController', function ($scope, authService, $http, $rootSco
 
     onError = function (error) {
         $scope.loginError = error
+        errorService.setError(error)
     }
 
 })

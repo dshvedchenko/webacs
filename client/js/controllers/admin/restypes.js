@@ -15,7 +15,7 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
                     $scope.items = data.data;
                 },
                 function (response) {
-                    errorService.setError(response.data.error)
+                    errorService.setError(response)
                 }
             )
     }
@@ -27,6 +27,20 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
 
     };
 
+    function deleteItem(item) {
+        restypesService.delete(item.id)
+            .then(function ok(response) {
+                    getAll()
+                    leaveDeleteItem()
+                },
+                function error(response) {
+                    errorService.setError(response)
+                }
+            )
+
+    };
+
+
     function updateItem(item) {
         var data = angular.copy(item)
         restypesService.update(data)
@@ -36,7 +50,7 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
                     leaveEditing();
                 },
                 function (response) {
-                    errorService.setError(response.data.error)
+                    errorService.setError(response)
                 }
             )
     }
@@ -70,7 +84,8 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
     function setEditedItem(item) {
         $scope.editedItem = angular.copy(item);
         $scope.isEditing = true;
-        $scope.isCreation = false;
+        leaveCreation();
+        leaveDeleteItem();
         $scope.newUser = null;
     }
 
@@ -79,26 +94,39 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
         $scope.isEditing = false;
     }
 
+    function setDeleteItem(item) {
+        leaveEditing();
+        leaveCreation();
+        $scope.deletedItem = angular.copy(item);
+        $scope.isDelete = true;
+    }
+
+    function leaveDeleteItem() {
+        $scope.isDelete = false;
+    }
+
     function setCreation() {
         leaveEditing();
+        leaveDeleteItem();
         $scope.isCreation = true;
         getNewItemForView();
     }
 
-    function finishCreation() {
+    function leaveCreation() {
         $scope.isCreation = false;
     }
 
     $scope.editedItem = null;
     $scope.updateItem = updateItem;
     $scope.leaveEditing = leaveEditing;
+    $scope.setDeleteItem = setDeleteItem;
     $scope.setEditedItem = setEditedItem;
     $scope.isCurrentItem = isCurrentItem;
     $scope.isFormValid = isFormValid;
     $scope.createItem = createItem;
     $scope.getAll = getAll;
     $scope.setCreation = setCreation;
-
+    $scope.deleteItem = deleteItem;
 
     getAll()
 });

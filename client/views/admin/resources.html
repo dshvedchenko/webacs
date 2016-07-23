@@ -6,7 +6,10 @@
 <table>
     <tr>
         <th>id</th>
+        <th>resource type</th>
         <th>name</th>
+        <th>detail</th>
+        <th>owners</th>
         <th></th>
     </tr>
     <tr ng-repeat="item in items | filter : nameFilter "
@@ -14,7 +17,10 @@
         ng-class="{'activerow':isCurrentItem(item.id)}"
     >
         <td>{{ item.id }}</td>
+        <td>{{ item.resType.name }}</td>
         <td>{{ item.name }}</td>
+        <td>{{ item.detail }}</td>
+        <td>{{ item.ownerPermission.title }}</td>
         <td><img src="img/edit.png" ng-click="setEditedItem(item)"/>
             <img src="img/delete.png" ng-click="setDeleteItem(item)"/></td>
 
@@ -30,9 +36,24 @@
                 <td><input type="text" ng-model="newItem.name"/></td>
             </tr>
             <tr>
+                <td>Detail</td>
+                <td><input type="text" ng-model="newItem.detail"/></td>
+            </tr>
+
+            <tr>
+                <td>Type</td>
+                <td>
+                    <select name="typeSelect" id="typeSelect"
+                            ng-options="resType.name for resType in availableResTypes  track by resType.id"
+                            ng-model="newItem.resType"
+                    >
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>Register</td>
                 <td>
-                    <button type="submit" ng-disabled="!isFormValid(newItem)">Create Resource type</button>
+                    <button type="submit" ng-disabled="!isFormValid(newItem)">Create Resource</button>
                 </td>
             </tr>
         </table>
@@ -49,8 +70,32 @@
                 <td><input type="text" ng-model="editedItem.id" readonly/></td>
             </tr>
             <tr>
+                <td>Type</td>
+                <td><input type="text" ng-model="editedItem.resType.name" readonly/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Owner</td>
+                <td>
+                    <select name="ownerPermission" id="ownerPermission"
+                            ng-options="permission.title for permission in availablePermissions  track by permission.id"
+                            ng-model="editedItem.ownerPermission"
+                    >
+                    </select>
+                </td>
+            </tr>
+
+            availablePermissions
+
+            <tr>
                 <td>Name</td>
                 <td><input type="text" ng-model="editedItem.name"/></td>
+            </tr>
+
+            <tr>
+                <td>Detail</td>
+                <td><input type="text" ng-model="editedItem.detail"/></td>
             </tr>
 
             <tr>
@@ -58,7 +103,7 @@
                     <button type="button" ng-click="leaveEditing()">Cancel</button>
                 </td>
                 <td>
-                    <button type="submit">Update ResourceType
+                    <button type="submit">Update Resource
                     </button>
                 </td>
             </tr>

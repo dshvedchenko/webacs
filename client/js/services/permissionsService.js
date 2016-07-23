@@ -1,9 +1,18 @@
-app.service('resourcesService', function ($rootScope, $http, ENDPOINT_URI) {
+app.service('permissionsService', function ($rootScope, $http, ENDPOINT_URI) {
     var service = this,
-        path = '/resources';
+        path = '/permissions';
 
     service.getAll = function () {
         return $http.get(ENDPOINT_URI + path)
+            .then(
+                function ok(response) {
+                    return response.data;
+                }
+            )
+    }
+
+    service.getAllByResourceId = function (resourceId) {
+        return $http.get(ENDPOINT_URI + path + "/resource/" + resourceId)
             .then(
                 function ok(response) {
                     return response.data;

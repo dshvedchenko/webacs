@@ -10,7 +10,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     appUserService.getValidRoles(
         null,
         function (response) {
-            errorService.setError(response.data.error)
+            errorService.setError(response.data)
         }
     )
 
@@ -21,7 +21,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
                     $scope.users = data.data;
                 },
                 function (response) {
-                    errorService.setError(response.data.error)
+                    errorService.setError(response.data)
                 }
             )
     }
@@ -41,7 +41,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
                     leaveEditing();
                 },
                 function (response) {
-                    errorService.setError(response.data.error)
+                    errorService.setError(response.data)
                 }
             )
     }
