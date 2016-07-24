@@ -68,13 +68,13 @@ table tr:nth-child(even) {
     /*display: block;*/
 }
 
-.animate-repeat.ng-move
+.animate-repeat.ng-move,
 .animate-repeat.ng-enter {
-    transition: all linear 0.1s;
+    transition: all linear 0.6s;
 }
 
 .animate-repeat.ng-leave {
-    transition: all linear 0.5s;
+    transition: all linear 0s;
 }
 
 .animate-repeat.ng-leave.ng-leave-active,

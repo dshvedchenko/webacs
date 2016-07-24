@@ -28,11 +28,11 @@ app.config(function ($routeProvider) {
             controller: "claimController"
         })
         .when("/claims/grant", {
-            templateUrl: "views/claims/grant.html",
-            controller: "claimController"
+            templateUrl: "views/claims/list_grant.html",
+            controller: "grantClaimController"
         })
         .when("/claims/revoke", {
-            templateUrl: "views/claims/revoke.html",
+            templateUrl: "views/claims/list_revoke.html",
             controller: "claimController"
         })
         .when("/claims/approve", {

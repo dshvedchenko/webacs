@@ -54,8 +54,13 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    public List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO) {
-        ClaimState claimState = modelMapper.map(claimStateDTO, ClaimState.class);
+    public List<PermissionClaimDTO> getAllOwn() {
+        List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByUserNotRevoked(contextUserService.getContextUser());
+        return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
+    }
+
+    @Override
+    public List<PermissionClaimDTO> getAllByState(ClaimState claimState) {
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByClaimState(claimState));
     }
 
@@ -64,8 +69,12 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
         AppUser appUser = contextUserService.getContextUser();
-        //TODO
-        return modelMapper.map(claim, PermissionClaimDTO.class);
+
+        if (appUser.equals(claim.getUser())) {
+            return modelMapper.map(claim, PermissionClaimDTO.class);
+        } else {
+            throw new AppException("user id mismatch");
+        }
     }
 
     @Override

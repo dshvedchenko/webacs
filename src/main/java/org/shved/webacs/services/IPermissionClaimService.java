@@ -2,6 +2,7 @@ package org.shved.webacs.services;
 
 import org.shved.webacs.dto.*;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.ClaimState;
 import org.shved.webacs.model.PermissionClaim;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
@@ -21,8 +22,12 @@ public interface IPermissionClaimService {
     List<PermissionClaimDTO> getAll();
 
     @Transactional
+    @PreAuthorize("hasAuthority('GENERIC')")
+    List<PermissionClaimDTO> getAllOwn();
+
+    @Transactional
     @PreAuthorize("hasAuthority('ADMIN')")
-    List<PermissionClaimDTO> getAllByState(ClaimStateDTO claimStateDTO);
+    List<PermissionClaimDTO> getAllByState(ClaimState claimState);
 
 
     @Transactional

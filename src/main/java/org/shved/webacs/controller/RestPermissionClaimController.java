@@ -5,6 +5,7 @@ import org.jboss.logging.Logger;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
+import org.shved.webacs.model.ClaimState;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAppUserService;
 import org.shved.webacs.services.IAuthTokenService;
@@ -106,7 +107,35 @@ public class RestPermissionClaimController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getOwnClaims(
     ) {
-        List<PermissionClaimDTO> list = permissionClaimService.getAll();
+        List<PermissionClaimDTO> list = permissionClaimService.getAllOwn();
+        return new ResponseData(list);
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/approved", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAllApproved(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.APPROVED);
+        return new ResponseData(list);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/granted", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAllGranted(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.GRANTED);
+        return new ResponseData(list);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/revoked", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAllRevoked(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.REVOKED);
         return new ResponseData(list);
     }
 
