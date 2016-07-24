@@ -16,9 +16,11 @@ app.controller('permissionsController',
         }
 
         function getAll() {
+
             permissionsService.getAll()
                 .then(
                     function (data) {
+                        $scope.items = [];
                         $scope.items = data.data;
                     },
                     function (response) {

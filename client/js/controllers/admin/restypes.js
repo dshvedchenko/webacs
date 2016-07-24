@@ -63,7 +63,7 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
 
     onSuccessCreation = function (data) {
         $scope.created = 'CREATED'
-        finishCreation();
+        leaveCreation();
         getAll();
     };
 
@@ -119,13 +119,13 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
     $scope.editedItem = null;
     $scope.updateItem = updateItem;
     $scope.leaveEditing = leaveEditing;
-    $scope.setDeleteItem = setDeleteItem;
     $scope.setEditedItem = setEditedItem;
     $scope.isCurrentItem = isCurrentItem;
     $scope.isFormValid = isFormValid;
     $scope.createItem = createItem;
     $scope.getAll = getAll;
     $scope.setCreation = setCreation;
+    $scope.setDeleteItem = setDeleteItem;
     $scope.deleteItem = deleteItem;
 
     getAll()

@@ -1,5 +1,5 @@
 <div ng-include="'views/claims/header.html'"></div>
-<h2>LIST OF ALL CLAIMS</h2>
+<h2>LIST OF ALL CLAIMS READY FOR GRANT</h2>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
 <table class="animate-container">
@@ -8,7 +8,7 @@
             id
         </th>
         <th ng-click="orderBy('claimState.name')">
-            state
+            username
         </th>
         <th ng-click="orderBy('user.username')">
             username

@@ -1,22 +1,25 @@
 <p>
 <div class="commands" ng-click="setCreation()" ng-show="isAdmin">Create new User</div></p>
-<div class="commands" ng-click="getAllUsers()">Refresh</div></p>
+<div class="commands" ng-click="getAll()">Refresh</div></p>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
-<table>
+<table class="animate-container">
     <tr>
         <th>uid</th>
         <th>username</th>
         <th>Firstname</th>
         <th>LastName</th>
+        <th></th>
     </tr>
     <tr ng-repeat="item in users | filter : usernameFilter "
-        ng-click="setEditedItem(item)"
+        class="animate-repeat"
         ng-class="{'activerow':isCurrentItem(item.id), 'disabledrow':!item.enabled}">
         <td>{{ item.id }}</td>
         <td>{{ item.username }}</td>
         <td>{{ item.firstname }}</td>
         <td>{{ item.lastname }}</td>
+        <td><img src="img/edit.png" ng-click="setEditedItem(item)"/>
+            <img src="img/disable.png" ng-click="setDisableItem(item)" ng-if="item.enabled"/></td>
     </tr>
 </table>
 
@@ -123,5 +126,9 @@
         </table>
     </form>
     <hr/>
+</div>
+<div ng-if="isDisable">
+    Confirm disable USER <strong>[{{ disableItem.username }}]</strong>?
+    <button ng-click="disableItem(disabledItem)">DISABLE</button>
 </div>
 </div>

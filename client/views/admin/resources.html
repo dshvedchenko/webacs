@@ -3,7 +3,7 @@
 <div class="commands" ng-click="getAll()">Refresh</div></p>
 <p><label for="nameFilter">Filter by name : </label><input id="nameFilter" type="text" ng-model="nameFilter">
 </p>
-<table>
+<table class="animate-container">
     <tr>
         <th>id</th>
         <th>resource type</th>
@@ -13,7 +13,7 @@
         <th></th>
     </tr>
     <tr ng-repeat="item in items | filter : nameFilter "
-
+        class="animate-repeat"
         ng-class="{'activerow':isCurrentItem(item.id)}"
     >
         <td>{{ item.id }}</td>

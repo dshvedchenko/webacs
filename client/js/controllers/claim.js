@@ -28,6 +28,11 @@ app.controller('claimController',
         }
 
 
+        $scope.orderBy = function (prop) {
+            $scope.claimOrderBy = prop
+        }
+
+
         getAllClaims();
 
 })

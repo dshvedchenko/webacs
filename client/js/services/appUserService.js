@@ -40,11 +40,11 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorSe
         }
     }
 
-    service.updateItem = function (data) {
+    service.update = function (data) {
         return $http.put(ENDPOINT_URI + path, data);
     }
 
-    service.deleteItem = function (id) {
+    service.delete = function (id) {
         return $http.delete(ENDPOINT_URI + path + "/" + id);
     }
 

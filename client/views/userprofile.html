@@ -1,16 +1,10 @@
 <table>
     <tr>
-        <th>uid</th>
-        <th>username</th>
-        <th>Firstname</th>
-        <th>LastName</th>
-        <th>SysRole</th>
+        <th>id</th>
+        <th>value</th>
     </tr>
-    <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.username }}</td>
-        <td>{{ item.firstname }}</td>
-        <td>{{ item.lastname }}</td>
-        <td>{{ item.sysrole }}</td>
+    <tr ng-repeat="(key,value) in item">
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
     </tr>
 </table>

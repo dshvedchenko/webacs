@@ -19,13 +19,29 @@ app.config(function ($routeProvider) {
         })
 
         .when("/claims", {
-            templateUrl: "views/claims.html",
-            controller: "claimController"
+            templateUrl: "views/claims.html" //,
+            // controller: "claimController"
         })
 
         .when("/claims/list", {
             templateUrl: "views/claims/list.html",
             controller: "claimController"
+        })
+        .when("/claims/grant", {
+            templateUrl: "views/claims/grant.html",
+            controller: "claimController"
+        })
+        .when("/claims/revoke", {
+            templateUrl: "views/claims/revoke.html",
+            controller: "claimController"
+        })
+        .when("/claims/approve", {
+            templateUrl: "views/claims/approve.html",
+            controller: "approveClaimController"
+        })
+        .when("/claims/myclaims", {
+            templateUrl: "views/claims/list.html",
+            controller: "userClaimController"
         })
         // admin UI
 

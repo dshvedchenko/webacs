@@ -14,7 +14,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         }
     )
 
-    function getAllUsers() {
+    function getAll() {
         appUserService.all()
             .then(
                 function (data) {
@@ -34,10 +34,10 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
 
     function updateItem(item) {
         var data = angular.copy(item)
-        appUserService.updateItem(data)
+        appUserService.update(data)
             .then(
                 function ok(response) {
-                    getAllUsers();
+                    getAll();
                     leaveEditing();
                 },
                 function (response) {
@@ -45,6 +45,19 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
                 }
             )
     }
+
+    function disableItem(item) {
+        appUserService.delete(item.id)
+            .then(function ok(response) {
+                    getAll()
+                    leaveDisableItem()
+                },
+                function error(response) {
+                    errorService.setError(response)
+                }
+            )
+
+    };
 
     function getNewUserForView() {
         $scope.newUser = {
@@ -61,8 +74,8 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
 
     onSuccessCreation = function (data) {
         $scope.created = 'CREATED'
-        finishCreation();
-        getAllUsers();
+        leaveCreation();
+        getAll();
     };
 
     onErrorCreation = function (data) {
@@ -85,8 +98,8 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     function setEditedItem(user) {
         $scope.editedItem = angular.copy(user);
         $scope.isEditing = true;
-        $scope.isCreation = false;
-        $scope.newUser = null;
+        leaveDisableItem();
+        leaveCreation();
     }
 
     function leaveEditing() {
@@ -100,11 +113,23 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         getNewUserForView();
     }
 
-    function finishCreation() {
+    function leaveCreation() {
         $scope.isCreation = false;
     }
 
-    getAllUsers();
+
+    function setDisableItem(item) {
+        leaveEditing();
+        leaveCreation();
+        $scope.disableItem = angular.copy(item);
+        $scope.isDisable = true;
+    }
+
+    function leaveDisableItem() {
+        $scope.isDisable = false;
+    }
+
+    getAll();
 
     $scope.editedItem = null;
     $scope.updateItem = updateItem;
@@ -113,6 +138,8 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     $scope.isCurrentItem = isCurrentItem;
     $scope.isFormValid = isFormValid;
     $scope.createUser = createUser;
-    $scope.getAllUsers = getAllUsers;
+    $scope.getAll = getAll;
     $scope.setCreation = setCreation;
+    $scope.setDisableItem = setDisableItem;
+    $scope.disableItem = disableItem;
 });
