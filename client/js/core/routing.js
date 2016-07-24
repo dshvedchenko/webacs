@@ -18,16 +18,22 @@ app.config(function ($routeProvider) {
             controller: "userProfileController"
         })
 
+        .when("/claims", {
+            templateUrl: "views/claims.html",
+            controller: "claimController"
+        })
+
+        .when("/claims/list", {
+            templateUrl: "views/claims/list.html",
+            controller: "claimController"
+        })
         // admin UI
 
         .when("/admin/users", {
             templateUrl: "views/admin/users.html",
             controller: "adminUserController"
         })
-        .when("/claims", {
-            templateUrl: "views/claims.html",
-            controller: "claimController"
-        })
+
         .when("/admin/restypes", {
             templateUrl: "views/admin/restypes.html",
             controller: "restypesController"

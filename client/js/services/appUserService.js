@@ -1,4 +1,4 @@
-app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
+app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorService) {
     this.counter = 0;
     $rootScope.validRoles = [];
     var service = this,
@@ -56,7 +56,7 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
                 },
                 function error(response) {
                     $rootScope.token = undefined
-                    onError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
+                    errorService.setError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
                 }
             )
     }
