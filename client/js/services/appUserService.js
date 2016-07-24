@@ -47,4 +47,17 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI) {
     service.deleteItem = function (id) {
         return $http.delete(ENDPOINT_URI + path + "/" + id);
     }
+
+    service.getSessionUser = function () {
+        $http.get(ENDPOINT_URI + path + "/current")
+            .then(
+                function ok(response) {
+                    $rootScope.sessionUser = response.data.data;
+                },
+                function error(response) {
+                    $rootScope.token = undefined
+                    onError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
+                }
+            )
+    }
 });

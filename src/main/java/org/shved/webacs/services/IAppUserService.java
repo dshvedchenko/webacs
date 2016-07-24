@@ -26,6 +26,9 @@ public interface IAppUserService {
     AppUserDTO getAppUserById(Long userId);
 
     @Transactional
+    AppUserDTO getCurrentUser();
+
+    @Transactional
     void handleSaveEditedAppUser(AppUserDTO appUserDTO);
 
     @Transactional

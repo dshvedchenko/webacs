@@ -48,6 +48,23 @@ public class TestRestUserController extends AbstractAppTest {
 
     @Transactional
     @Test
+    public void testGetCurrentUser() throws Exception {
+        String tokenStr = getTokenInfo();
+
+        mockMvc.perform(get(RestEndpoints.API_V1_USERS + "/current")
+                .header("X-AUTHID", tokenStr)
+                .accept(contentType)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.username", is("admin")))
+                .andExpect(jsonPath("$.data.lastname", is("admin")))
+                .andExpect(jsonPath("$.data.firstname", is("admin")))
+                .andExpect(jsonPath("$.data.email", is("admin@example.com")))
+                .andExpect(jsonPath("$.data.sysrole", is("ADMIN")));
+    }
+
+    @Transactional
+    @Test
     public void editUserTest() throws Exception {
         final Long EDIT_USERS_ID = 1002L;
         final String EDIT_USER_USERNAME = "johns";

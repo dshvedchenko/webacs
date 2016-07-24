@@ -1,4 +1,4 @@
-app.service('authService', function ($rootScope, $http, ENDPOINT_URI) {
+app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserService) {
 
     this.isAdmin = function () {
         return $rootScope.isAdmin
@@ -25,7 +25,12 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI) {
                 $rootScope.isAdmin = response.data.data.sysrole === "ADMIN"
                 $rootScope.token = response.data.data.token
             }
-        );
+        ).then(
+            function loadCurrentUser() {
+                appUserService.getSessionUser()
+            }
+        )
+        ;
 
     }
 

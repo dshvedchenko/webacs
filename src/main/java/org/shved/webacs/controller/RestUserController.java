@@ -40,6 +40,15 @@ public class RestUserController {
         return rd;
     }
 
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public ResponseData<AppUserDTO> getCurrentUser(
+    ) {
+        AppUserDTO appUserDTO = appUserService.getCurrentUser();
+        ResponseData rd = new ResponseData();
+        rd.setData(appUserDTO);
+        return rd;
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)

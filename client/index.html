@@ -29,6 +29,7 @@
     <script src="js/controllers/admin/resource.js"></script>
     <script src="js/controllers/admin/permissions.js"></script>
     <script src="js/controllers/claim.js"></script>
+    <script src="js/controllers/userprofile.js"></script>
 </head>
 <body>
 <div ng-app="app">
@@ -37,10 +38,12 @@
         <div ng-switch-when="undefined">
             <a href="#/login">Login</a>
             <a href="#/userregister">User Register</a>
+
         </div>
         <div ng-switch-when="true">
             <a href="#/logout">Logout</a>
             <a href="#/claims">Claims</a>
+            <a href="#/userprofile">User Profile</a>
             <div ng-show="isAdmin">
                 <a href="#/admin/users">Admin Users</a>
                 <a href="#/admin/restypes">Resource Types</a>

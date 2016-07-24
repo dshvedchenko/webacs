@@ -13,6 +13,7 @@ import org.shved.webacs.model.AppUser;
 import org.shved.webacs.model.SysRole;
 import org.shved.webacs.services.IAppUserService;
 import org.shved.webacs.services.IAuthTokenService;
+import org.shved.webacs.services.IContextUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,14 +30,13 @@ import java.util.stream.Collectors;
 public class AppUserServiceImpl implements IAppUserService {
 
     @Autowired
+    IContextUserService contextUserService;
+    @Autowired
     private IAppUserDAO appUserDAO;
-
     @Autowired
     private IAuthTokenService authTokenService;
-
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -86,6 +86,16 @@ public class AppUserServiceImpl implements IAppUserService {
         }
 
         return appUser;
+    }
+
+    @Override
+    public AppUserDTO getCurrentUser() {
+        AppUser user = contextUserService.getContextUser();
+        if (user == null) {
+            throw new AppException("no context user");
+        } else {
+            return modelMapper.map(user, AppUserDTO.class);
+        }
     }
 
     @Override

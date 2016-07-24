@@ -12,6 +12,14 @@ app.config(function ($routeProvider) {
             templateUrl: "views/logout.html",
             controller: "logoutController"
         })
+
+        .when("/userprofile", {
+            templateUrl: "views/userprofile.html",
+            controller: "userProfileController"
+        })
+
+        // admin UI
+
         .when("/admin/users", {
             templateUrl: "views/admin/users.html",
             controller: "adminUserController"
