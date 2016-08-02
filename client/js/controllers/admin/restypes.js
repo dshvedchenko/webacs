@@ -2,7 +2,7 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
 
     $scope.items = [];
     $scope.isEditing = false;
-    $scope.created = ''
+    $scope.created = '';
 
     if (!authService.isLogged()) {
         $location.path("/")
@@ -25,12 +25,11 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
         var data = angular.copy(item);
         restypesService.create(data, onSuccessCreation, onErrorCreation)
 
-    };
-
+    }
     function deleteItem(item) {
         restypesService.delete(item.id)
             .then(function ok(response) {
-                    getAll()
+                    getAll();
                     leaveDeleteItem()
                 },
                 function error(response) {
@@ -38,11 +37,9 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
                 }
             )
 
-    };
-
-
+    }
     function updateItem(item) {
-        var data = angular.copy(item)
+        var data = angular.copy(item);
         restypesService.update(data)
             .then(
                 function ok(response) {
@@ -62,7 +59,7 @@ app.controller('restypesController', function ($scope, $rootScope, restypesServi
     }
 
     onSuccessCreation = function (data) {
-        $scope.created = 'CREATED'
+        $scope.created = 'CREATED';
         leaveCreation();
         getAll();
     };

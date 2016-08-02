@@ -2,10 +2,8 @@ package org.shved.webacs.model;
 
 import lombok.Data;
 import lombok.Getter;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.Constraint;
 import java.util.Date;
 import java.util.List;
 
@@ -79,9 +77,8 @@ public class AppUser {
         if (this.getClass() != getClass()) return false;
         AppUser inputObj = (AppUser) obj;
 
-        if (this.getId().longValue() != inputObj.getId().longValue()) return false;
+        return this.getId().longValue() == inputObj.getId().longValue();
 
-        return true;
     }
 
     @Override

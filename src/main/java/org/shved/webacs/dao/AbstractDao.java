@@ -3,9 +3,7 @@ package org.shved.webacs.dao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.usertype.ParameterizedType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
@@ -27,16 +25,15 @@ public abstract class AbstractDao<PK extends Serializable, T> {
     }
 
     @SuppressWarnings("unchecked")
-    public T getByKey(PK key, Class<T> clazz) {
-        return (T) getSession().get(clazz, key);
+    protected T getByKey(PK key, Class<T> clazz) {
+        return getSession().get(clazz, key);
     }
 
-    public void persist(T entity) {
+    protected void persist(T entity) {
         Session session = getSession();
         session.persist(entity);
     }
 
-    @Transactional
     public void delete(T entity) {
         getSession().delete(entity);
     }

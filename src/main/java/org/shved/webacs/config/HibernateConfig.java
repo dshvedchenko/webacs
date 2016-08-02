@@ -2,8 +2,6 @@ package org.shved.webacs.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
-import org.shved.webacs.dao.*;
-import org.shved.webacs.dao.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,7 +33,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan(new String[]{"org.shved.webacs.model"});
+        sessionFactory.setPackagesToScan("org.shved.webacs.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;

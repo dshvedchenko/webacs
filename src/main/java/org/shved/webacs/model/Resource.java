@@ -40,9 +40,8 @@ public class Resource {
         if (this.getClass() != getClass()) return false;
         Resource inputObj = (Resource) obj;
 
-        if (this.getId() != inputObj.getId()) return false;
+        return this.getId() == inputObj.getId();
 
-        return true;
     }
 
     @Override

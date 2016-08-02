@@ -2,11 +2,11 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserSer
 
     this.isAdmin = function () {
         return $rootScope.isAdmin
-    }
+    };
 
     this.isLogged = function () {
         return $rootScope.token !== undefined;
-    }
+    };
 
     this.login = function (data, onSuccess, onError) {
 
@@ -16,13 +16,13 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserSer
                 onSuccess(response.data.data.token)
             },
             function error(response) {
-                $rootScope.token = undefined
+                $rootScope.token = undefined;
                 onError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
             }
         );
         post.then(
             function setSession(response) {
-                $rootScope.isAdmin = response.data.data.sysrole === "ADMIN"
+                $rootScope.isAdmin = response.data.data.sysrole === "ADMIN";
                 $rootScope.token = response.data.data.token
             }
         ).then(
@@ -32,7 +32,7 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserSer
         )
         ;
 
-    }
+    };
 
     this.logout = function (onSuccess, onError) {
         if ($rootScope.token === undefined) return;
@@ -48,11 +48,11 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserSer
         );
         post.then(
             function clearSession(response) {
-                delete $rootScope.token
-                delete $rootScope.isAdmin
+                delete $rootScope.token;
+                delete $rootScope.isAdmin;
                 delete $rootScope.loggedin
             }
         )
     }
 
-})
+});

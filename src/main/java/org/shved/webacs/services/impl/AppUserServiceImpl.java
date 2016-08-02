@@ -108,16 +108,17 @@ public class AppUserServiceImpl implements IAppUserService {
     @Transactional
     public void deleteById(Long userId) {
         AppUser appUser = appUserDAO.findById(userId);
+        preventSelfDisable(appUser);
+
         appUser.setEnabled(false);
         appUser.setDisabled_at(new Date());
         appUserDAO.save(appUser);
     }
 
-    @Override
-    public String getTestData(String token) {
-        authTokenService.isTokenValid(token);
-
-        return "TEST COMPLETED";
+    private void preventSelfDisable(AppUser appUser) {
+        if (contextUserService.getContextUser().equals(appUser)) {
+            throw new AppException("CAN NOT DISABLE YOURSELF");
+        }
     }
 
     @Override
@@ -152,6 +153,9 @@ public class AppUserServiceImpl implements IAppUserService {
 
     private void applyAppUserDTO2AppUserByAdmin(AppUser appUserNewInfo, AppUser appUser) {
         if (!appUser.getId().equals(appUserNewInfo.getId())) throw new AppException("user id must match");
+        if (!appUserNewInfo.getEnabled()) {
+            preventSelfDisable(appUser);
+        }
         appUser.setUsername(appUserNewInfo.getUsername());
         appUser.setEnabled(appUserNewInfo.getEnabled());
         appUser.setDisabled_at(appUser.getEnabled() ? null : new Date());

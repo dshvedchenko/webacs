@@ -33,8 +33,7 @@ app.controller('permissionsController',
         function createItem(item) {
             var data = angular.copy(item);
             permissionsService.create(data, onSuccessCreation, onErrorCreation);
-        };
-
+        }
         function getAvailableResources() {
             resourcesService.getAll()
                 .then(
@@ -50,7 +49,7 @@ app.controller('permissionsController',
         function deleteItem(item) {
             permissionsService.delete(item.id)
                 .then(function ok(response) {
-                        getAll()
+                        getAll();
                         leaveDeleteItem()
                     },
                     function error(response) {
@@ -58,11 +57,9 @@ app.controller('permissionsController',
                     }
                 )
 
-        };
-
-
+        }
         function updateItem(item) {
-            var data = angular.copy(item)
+            var data = angular.copy(item);
             permissionsService.update(data)
                 .then(
                     function ok(response) {
@@ -86,7 +83,7 @@ app.controller('permissionsController',
         }
 
         onSuccessCreation = function (data) {
-            $scope.created = 'CREATED'
+            $scope.created = 'CREATED';
             leaveCreation();
             getAll();
         };

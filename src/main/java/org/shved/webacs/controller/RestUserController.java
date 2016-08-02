@@ -1,5 +1,6 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserCreationDTO;
@@ -11,7 +12,6 @@ import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,8 @@ import java.util.List;
  * @author dshvedchenko on 6/23/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = RestEndpoints.API_V1_USERS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestUserController {
+@RequestMapping(value = RestEndpoints.API_V1_USERS)
+public class RestUserController extends AbstractAPIV1Controller {
     @Autowired
     IAppUserService appUserService;
 
@@ -49,7 +48,7 @@ public class RestUserController {
         return rd;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void saveUser(
@@ -58,7 +57,7 @@ public class RestUserController {
         appUserService.handleSaveEditedAppUser(appUserDTO);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<AuthToken> createUser(

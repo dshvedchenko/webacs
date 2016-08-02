@@ -5,8 +5,19 @@
     Login :
     <button type="submit">Login</button>
 </form>
-<a style="color:blue;" ng-click="logingAsAdmin()">login as admin</a> -- <a style="color:blue;"
-                                                                           ng-click="logingAsUser1()">login as
-    "johns"</a>
+
+--- DEMO login table ---
+<table>
+    <tr>
+        <td><a style="color:blue;" ng-click="logingAsAdmin()">login as admin</a></td>
+    </tr>
+    <tr>
+        <td><a style="color:blue;" ng-click="logingAsUser1()">login as "johns"</a></td>
+    </tr>
+    <tr>
+        <td><a style="color:blue;" ng-click="badLoginAsUser1()"> BAD login as "johns"</a></td>
+    </tr>
+</table>
+
 <br/>
 <div ng-show="loginError">{{loginError}}</div>

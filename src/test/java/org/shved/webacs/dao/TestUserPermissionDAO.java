@@ -1,7 +1,5 @@
 package org.shved.webacs.dao;
 
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
-import org.jboss.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.shved.webacs.AbstractRepositoryTest;
@@ -18,22 +16,20 @@ import java.util.List;
  */
 public class TestUserPermissionDAO extends AbstractRepositoryTest {
 
-    Logger logger = LoggerFactory.logger(TestUserPermissionDAO.class);
+    @Autowired
+    private IUserPermissionDAO userPermissionDAO;
 
     @Autowired
-    IUserPermissionDAO userPermissionDAO;
+    private IPermissionDAO permissionDAO;
 
     @Autowired
-    IPermissionDAO permissionDAO;
+    private IAppUserDAO appUserDAO;
 
     @Autowired
-    IAppUserDAO appUserDAO;
+    private IPermissionClaimDAO permissionClaimDAO;
 
     @Autowired
-    IPermissionClaimDAO permissionClaimDAO;
-
-    @Autowired
-    IClaimStateDAO claimStateDAO;
+    private IClaimStateDAO claimStateDAO;
 
     @Test
     public void testDao() {
@@ -120,7 +116,6 @@ public class TestUserPermissionDAO extends AbstractRepositoryTest {
         Assert.assertTrue(userPermissionList.size() > 0);
         PermissionClaim pc = userPermissionList.get(0).getClaim();
         Assert.assertNotNull(userPermissionDAO.findByClaim(pc));
-        ;
     }
 
     @Test

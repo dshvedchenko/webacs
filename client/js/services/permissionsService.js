@@ -9,7 +9,7 @@ app.service('permissionsService', function ($rootScope, $http, ENDPOINT_URI) {
                     return response.data;
                 }
             )
-    }
+    };
 
     service.getAllByResourceId = function (resourceId) {
         return $http.get(ENDPOINT_URI + path + "/resource/" + resourceId)
@@ -18,7 +18,7 @@ app.service('permissionsService', function ($rootScope, $http, ENDPOINT_URI) {
                     return response.data;
                 }
             )
-    }
+    };
 
     service.create = function (data, onSuccess, onError) {
         $http.post(ENDPOINT_URI + path, data)
@@ -30,11 +30,11 @@ app.service('permissionsService', function ($rootScope, $http, ENDPOINT_URI) {
                     onError(response.data.error)
                 }
             )
-    }
+    };
 
     service.update = function (data) {
         return $http.put(ENDPOINT_URI + path, data);
-    }
+    };
 
     service.delete = function (id) {
         return $http.delete(ENDPOINT_URI + path + "/" + id);

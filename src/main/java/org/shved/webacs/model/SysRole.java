@@ -9,7 +9,7 @@ public enum SysRole {
 
     private Integer code;
 
-    private SysRole(Integer code) {
+    SysRole(Integer code) {
         this.code = code;
     }
 }

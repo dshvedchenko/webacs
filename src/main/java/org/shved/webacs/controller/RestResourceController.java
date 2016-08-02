@@ -18,9 +18,8 @@ import java.util.List;
  * @author dshvedchenko on 6/26/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = RestEndpoints.API_V1_RESOURCES, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestResourceController {
+@RequestMapping(value = RestEndpoints.API_V1_RESOURCES)
+public class RestResourceController extends AbstractAPIV1Controller {
 
     @Autowired
     IResourceService resourceService;

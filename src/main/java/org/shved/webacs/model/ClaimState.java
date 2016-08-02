@@ -2,7 +2,10 @@ package org.shved.webacs.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author dshvedchenko on 6/13/16.
@@ -43,9 +46,8 @@ public class ClaimState {
         if (this.getClass() != getClass()) return false;
         ClaimState inputObj = (ClaimState) obj;
 
-        if (this.getId() != inputObj.getId()) return false;
+        return this.getId() == inputObj.getId();
 
-        return true;
     }
 
     @Override

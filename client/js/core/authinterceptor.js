@@ -1,7 +1,7 @@
 app.factory('authinterceptor', function ($q, $rootScope) {
     return {
         'request': function (config) {
-            if ($rootScope.token) config.headers['X-AUTHID'] = $rootScope.token
+            if ($rootScope.token) config.headers['X-AUTHID'] = $rootScope.token;
             config.headers['Content-Type'] = "application/json";
             return config;
         }

@@ -20,7 +20,6 @@ public interface IAppUserService {
 
     @Transactional
     AppUser registerUser(UserRegistrationDTO appUser);
-    String getTestData(String token);
 
     @Transactional
     AppUserDTO getAppUserById(Long userId);

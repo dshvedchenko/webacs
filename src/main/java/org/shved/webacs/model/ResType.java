@@ -1,7 +1,6 @@
 package org.shved.webacs.model;
 
 import lombok.Data;
-import org.shved.webacs.dto.ResTypeDTO;
 
 import javax.persistence.*;
 
@@ -22,7 +21,6 @@ public class ResType {
     private String name;
 
     public void update(ResType updatedItem) {
-        getName();
         setName(updatedItem.getName());
     }
 
@@ -36,9 +34,8 @@ public class ResType {
         if (this.getClass() != getClass()) return false;
         ResType inputObj = (ResType) obj;
 
-        if (this.getId() != inputObj.getId()) return false;
+        return this.getId().equals(inputObj.getId());
 
-        return true;
     }
 
     @Override

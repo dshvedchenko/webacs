@@ -1,12 +1,7 @@
 package org.shved.webacs.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -19,8 +14,6 @@ public class Error {
 
     public Error() {
     }
-
-    ;
 
     public Error(Exception e, HttpServletRequest request) {
         this.setMessage(e.getMessage());

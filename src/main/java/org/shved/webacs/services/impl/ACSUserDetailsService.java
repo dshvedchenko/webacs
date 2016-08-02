@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author dshvedchenko on 6/14/16.
  */
-@Service("userDetailsService")
+@Service
 public class ACSUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
@@ -28,7 +28,7 @@ public class ACSUserDetailsService implements org.springframework.security.core.
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         AppUser user = appUserDAO.findByUsername(username);
-        if (!user.getEnabled()) user = null;
+        if (user == null || !user.getEnabled()) user = null;
         List<GrantedAuthority> authorities = buildUserAuthority(user.getSysrole());
 
         return buildUserForAuthentication(user, authorities);
@@ -43,8 +43,8 @@ public class ACSUserDetailsService implements org.springframework.security.core.
 //                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole()))
 //                .collect(Collectors.toList());
         List<GrantedAuthority> result = new LinkedList<>();
-        result.add(new SimpleGrantedAuthority("GENERIC"));
-        if (role == SysRole.ADMIN) result.add(new SimpleGrantedAuthority("ADMIN"));
+        result.add(new SimpleGrantedAuthority(SysRole.GENERIC.name()));
+        if (role == SysRole.ADMIN) result.add(new SimpleGrantedAuthority(SysRole.ADMIN.name()));
         return result;
     }
 }

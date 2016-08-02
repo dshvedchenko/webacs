@@ -34,9 +34,8 @@ public class AuthToken {
         if (this.getClass() != getClass()) return false;
         AuthToken inputObj = (AuthToken) obj;
 
-        if (this.getToken() != inputObj.getToken()) return false;
+        return this.getToken().equals(inputObj.getToken());
 
-        return true;
     }
 
     @Override

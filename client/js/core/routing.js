@@ -36,11 +36,11 @@ app.config(function ($routeProvider) {
             controller: "claimController"
         })
         .when("/claims/approve", {
-            templateUrl: "views/claims/approve.html",
+            templateUrl: "views/claims/list_approve.html",
             controller: "approveClaimController"
         })
         .when("/claims/myclaims", {
-            templateUrl: "views/claims/list.html",
+            templateUrl: "views/claims/myclaims.html",
             controller: "userClaimController"
         })
         // admin UI

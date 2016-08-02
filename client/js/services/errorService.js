@@ -18,4 +18,4 @@ app.service('errorService', function ($rootScope, $timeout) {
         }, 5000)
     };
 
-})
+});

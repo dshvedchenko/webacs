@@ -2,15 +2,11 @@ package org.shved.webacs.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.PermissionDTO;
-import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.dto.ResourceDTO;
-import org.shved.webacs.dto.UserAuthDTO;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +17,6 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * @author dshvedchenko on 6/26/16.
@@ -83,7 +78,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
         response = mockMvc.perform(
                 put(RestEndpoints.API_V1_PERMISSIONS + "/1")
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
                         .content(new ObjectMapper().writeValueAsString(respData))
@@ -108,7 +103,7 @@ public class TestRestPermissionController extends AbstractAppTest {
 
         response = mockMvc.perform(
                 post(RestEndpoints.API_V1_PERMISSIONS)
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
                         .content(new ObjectMapper().writeValueAsString(permissionDTO))
@@ -116,7 +111,6 @@ public class TestRestPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.id").exists())
                 .andExpect(jsonPath("$.data.title", is("title 3")))
                 .andExpect(jsonPath("$.data.description", is("descr 535")))
-        ;
         ;
     }
 
@@ -148,11 +142,10 @@ public class TestRestPermissionController extends AbstractAppTest {
                 .andExpect(jsonPath("$.data.description", is("descr 535")))
         ;
         Integer newPermId = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data.id");
-        ;
 
         response = mockMvc.perform(
                 delete(RestEndpoints.API_V1_PERMISSIONS + "/" + newPermId)
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
         )
@@ -162,7 +155,7 @@ public class TestRestPermissionController extends AbstractAppTest {
     private Map getPermissionById(Long id, String tokenStr) throws Exception {
         ResultActions response = mockMvc.perform(
                 get(RestEndpoints.API_V1_PERMISSIONS + "/" + id)
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
 
@@ -179,7 +172,7 @@ public class TestRestPermissionController extends AbstractAppTest {
     private Map getResourceById(Long id, String tokenStr) throws Exception {
         ResultActions response = mockMvc.perform(
                 get(RestEndpoints.API_V1_RESTYPES + id)
-                        .header("X-AUTHID", tokenStr)
+                        .header(Auth.AUTH_TOKEN_NAME, tokenStr)
                         .accept(contentType)
                         .contentType(contentType)
 

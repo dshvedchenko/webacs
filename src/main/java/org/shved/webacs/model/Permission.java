@@ -2,7 +2,6 @@ package org.shved.webacs.model;
 
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -53,9 +52,8 @@ public class Permission {
         if (this.getClass() != getClass()) return false;
         Permission inputObj = (Permission) obj;
 
-        if (this.getId() != inputObj.getId()) return false;
+        return this.getId() == inputObj.getId();
 
-        return true;
     }
 
     @Override

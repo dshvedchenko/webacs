@@ -11,7 +11,7 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorSe
                     return response.data;
                 }
             )
-    }
+    };
 
     service.createUser = function (data, onSuccess, onError) {
         $http.post(ENDPOINT_URI + path, data)
@@ -23,14 +23,14 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorSe
                     onError(response.data.error)
                 }
             )
-    }
+    };
 
     service.getValidRoles = function (onSuccess, onError) {
         if ($rootScope.validRoles.length === 0) {
             $http.get(ENDPOINT_URI + "/sysroles")
                 .then(
                     function ok(response) {
-                        if (response.data.data !== undefined) $rootScope.validRoles = response.data.data
+                        if (response.data.data !== undefined) $rootScope.validRoles = response.data.data;
                         if (onSuccess instanceof Function) onSuccess()
                     },
                     function error(response) {
@@ -38,15 +38,15 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorSe
                     }
                 )
         }
-    }
+    };
 
     service.update = function (data) {
         return $http.put(ENDPOINT_URI + path, data);
-    }
+    };
 
     service.delete = function (id) {
         return $http.delete(ENDPOINT_URI + path + "/" + id);
-    }
+    };
 
     service.getSessionUser = function () {
         $http.get(ENDPOINT_URI + path + "/current")
@@ -55,7 +55,7 @@ app.service('appUserService', function ($rootScope, $http, ENDPOINT_URI, errorSe
                     $rootScope.sessionUser = response.data.data;
                 },
                 function error(response) {
-                    $rootScope.token = undefined
+                    $rootScope.token = undefined;
                     errorService.setError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
                 }
             )

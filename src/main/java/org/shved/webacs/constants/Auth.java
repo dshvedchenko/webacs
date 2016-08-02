@@ -5,4 +5,6 @@ package org.shved.webacs.constants;
  */
 public class Auth {
     public static final String AUTH_TOKEN_NAME = "X-AUTHID";
+    public static final String hasGenericAutority = "hasAuthority('GENERIC')";
+    public static final String hasAdminAutority = "hasAuthority('ADMIN')";
 }

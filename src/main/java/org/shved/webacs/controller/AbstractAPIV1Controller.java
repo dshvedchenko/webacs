@@ -1,16 +1,11 @@
 package org.shved.webacs.controller;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.shved.webacs.constants.RestEndpoints;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author dshvedchenko on 6/24/16.
  */
-@RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/v1", consumes = "application/json", produces = "application/json")
-public class AbstractAPIV1Controller {
+@RequestMapping(value = RestEndpoints.API_V1, consumes = "application/json", produces = "application/json")
+public abstract class AbstractAPIV1Controller {
 }

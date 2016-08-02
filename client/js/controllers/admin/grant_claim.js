@@ -9,7 +9,7 @@ app.controller('grantClaimController',
 
         $scope.claims = [];
         $scope.isEditing = false;
-        $scope.created = ''
+        $scope.created = '';
 
         if (!authService.isLogged()) {
             $location.path("/")
@@ -30,9 +30,9 @@ app.controller('grantClaimController',
 
         $scope.orderBy = function (prop) {
             $scope.claimOrderBy = prop
-        }
+        };
 
 
         getAllClaims();
 
-    })
+    });

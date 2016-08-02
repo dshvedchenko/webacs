@@ -1,7 +1,6 @@
 package org.shved.webacs.model;
 
 import lombok.Data;
-import org.hibernate.annotations.Tables;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -95,9 +94,8 @@ public class PermissionClaim {
 
         if (this.getEndAt() == null && inputObj.getEndAt() != null) return false;
         if (inputObj.getEndAt() == null && this.getEndAt() != null) return false;
-        if (this.getEndAt() != inputObj.getEndAt()) return false;
+        return this.getEndAt() == inputObj.getEndAt();
 
-        return true;
     }
 
     @Override

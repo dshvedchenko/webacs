@@ -2,15 +2,13 @@ package org.shved.webacs.controller;
 
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.model.ClaimState;
 import org.shved.webacs.response.ResponseData;
-import org.shved.webacs.services.IAppUserService;
-import org.shved.webacs.services.IAuthTokenService;
 import org.shved.webacs.services.IPermissionClaimService;
-import org.shved.webacs.services.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,9 +21,8 @@ import java.util.List;
  * @author dshvedchenko on 6/26/16.
  */
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD})
-@RequestMapping(value = RestEndpoints.API_V1_CLAIMS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestPermissionClaimController {
+@RequestMapping(value = RestEndpoints.API_V1_CLAIMS)
+public class RestPermissionClaimController extends AbstractAPIV1Controller {
 
     Logger logger = LoggerFactory.logger(RestPermissionClaimController.class);
 
@@ -76,7 +73,7 @@ public class RestPermissionClaimController {
         permissionClaimService.approve(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "/{id}/grant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void grantPermissionClaim(
@@ -93,7 +90,7 @@ public class RestPermissionClaimController {
         permissionClaimService.revoke(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAll(
@@ -102,7 +99,7 @@ public class RestPermissionClaimController {
         return new ResponseData(list);
     }
 
-    @PreAuthorize("hasAuthority('GENERIC')")
+    @PreAuthorize(Auth.hasGenericAutority)
     @RequestMapping(value = "/own", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getOwnClaims(
@@ -112,7 +109,7 @@ public class RestPermissionClaimController {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "/approved", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAllApproved(
@@ -121,7 +118,7 @@ public class RestPermissionClaimController {
         return new ResponseData(list);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "/granted", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAllGranted(
@@ -130,7 +127,7 @@ public class RestPermissionClaimController {
         return new ResponseData(list);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "/revoked", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAllRevoked(

@@ -17,9 +17,8 @@ import java.util.List;
  * @author dshvedchenko on 6/26/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = RestEndpoints.API_V1_PERMISSIONS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestPermissionController {
+@RequestMapping(value = RestEndpoints.API_V1_PERMISSIONS)
+public class RestPermissionController extends AbstractAPIV1Controller {
 
     @Autowired
     private IPermissionService permissionService;

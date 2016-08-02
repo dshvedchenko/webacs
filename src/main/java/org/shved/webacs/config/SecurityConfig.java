@@ -2,6 +2,8 @@ package org.shved.webacs.config;
 
 import org.shved.webacs.security.JwtAuthenticationEntryPoint;
 import org.shved.webacs.security.TokenAuthenticationFilter;
+import org.shved.webacs.services.IAuthTokenService;
+import org.shved.webacs.services.impl.ACSUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -29,16 +30,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableScheduling
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private IAuthTokenService authTokenService;
 
+    @Bean(name = "userDetailsService")
+    public UserDetailsService userDetailsServiceBean() {
+        return new ACSUserDetailsService();
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(userDetailsServiceBean())
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -88,11 +93,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean(name = "tokenAuthenticationFilter")
     public TokenAuthenticationFilter getTokenAuthenticationFilter() throws Exception {
-        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();
+        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter(authTokenService, userDetailsServiceBean());
         restTokenAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return restTokenAuthenticationFilter;
     }
-
-
 
 }

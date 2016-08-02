@@ -44,12 +44,11 @@ app.controller('resourcesController',
         function createItem(item) {
             var data = angular.copy(item);
             resourcesService.create(data, onSuccessCreation, onErrorCreation);
-        };
-
+        }
         function deleteItem(item) {
             resourcesService.delete(item.id)
                 .then(function ok(response) {
-                        getAll()
+                        getAll();
                         leaveDeleteItem()
                     },
                     function error(response) {
@@ -57,11 +56,9 @@ app.controller('resourcesController',
                     }
                 )
 
-        };
-
-
+        }
         function updateItem(item) {
-            var data = angular.copy(item)
+            var data = angular.copy(item);
             resourcesService.update(data)
                 .then(
                     function ok(response) {
@@ -82,7 +79,7 @@ app.controller('resourcesController',
         }
 
         onSuccessCreation = function (data) {
-            $scope.created = 'CREATED'
+            $scope.created = 'CREATED';
             leaveCreation();
             getAll();
         };

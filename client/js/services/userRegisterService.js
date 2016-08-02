@@ -3,9 +3,9 @@ app.service('userregisterService', function ($rootScope, $http, ENDPOINT_URI) {
     this.shares = 2000;
 
     this.getHelloMessage = function () {
-        console.log(this.counter)
+        console.log(this.counter);
         return this.counter++;
-    }
+    };
 
     this.register = function (data, onSuccess, onError) {
         $http.post(ENDPOINT_URI + "/register", data)

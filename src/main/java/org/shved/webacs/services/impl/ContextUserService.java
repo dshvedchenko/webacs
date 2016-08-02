@@ -30,13 +30,14 @@ public class ContextUserService implements IContextUserService {
         return null;
     }
 
-    protected String getPrincipal() {
+    private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
             userName = ((UserDetails) principal).getUsername();
         } else {
+            if (principal != null)
             userName = principal.toString();
         }
         return userName;

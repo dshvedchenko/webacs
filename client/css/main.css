@@ -1,16 +1,16 @@
 body {
-    padding: 5px;
+    padding: 3px;
 }
 
 a {
-    padding: 5px;
+    padding: 3px;
 }
 
 .has-error {
     color: red;
     background-color: orange;
     border-color: black;
-    padding: 20px;
+    padding: 15px;
 }
 
 .activerow {
@@ -29,11 +29,11 @@ a {
 table, th, td {
     border: 1px solid grey;
     border-collapse: collapse;
-    padding: 5px;
+    padding: 3px;
 }
 
 form, input {
-    padding: 8px;
+    padding: 4px;
     font-size: medium;
 }
 

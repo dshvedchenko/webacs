@@ -15,16 +15,16 @@ import java.util.List;
 public class TestPermissionClaimDAO extends AbstractRepositoryTest {
 
     @Autowired
-    IPermissionClaimDAO permissionClaimDAO;
+    private IPermissionClaimDAO permissionClaimDAO;
 
     @Autowired
-    IClaimStateDAO claimStateDAO;
+    private IClaimStateDAO claimStateDAO;
 
     @Autowired
-    IPermissionDAO permissionDAO;
+    private IPermissionDAO permissionDAO;
 
     @Autowired
-    IAppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Test
     public void testDao() {
@@ -42,7 +42,7 @@ public class TestPermissionClaimDAO extends AbstractRepositoryTest {
         ClaimState claimState = new ClaimState();
         claimState.setId(2);
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByClaimState(claimState);
-        Assert.assertTrue(permissionClaimList.size() > 10);
+        Assert.assertTrue(permissionClaimList.size() >= 10);
     }
 
     @Test

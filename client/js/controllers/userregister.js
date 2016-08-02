@@ -1,4 +1,4 @@
-app.controller('userRegisterController', function ($scope, userregisterService, $http, $rootScope, $location) {
+app.controller('userRegisterController', function ($scope, userregisterService, $http, $rootScope, $location, errorService) {
 
     $scope.username = '';
     $scope.password = '';
@@ -15,7 +15,7 @@ app.controller('userRegisterController', function ($scope, userregisterService, 
             email: angular.copy($scope.email),
             firstName: angular.copy($scope.firstname),
             lastName: angular.copy($scope.lastname)
-        }
+        };
         userregisterService.register(data, onSuccess, onError)
     };
 
@@ -24,7 +24,7 @@ app.controller('userRegisterController', function ($scope, userregisterService, 
     };
 
     onError = function (data) {
-        $scope.registerError = data
+        errorService.setError(data)
     };
 
     $scope.isFormValid = function () {

@@ -1,4 +1,4 @@
-app.controller('claimController',
+app.controller('userClaimController',
     function ($scope,
               $http,
               $rootScope,
@@ -15,8 +15,8 @@ app.controller('claimController',
             $location.path("/")
         }
 
-        function getAllClaims() {
-            claimService.getAllClaims()
+        function get() {
+            claimService.getAllMyClaims()
                 .then(
                     function (data) {
                         $scope.claims = data.data;
@@ -33,6 +33,6 @@ app.controller('claimController',
         };
 
 
-        getAllClaims();
+        get();
 
     });

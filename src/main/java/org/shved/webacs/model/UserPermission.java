@@ -3,7 +3,6 @@ package org.shved.webacs.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @author dshvedchenko on 6/8/16.
@@ -50,11 +49,9 @@ public class UserPermission {
 
         if (this.getUser() != inputObj.getUser()) return false;
 
-        if (this.getPermission() != inputObj.getPermission()) return false;
+        return this.getPermission() == inputObj.getPermission();
 
 
-
-        return true;
     }
 
     @Override

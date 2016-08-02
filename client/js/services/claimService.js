@@ -23,9 +23,17 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
         console.log(claimId);
     }
 
-    function getAllMyClaims() {
-        console.log("all claims for current user")
-    }
+    service.getAllMyClaims = function () {
+        return $http.get(ENDPOINT_URI + path + "/own")
+            .then(
+                function ok(response) {
+                    return response.data;
+                },
+                function err(error) {
+                    errorService.setError(error)
+                }
+            )
+    };
 
     function getAllClaimsForUser(userId) {
         console.log(userId)
@@ -41,7 +49,19 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                     errorService.setError(error)
                 }
             )
-    }
+    };
+
+    service.getAllClaimed = function () {
+        return $http.get(ENDPOINT_URI + path + "/claimed")
+            .then(
+                function ok(response) {
+                    return response.data;
+                },
+                function err(error) {
+                    errorService.setError(error)
+                }
+            )
+    };
 
     service.getAllApproved = function () {
         return $http.get(ENDPOINT_URI + path + "/approved")
@@ -53,7 +73,7 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                     errorService.setError(error)
                 }
             )
-    }
+    };
 
     service.getAllGranted = function () {
         return $http.get(ENDPOINT_URI + path + "/granted")
@@ -65,7 +85,7 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                     errorService.setError(error)
                 }
             )
-    }
+    };
 
     service.getAllRevoked = function () {
         return $http.get(ENDPOINT_URI + path + "/revoked")
@@ -78,4 +98,4 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                 }
             )
     }
-})
+});

@@ -2,24 +2,24 @@ package org.shved.webacs.config;
 
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
-import org.modelmapper.ModelMapper;
+import org.shved.webacs.constants.RestEndpoints;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -97,8 +97,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean(name = "messageSource")
     public MessageSource createMessageSourceBean() {
         ResourceBundleMessageSource msgSrc = new ResourceBundleMessageSource();
-        msgSrc.setBasenames(new String[]{"messages/validation", "messages/message"});
+        msgSrc.setBasenames("messages/validation", "messages/message");
         return msgSrc;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping(RestEndpoints.API_V1 + "/**")
+                .allowedOrigins("*")
+                .allowedMethods("PUT", "POST", "DELETE", "OPTIONS", "GET")
+                .maxAge(3600)
+        ;
     }
 
     public static class JsonViewResolver implements ViewResolver {
@@ -108,5 +117,4 @@ public class AppConfig extends WebMvcConfigurerAdapter {
             return view;
         }
     }
-
 }

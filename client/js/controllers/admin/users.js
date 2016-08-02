@@ -1,7 +1,7 @@
 app.controller('adminUserController', function ($scope, appUserService, authService, $http, $rootScope, $location, errorService) {
     $scope.users = [];
     $scope.isEditing = false;
-    $scope.created = ''
+    $scope.created = '';
 
     if (!authService.isLogged()) {
         $location.path("/")
@@ -12,7 +12,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         function (response) {
             errorService.setError(response.data)
         }
-    )
+    );
 
     function getAll() {
         appUserService.all()
@@ -30,10 +30,9 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
         var data = angular.copy(item);
         appUserService.createUser(data, onSuccessCreation, onErrorCreation)
 
-    };
-
+    }
     function updateItem(item) {
-        var data = angular.copy(item)
+        var data = angular.copy(item);
         appUserService.update(data)
             .then(
                 function ok(response) {
@@ -49,7 +48,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     function disableItem(item) {
         appUserService.delete(item.id)
             .then(function ok(response) {
-                    getAll()
+                    getAll();
                     leaveDisableItem()
                 },
                 function error(response) {
@@ -57,8 +56,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
                 }
             )
 
-    };
-
+    }
     function getNewUserForView() {
         $scope.newUser = {
             username: '',
@@ -73,13 +71,13 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     }
 
     onSuccessCreation = function (data) {
-        $scope.created = 'CREATED'
+        $scope.created = 'CREATED';
         leaveCreation();
         getAll();
     };
 
     onErrorCreation = function (data) {
-        $scope.errorBox = data
+        errorService.setError(data)
     };
 
     function isFormValid(data) {
@@ -121,7 +119,7 @@ app.controller('adminUserController', function ($scope, appUserService, authServ
     function setDisableItem(item) {
         leaveEditing();
         leaveCreation();
-        $scope.disableItem = angular.copy(item);
+        $scope.disabledUser = angular.copy(item);
         $scope.isDisable = true;
     }
 

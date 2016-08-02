@@ -1,19 +1,19 @@
 package org.shved.webacs.services.impl;
 
-import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.dao.IUserPermissionDAO;
-import org.shved.webacs.dto.*;
+import org.shved.webacs.dto.CreatePermissionClaimDTO;
+import org.shved.webacs.dto.PermissionClaimDTO;
+import org.shved.webacs.dto.PermissionDTO;
+import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.exception.AppException;
 import org.shved.webacs.model.*;
 import org.shved.webacs.services.IContextUserService;
 import org.shved.webacs.services.IPermissionClaimService;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,26 +26,25 @@ import java.util.stream.Collectors;
  * @author dshvedchenko on 7/5/16.
  */
 @Service
-@Data
 public class PermissionClaimServiceImpl implements IPermissionClaimService {
 
     @Autowired
-    IPermissionClaimDAO permissionClaimDAO;
+    private IPermissionClaimDAO permissionClaimDAO;
 
     @Autowired
-    IUserPermissionDAO userPermissionDAO;
+    private IUserPermissionDAO userPermissionDAO;
 
     @Autowired
-    IResourceService resourceService;
+    private IResourceService resourceService;
 
     @Autowired
-    IAppUserDAO appUserDAO;
+    private IAppUserDAO appUserDAO;
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Autowired
-    IContextUserService contextUserService;
+    private IContextUserService contextUserService;
 
     @Override
     public List<PermissionClaimDTO> getAll() {
@@ -90,7 +89,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByPermission(permission));
     }
 
-    // TODO,
     // 3. how to check permissions
     // 4. provide to user only list of permission that is not claimed to him already
     @Override
@@ -101,7 +99,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         List<PermissionClaim> activeUserClaims = permissionClaimDAO.findAllByUserNotRevoked(appUser);
         if (isAlreadyClaimed(newClaimedPermissionList, activeUserClaims))
             throw new AppException("Permissions already claimed");
-
         List<PermissionClaim> newClaims = new LinkedList<>();
         for (Permission permission : newClaimedPermissionList) {
             PermissionClaim permissionClaim = new PermissionClaim();
@@ -112,7 +109,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
             newClaims.add(permissionClaim);
             permissionClaimDAO.save(permissionClaim);
         }
-
         return newClaims.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
     }
 
@@ -199,7 +195,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
             userPermissionDAO.deleteByClaim(permissionClaim);
             permissionClaimDAO.save(permissionClaim);
         }
-        ;
 
     }
 

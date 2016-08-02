@@ -7,6 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dshvedchenko on 6/11/16.
  */
 @ContextConfiguration(value = "classpath:test/hibernate-context-test.cfg.xml")
-@ComponentScan({"org.shved.webacs", "org.shved.webacs.dao.impl.*"})
+@ComponentScan({"org.shved.webacs.dao"})
 public abstract class AbstractRepositoryTest extends AbstractTransactionalProfileTest {
 }

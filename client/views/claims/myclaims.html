@@ -1,0 +1,39 @@
+<div ng-include="'views/claims/header.html'"></div>
+<h2>My CLAIMS</h2>
+<p><label for="userFilter">Filter by : </label><input id="userFilter" type="text" ng-model="cfilter">
+</p>
+<table class="animate-container">
+    <tr>
+        <th>
+            id
+        </th>
+        <th ng-click="orderBy('claimState.name')">
+            state
+        </th>
+        <th ng-click="orderBy('permission.title')">
+            permission
+        </th>
+        <th ng-click="orderBy('permission.resource.name')">
+            resource
+        </th>
+        <th>Created</th>
+        <th>Approved</th>
+        <th>Granted</th>
+        <th>Revoked</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="item in claims  | filter : cfilter | orderBy:claimOrderBy"
+        class="animate-repeat"
+        ng-click="setEditedItem(item)">
+        <td>{{ item.id }}</td>
+        <td>{{ item.claimState.name }}</td>
+        <td>{{ item.permission.title }}</td>
+        <td>{{ item.permission.resource.name }}</td>
+        <td>{{ item.claimedAt | asDate | date:'short' }}</td>
+        <td>{{ item.approvedAt | asDate | date:'short' }}</td>
+        <td>{{ item.grantedAt | asDate | date:'short' }}</td>
+        <td>{{ item.revokedAt | asDate | date:'short' }}</td>
+        <td><span ng-if="item.claimState.id == 0">.. cancel ..</span>
+        </td>
+    </tr>
+</table>

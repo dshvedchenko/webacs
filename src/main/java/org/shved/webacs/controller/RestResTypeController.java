@@ -1,14 +1,13 @@
 package org.shved.webacs.controller;
 
+import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.ClaimStateDTO;
 import org.shved.webacs.dto.ResTypeDTO;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAuthTokenService;
-import org.shved.webacs.services.IClaimStateService;
 import org.shved.webacs.services.IResTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +15,8 @@ import org.springframework.web.bind.annotation.*;
  * @author dshvedchenko on 6/28/16.
  */
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(value = RestEndpoints.API_V1_RESTYPES, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestResTypeController {
+@RequestMapping(value = RestEndpoints.API_V1_RESTYPES)
+public class RestResTypeController extends AbstractAPIV1Controller {
 
     @Autowired
     IAuthTokenService authTokenService;
@@ -33,7 +31,7 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getById(id));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteById(
             @PathVariable(value = "id") Integer id
@@ -47,7 +45,7 @@ public class RestResTypeController {
         return new ResponseData(resTypeService.getAll());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public void update(
             @RequestBody ResTypeDTO updatedItem
@@ -55,7 +53,7 @@ public class RestResTypeController {
         resTypeService.save(updatedItem);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(method = RequestMethod.POST)
     public ResponseData<ResTypeDTO> create(
             @RequestBody ResTypeDTO updatedItem
