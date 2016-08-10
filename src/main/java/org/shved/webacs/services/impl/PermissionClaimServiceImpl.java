@@ -1,7 +1,6 @@
 package org.shved.webacs.services.impl;
 
 import org.modelmapper.ModelMapper;
-import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
@@ -36,9 +35,6 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
 
     @Autowired
     private IResourceService resourceService;
-
-    @Autowired
-    private IAppUserDAO appUserDAO;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -139,7 +135,8 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         PermissionClaim currentPermissionClaim = permissionClaimDAO.findById(id);
         Boolean ownerOfClaim = contextUser == currentPermissionClaim.getUser();
         Boolean deleteAllowedInState = currentPermissionClaim.getClaimState() == ClaimState.CLAIMED;
-        if (ownerOfClaim && deleteAllowedInState /* ADMINs also need ability to delete claims */) {
+        Boolean isAdmin = contextUserService.getContextUser().getSysrole() == SysRole.ADMIN;
+        if ((ownerOfClaim || isAdmin) && deleteAllowedInState) {
             permissionClaimDAO.deleteById(id);
         } else {
             throw new AppException("DELETE REJECTED in state " + currentPermissionClaim.getClaimState());
@@ -204,8 +201,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     private List<PermissionClaimDTO> convertListPermissionClaimsToPermissionClaimDTO(List<PermissionClaim> permissionClaimList) {
-        List<PermissionClaimDTO> permissions = null;
-        permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
+        List<PermissionClaimDTO> permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
         return permissions;
     }
 
