@@ -9,6 +9,7 @@ import org.shved.webacs.model.ResType;
 import org.shved.webacs.services.IResTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class ResTypeServiceImpl implements IResTypeService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public List<ResTypeDTO> getAll() {
         List<ResType> list = resTypeDAO.findAll();
 
@@ -34,6 +36,7 @@ public class ResTypeServiceImpl implements IResTypeService {
     }
 
     @Override
+    @Transactional
     public ResTypeDTO getById(Integer id) {
         ResType res = resTypeDAO.findById(id);
         if (res == null) throw new NotFoundException("Non exiting ResType id");
@@ -42,6 +45,7 @@ public class ResTypeServiceImpl implements IResTypeService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
         try {
             resTypeDAO.deleteById(id);
@@ -52,6 +56,7 @@ public class ResTypeServiceImpl implements IResTypeService {
 
 
     @Override
+    @Transactional
     public ResTypeDTO save(ResTypeDTO resTypeDTO) {
         ResType newObj = modelMapper.map(resTypeDTO, ResType.class);
         ResType dbObj;

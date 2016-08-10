@@ -4,7 +4,6 @@ import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.UserCreationDTO;
 import org.shved.webacs.dto.UserRegistrationDTO;
 import org.shved.webacs.model.AppUser;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,22 +17,18 @@ public interface IAppUserService {
 
     List<AppUserDTO> getAllDisabled();
 
-    @Transactional
+
     AppUser registerUser(UserRegistrationDTO appUser);
 
-    @Transactional
+
     AppUserDTO getAppUserById(Long userId);
 
-    @Transactional
     AppUserDTO getCurrentUser();
 
-    @Transactional
     void handleSaveEditedAppUser(AppUserDTO appUserDTO);
 
-    @Transactional
     AppUser createAppUserByAdmin(UserCreationDTO appUser);
 
-    @Transactional
     void deleteById(Long userId);
 
 }

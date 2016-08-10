@@ -47,18 +47,21 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     private IContextUserService contextUserService;
 
     @Override
+    @Transactional
     public List<PermissionClaimDTO> getAll() {
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllPermissionClaim();
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
+    @Transactional
     public List<PermissionClaimDTO> getAllOwn() {
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByUserNotRevoked(contextUserService.getContextUser());
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
+    @Transactional
     public List<PermissionClaimDTO> getAllByState(ClaimState claimState) {
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByClaimState(claimState));
     }
@@ -144,6 +147,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
+    @Transactional
     public void approve(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
@@ -166,6 +170,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
+    @Transactional
     public void grant(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);

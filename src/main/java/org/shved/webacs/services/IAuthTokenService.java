@@ -3,7 +3,6 @@ package org.shved.webacs.services;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.dto.LoggedUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * @author dshvedchenko on 6/24/16.
@@ -11,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 public interface IAuthTokenService {
     int HALF_AN_HOUR_IN_MILLISECONDS = 30 * 60 * 1000;
 
-    @Scheduled(fixedRate = HALF_AN_HOUR_IN_MILLISECONDS)
     void evictExpiredTokens();
 
     LoggedUserDTO restLogin(UserAuthDTO userLogin);

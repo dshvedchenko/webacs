@@ -89,6 +89,7 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     @Override
+    @Transactional
     public AppUserDTO getCurrentUser() {
         AppUser user = contextUserService.getContextUser();
         if (user == null) {
@@ -99,6 +100,7 @@ public class AppUserServiceImpl implements IAppUserService {
     }
 
     @Override
+    @Transactional
     public AppUser createAppUserByAdmin(UserCreationDTO newUser) {
         AppUser appUser = modelMapper.map(newUser, AppUser.class);
         return addNewAppUser(appUser);

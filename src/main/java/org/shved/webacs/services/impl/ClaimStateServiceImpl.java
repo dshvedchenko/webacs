@@ -8,6 +8,7 @@ import org.shved.webacs.model.ClaimState;
 import org.shved.webacs.services.IClaimStateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class ClaimStateServiceImpl implements IClaimStateService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public List<ClaimStateDTO> getAll() {
         List<ClaimState> list = claimStateDAO.getAll();
         if (list == null || list != null && list.size() == 0) throw new NotFoundException("empty claimstate storage");
@@ -32,6 +34,7 @@ public class ClaimStateServiceImpl implements IClaimStateService {
     }
 
     @Override
+    @Transactional
     public ClaimStateDTO getById(Integer id) {
         ClaimState res = claimStateDAO.getById(id);
         if (res == null) throw new NotFoundException("Non exiting claim state id");

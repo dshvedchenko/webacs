@@ -3,8 +3,6 @@ package org.shved.webacs.services.impl;
 import org.modelmapper.ModelMapper;
 import org.shved.webacs.dao.IPermissionDAO;
 import org.shved.webacs.dao.IResourceDAO;
-import org.shved.webacs.dto.PermissionDTO;
-import org.shved.webacs.dto.PermissionTitleDTO;
 import org.shved.webacs.dto.ResourceCreationDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.exception.AppException;
@@ -27,16 +25,16 @@ import java.util.stream.Collectors;
 public class ResourceServiceImpl implements IResourceService {
 
     @Autowired
-    IResourceDAO resourceDAO;
+    private IResourceDAO resourceDAO;
 
     @Autowired
-    IPermissionDAO permissionDAO;
+    private IPermissionDAO permissionDAO;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    @Transactional()
+    @Transactional
     public ResourceDTO create(ResourceCreationDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         resourceDAO.save(resource);
@@ -53,6 +51,7 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    @Transactional
     public void updateResource(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         Resource toSave = resourceDAO.findById(resource.getId());
@@ -74,6 +73,7 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         try {
             resourceDAO.deleteById(id);
@@ -83,16 +83,19 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    @Transactional
     public List<ResourceDTO> getAll() {
         return convertListResourcesToListResourceDTO(resourceDAO.findAllResources());
     }
 
     @Override
+    @Transactional
     public List<ResourceDTO> getAllByResTypeId(Integer typeId) {
         return convertListResourcesToListResourceDTO(resourceDAO.findAllByResTypeId(typeId));
     }
 
     @Override
+    @Transactional
     public boolean isOwnerOfResource(Resource resource, AppUser appUser) {
         return resource.getOwnerPermission().getAppUsers().contains(appUser);
     }
