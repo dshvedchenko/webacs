@@ -1,13 +1,10 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IPermissionClaimDAO;
 import org.shved.webacs.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,12 +58,23 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
         return criteria.list();
     }
 
+
+    @Override
+    public List<PermissionClaim> findAllByUser(AppUser appUser) {
+        Criteria criteria = getSession().createCriteria(PermissionClaim.class)
+                .add(Restrictions.eq("user", appUser)
+                );
+        return criteria.list();
+    }
+
     @Override
     public List<PermissionClaim> findAllByUserNotRevoked(AppUser appUser) {
         Criteria criteria = getSession().createCriteria(PermissionClaim.class)
-                .add(Restrictions.conjunction(Restrictions.eq("user", appUser)
-                        , Restrictions.ne("claimState", ClaimState.REVOKED)
-                ));
+                .add(Restrictions.conjunction(
+                        Restrictions.eq("user", appUser),
+                        Restrictions.ne("claimState", ClaimState.REVOKED)
+                        )
+                );
         return criteria.list();
     }
 

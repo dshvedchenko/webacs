@@ -1,4 +1,5 @@
-app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorService) {
+app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorService,
+                                      resourcesService) {
 
     var service = this,
         path = '/claims';
@@ -97,5 +98,21 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                     errorService.setError(error)
                 }
             )
+    }
+
+    service.getAllResourcesForClaim = function () {
+        return resourcesService.getAll()
+            .then(function (resp) {
+                    var resourcesToClaim = resp.data.map(function (res) {
+                        res['claimed'] = false;
+                        return res
+                    })
+                    return resourcesToClaim;
+                },
+                function (data) {
+                    return "can not get resources";
+                }
+            )
+
     }
 });

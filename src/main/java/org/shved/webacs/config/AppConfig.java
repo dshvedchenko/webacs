@@ -1,7 +1,5 @@
 package org.shved.webacs.config;
 
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
-import org.jboss.logging.Logger;
 import org.shved.webacs.constants.RestEndpoints;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +30,6 @@ import java.util.Locale;
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     public static final int CACHE_PERIOD = 31556926;
-    Logger logger = LoggerFactory.logger(AppConfig.class);
 
     @Bean
     public InternalResourceViewResolver viewResolver() {

@@ -5,7 +5,6 @@ import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.model.ClaimState;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -14,40 +13,17 @@ import java.util.List;
  */
 public interface IPermissionClaimService {
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAll();
-
-    @PreAuthorize("hasAuthority('GENERIC')")
     List<PermissionClaimDTO> getAllOwn();
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByState(ClaimState claimState);
-
     PermissionClaimDTO getById(Long id);
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO);
-
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
-
-
     List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList);
-
-
     void update(PermissionClaimDTO permissionClaimDTO);
-
-
     void delete(Long id);
-
-
     void approve(Long claimId);
-
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     void grant(Long claimId);
-
     void revoke(Long claimId);
 
 }

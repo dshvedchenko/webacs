@@ -52,7 +52,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     @Override
     @Transactional
     public List<PermissionClaimDTO> getAllOwn() {
-        List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByUserNotRevoked(contextUserService.getContextUser());
+        List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByUser(contextUserService.getContextUser());
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
@@ -68,7 +68,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         PermissionClaim claim = permissionClaimDAO.findById(id);
         AppUser appUser = contextUserService.getContextUser();
 
-        if (appUser.equals(claim.getUser())) {
+        if (appUser.equals(claim.getUser()) || contextUserService.isAdmin()) {
             return modelMapper.map(claim, PermissionClaimDTO.class);
         } else {
             throw new AppException("user id mismatch");
@@ -88,14 +88,20 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByPermission(permission));
     }
 
-    // 3. how to check permissions
-    // 4. provide to user only list of permission that is not claimed to him already
     @Override
     @Transactional
     public List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> createClaims) {
-        List<Permission> newClaimedPermissionList = createClaims.stream().map(item -> modelMapper.map(item.getPermissionDTO(), Permission.class)).collect(Collectors.toList());
+
+        List<Permission> newClaimedPermissionList = createClaims.stream()
+                .map(item -> {
+                    Permission permission = new Permission();
+                    permission.setId(item.getPermissionId());
+                    return permission;
+                })
+                .collect(Collectors.toList());
+
         AppUser appUser = contextUserService.getContextUser();
-        List<PermissionClaim> activeUserClaims = permissionClaimDAO.findAllByUserNotRevoked(appUser);
+        List<PermissionClaim> activeUserClaims = permissionClaimDAO.findAllByUser(appUser);
         if (isAlreadyClaimed(newClaimedPermissionList, activeUserClaims))
             throw new AppException("Permissions already claimed");
         List<PermissionClaim> newClaims = new LinkedList<>();
@@ -135,8 +141,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         PermissionClaim currentPermissionClaim = permissionClaimDAO.findById(id);
         Boolean ownerOfClaim = contextUser == currentPermissionClaim.getUser();
         Boolean deleteAllowedInState = currentPermissionClaim.getClaimState() == ClaimState.CLAIMED;
-        Boolean isAdmin = contextUserService.getContextUser().getSysrole() == SysRole.ADMIN;
-        if ((ownerOfClaim || isAdmin) && deleteAllowedInState) {
+        if ((ownerOfClaim || contextUserService.isAdmin()) && deleteAllowedInState) {
             permissionClaimDAO.deleteById(id);
         } else {
             throw new AppException("DELETE REJECTED in state " + currentPermissionClaim.getClaimState());

@@ -3,7 +3,6 @@ package org.shved.webacs.controller;
 import org.shved.webacs.constants.Auth;
 import org.shved.webacs.dto.LoggedUserDTO;
 import org.shved.webacs.dto.UserAuthDTO;
-import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IAppUserService;
 import org.shved.webacs.services.IAuthTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +33,12 @@ public class RestAuthController extends AbstractAPIV1Controller {
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ResponseEntity<String> logout(
+    public void logout(
             @RequestHeader(name = Auth.AUTH_TOKEN_NAME) String token
     ) {
-        ResponseData rd = new ResponseData();
+        // ResponseData rd = new ResponseData();
         authTokenService.restLogout(token);
-        return ResponseEntity.ok("success");
+        return;
     }
 
 }

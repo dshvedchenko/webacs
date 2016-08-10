@@ -1,7 +1,5 @@
 package org.shved.webacs.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
@@ -11,21 +9,16 @@ import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
-import org.shved.webacs.dto.PermissionDTO;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,17 +41,17 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data", hasSize(14)))
+                .andExpect(jsonPath("$.data", hasSize(10)))
                 .andExpect(jsonPath("$.data[0].approver.username", is("billk")))
                 .andExpect(jsonPath("$.data[0].user.username", is("ninaa")))
                 .andExpect(jsonPath("$.data[0].claimedAt", is("2016-06-10 09:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].approvedAt", is("2016-06-10 10:00:00.000+0000")))
                 .andExpect(jsonPath("$.data[0].grantedAt", is("2016-06-10 10:20:00.000+0000")))
-                .andExpect(jsonPath("$.data[13].approver.username", is("admin")))
-                .andExpect(jsonPath("$.data[13].user.username", is("billk")))
-                .andExpect(jsonPath("$.data[13].claimedAt", is("2016-06-10 09:00:00.000+0000")))
-                .andExpect(jsonPath("$.data[13].approvedAt", is("2016-06-10 10:00:00.000+0000")))
-                .andExpect(jsonPath("$.data[13].grantedAt", is("2016-06-10 10:20:00.000+0000")));
+                .andExpect(jsonPath("$.data[9].approver.username", is("billk")))
+                .andExpect(jsonPath("$.data[9].user.username", is("ninaa")))
+                .andExpect(jsonPath("$.data[9].claimedAt", is("2016-06-10 09:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[9].approvedAt", is("2016-06-10 10:00:00.000+0000")))
+                .andExpect(jsonPath("$.data[9].grantedAt", is("2016-06-10 10:20:00.000+0000")));
     }
 
     @Test
@@ -88,10 +81,9 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
     public void getCreateClaimTest() throws Exception {
         String rawToken = getTokenInfo();
 
-        PermissionDTO pdto = getPermissionDTOById(2L);
         List<CreatePermissionClaimDTO> createClaimList = new LinkedList<>();
         CreatePermissionClaimDTO createPermissionClaimDTO = new CreatePermissionClaimDTO();
-        createPermissionClaimDTO.setPermissionDTO(pdto);
+        createPermissionClaimDTO.setPermissionId(2L);
         createClaimList.add(createPermissionClaimDTO);
 
         ResultActions response = mockMvc.perform(
@@ -129,10 +121,9 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
         String rawToken = getTokenInfo();
 
-        PermissionDTO pdto = getPermissionDTOById(2L);
         List<CreatePermissionClaimDTO> createClaimList = new LinkedList<>();
         CreatePermissionClaimDTO createPermissionClaimDTO = new CreatePermissionClaimDTO();
-        createPermissionClaimDTO.setPermissionDTO(pdto);
+        createPermissionClaimDTO.setPermissionId(2L);
         createClaimList.add(createPermissionClaimDTO);
 
         ResultActions response = mockMvc.perform(
@@ -188,24 +179,5 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
 
     }
 
-
-
-    PermissionDTO getPermissionDTOById(Long id) throws Exception {
-        String rawToken = getTokenInfo();
-
-        ResultActions response = mockMvc.perform(
-                get(RestEndpoints.API_V1_PERMISSIONS + "/" + id)
-                        .header(Auth.AUTH_TOKEN_NAME, rawToken)
-                        .accept(contentType)
-                        .contentType(contentType)
-
-        )
-                .andExpect(status().isOk());
-
-        Map rawPerm = JsonPath.read(response.andReturn().getResponse().getContentAsString(), "$.data");
-        PermissionDTO result = modelMapper.map(rawPerm, PermissionDTO.class);
-
-        return result;
-    }
 
 }

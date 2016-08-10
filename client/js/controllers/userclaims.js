@@ -9,13 +9,14 @@ app.controller('userClaimController',
 
         $scope.claims = [];
         $scope.isEditing = false;
-        $scope.created = '';
+        $scope.newClaimSteps = 0;
+        $scope.resources = [];
 
         if (!authService.isLogged()) {
             $location.path("/")
         }
 
-        function get() {
+        get = function () {
             claimService.getAllMyClaims()
                 .then(
                     function (data) {
@@ -28,11 +29,31 @@ app.controller('userClaimController',
         }
 
 
-        $scope.orderBy = function (prop) {
+        function orderBy(prop) {
             $scope.claimOrderBy = prop
         };
 
+        function newClaimsWizard() {
+            getResourcesToClaim();
+            $scope.newClaimSteps++;
+        }
+
+        function getResourcesToClaim() {
+            claimService.getAllResourcesForClaim()
+                .then(
+                    function (data) {
+                        $scope.resources = data;
+                    }
+                    ,
+                    function (error) {
+                        errorService.setError(error)
+                    }
+                );
+        }
 
         get();
+
+        $scope.orderBy = orderBy;
+        $scope.newClaimsWizard = newClaimsWizard;
 
     });

@@ -37,3 +37,27 @@
         </td>
     </tr>
 </table>
+<hr/>
+<button type="button" ng-click="newClaimsWizard()">New Claim</button>
+<div ng-show="newClaimSteps === 1">
+    <h3>Select Resources</h3>
+    <table class="animate-container">
+        <tr>
+            <th>
+                Resource
+            </th>
+            <th>
+                Claim
+            </th>
+        </tr>
+        <tr ng-repeat="resource in resources"
+            class="animate-repeat">
+            <td>{{ resource.name }}<br/><em>{{ resource.detail }}</em>
+            </td>
+            <td><input type="checkbox" ng-model="resource.claimed"/></td>
+        </tr>
+    </table>
+</div>
+<div ng-show="newClaimSteps === 2">
+    <h3>Select Permissions</h3>
+</div>

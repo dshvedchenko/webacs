@@ -32,6 +32,10 @@ table, th, td {
     padding: 3px;
 }
 
+table th {
+    cursor: pointer;
+}
+
 form, input {
     padding: 4px;
     font-size: medium;

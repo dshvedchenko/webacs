@@ -3,6 +3,7 @@ package org.shved.webacs.services.impl;
 import org.shved.webacs.dao.IAppUserDAO;
 import org.shved.webacs.exception.AppException;
 import org.shved.webacs.model.AppUser;
+import org.shved.webacs.model.SysRole;
 import org.shved.webacs.services.IContextUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,11 @@ public class ContextUserService implements IContextUserService {
 
     @Autowired
     IAppUserDAO appUserDAO;
+
+    @Override
+    public Boolean isAdmin() {
+        return getContextUser().getSysrole() == SysRole.ADMIN;
+    }
 
     @Override
     public AppUser getContextUser() {

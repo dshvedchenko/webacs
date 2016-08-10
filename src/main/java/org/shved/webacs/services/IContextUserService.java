@@ -7,4 +7,6 @@ import org.shved.webacs.model.AppUser;
  */
 public interface IContextUserService {
     AppUser getContextUser();
+
+    Boolean isAdmin();
 }
