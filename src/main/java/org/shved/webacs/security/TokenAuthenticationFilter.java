@@ -4,7 +4,6 @@ import org.shved.webacs.constants.Auth;
 import org.shved.webacs.dto.AppUserDTO;
 import org.shved.webacs.exception.NotFoundException;
 import org.shved.webacs.services.IAuthTokenService;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +26,7 @@ public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
     final private IAuthTokenService authTokenService;
     final private UserDetailsService userDetailsService;
-    private AuthenticationManager authenticationManager;
+//    private AuthenticationManager authenticationManager;
 
     public TokenAuthenticationFilter(IAuthTokenService authTokenService, UserDetailsService userDetailsService) {
         this.authTokenService = authTokenService;

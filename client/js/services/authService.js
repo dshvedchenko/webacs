@@ -13,17 +13,17 @@ app.service('authService', function ($rootScope, $http, ENDPOINT_URI, appUserSer
         var post = $http.post(ENDPOINT_URI + "/login", data);
         post.then(
             function ok(response) {
-                onSuccess(response.data.data.token)
+                onSuccess(response.data.token)
             },
             function error(response) {
                 $rootScope.token = undefined;
-                onError(response.data !== null ? response.data.error : "UNKNOWN NETWORK ERROR")
+                onError(response.data !== null ? response.error : "UNKNOWN NETWORK ERROR")
             }
         );
         post.then(
             function setSession(response) {
-                $rootScope.isAdmin = response.data.data.sysrole === "ADMIN";
-                $rootScope.token = response.data.data.token
+                $rootScope.isAdmin = response.data.sysrole === "ADMIN";
+                $rootScope.token = response.data.token
             }
         ).then(
             function loadCurrentUser() {
