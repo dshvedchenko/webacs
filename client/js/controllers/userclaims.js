@@ -76,7 +76,6 @@ app.controller('userClaimController',
                     )
                 }
             )
-        )
             ;
         }
 
