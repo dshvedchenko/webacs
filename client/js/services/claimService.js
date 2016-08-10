@@ -1,5 +1,6 @@
 app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorService,
-                                      resourcesService) {
+                                      resourcesService,
+                                      permissionsService) {
 
     var service = this,
         path = '/claims';
@@ -109,10 +110,22 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
                     })
                     return resourcesToClaim;
                 },
-                function (data) {
+                function (error) {
                     return "can not get resources";
                 }
             )
 
+    }
+
+    service.getPermissionsByResourceId = function (id) {
+        return permissionsService.getAllByResourceId(id)
+            .then(function (reponse) {
+                    var permissions = reponse.data;
+                    return permissions;
+                },
+                function (error) {
+                    return "can not regt permissions";
+                }
+            )
     }
 });

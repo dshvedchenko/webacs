@@ -38,7 +38,7 @@
     </tr>
 </table>
 <hr/>
-<button type="button" ng-click="newClaimsWizard()">New Claim</button>
+<button type="button" ng-click="newClaimsWizard()" ng-show="newClaimSteps === 0">New Claim</button>
 <div ng-show="newClaimSteps === 1">
     <h3>Select Resources</h3>
     <table class="animate-container">
@@ -49,15 +49,25 @@
             <th>
                 Claim
             </th>
+            <th style="width: 300px;">
+                Permissions
+            </th>
         </tr>
         <tr ng-repeat="resource in resources"
             class="animate-repeat">
             <td>{{ resource.name }}<br/><em>{{ resource.detail }}</em>
             </td>
-            <td><input type="checkbox" ng-model="resource.claimed"/></td>
+            <td><input type="checkbox" ng-model="resource.claimed" ng-click="getPermissionsByResource(resource)"/></td>
+            <td>
+                <div ng-show="resource.claimed" class="animate-repeat">
+                    <ul>
+                        <li ng-repeat="permission in resource.permissions">{{ permission.title }} <input type="checkbox"
+                                                                                                         ng-model="permission.claimed"/>
+                        </li>
+                    </ul>
+                </div>
+            </td>
         </tr>
     </table>
 </div>
-<div ng-show="newClaimSteps === 2">
-    <h3>Select Permissions</h3>
-</div>
+<button type="button" ng-click="submitClaims()" ng-show="anyResourcesClaimed()">Submit</button>
