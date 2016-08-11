@@ -136,12 +136,12 @@ public class TestRestClaimPermissionController extends AbstractAppTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data").exists());
 
-        TypeRef<List<PermissionClaimDTO>> permissionCLaimListType = new TypeRef<List<PermissionClaimDTO>>() {
+        TypeRef<List<PermissionClaimDTO>> permissionClaimListType = new TypeRef<List<PermissionClaimDTO>>() {
         };
 
         List<PermissionClaimDTO> permissionClaimDTOList = JsonPath
                 .parse(response.andReturn().getResponse().getContentAsString())
-                .read("$.data", permissionCLaimListType);
+                .read("$.data", permissionClaimListType);
 
         PermissionClaimDTO claim = permissionClaimDTOList.get(0);
 

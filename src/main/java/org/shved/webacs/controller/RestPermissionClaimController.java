@@ -136,4 +136,12 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
         return new ResponseData(list);
     }
 
+    @PreAuthorize(Auth.hasGenericAutority)
+    @RequestMapping(value = "/claimed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAllClaimed(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.CLAIMED);
+        return new ResponseData(list);
+    }
 }
