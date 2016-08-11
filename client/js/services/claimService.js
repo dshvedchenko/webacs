@@ -5,8 +5,16 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
     var service = this,
         path = '/claims';
 
-    function createClaim(data) {
-        console.log(data);
+    service.createClaims = function (data) {
+        return $http.post(ENDPOINT_URI + path, data)
+            .then(
+                function ok(response) {
+                    return response.data;
+                },
+                function err(error) {
+                    errorService.setError(error)
+                }
+            )
     }
 
     function updateClaim(data) {

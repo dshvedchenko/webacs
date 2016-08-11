@@ -1,5 +1,5 @@
 
-Notes for TestCases
+## Notes for TestCases
 
 2. Test detects failures for non-valid input data
 3. Corner-Cases: test ranges, some values should be postive
@@ -10,5 +10,6 @@ Notes for TestCases
    ( it allows detecting conversion cases between subsystems, aka diff timezones in client and server and not correctly handling it)
 
 ----
-//TODO
-FIX update resource
+
+## TODO
+Client: get list of permissions to claim without already claimed

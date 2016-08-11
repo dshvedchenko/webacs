@@ -9,14 +9,14 @@ app.controller('userClaimController',
 
         $scope.claims = [];
         $scope.isEditing = false;
-        $scope.newClaimSteps = 0;
+        $scope.newClaimSteps = false;
         $scope.resources = [];
 
         if (!authService.isLogged()) {
             $location.path("/")
         }
 
-        get = function () {
+        refreshClaims = function () {
             claimService.getAllMyClaims()
                 .then(
                     function (data) {
@@ -35,7 +35,7 @@ app.controller('userClaimController',
 
         function newClaimsWizard() {
             getResourcesToClaim();
-            $scope.newClaimSteps++;
+            $scope.newClaimSteps = true;
         }
 
         function getResourcesToClaim() {
@@ -64,33 +64,45 @@ app.controller('userClaimController',
         }
 
         function submitClaims() {
-            var claimedRes = $scope.resources.filter(function (i) {
-                return i.claimed
-            })
-            var claimedPerm = claimedRes.filter(
-                function (i) {
-                    return i.permissions.some(
-                        function (p) {
-                            return p.claimed
-                        }
-                    )
-                }
-            )
+            claimService.createClaims(convertSelectionToPermissionIdsLists())
+                .then(
+                    function (data) {
+                        $scope.newClaimSteps = false;
+                        refreshClaims();
+                    }
+                );
             ;
         }
 
-        function anyResourcesClaimed() {
+        function convertSelectionToPermissionIdsLists() {
+            return $scope.resources
+                .filter(function (i) {
+                    return i.claimed
+                })
+                .reduce(function (perms, item) {
+                    return perms.concat(item.permissions.filter(
+                        function (permission) {
+                            return permission.claimed & !permission.alreadyClaimed
+                        })
+                    )
+                }, [])
+                .map(function (permission) {
+                    return {permissionId: permission.id}
+                })
+        }
+
+        function isAnyResourcesClaimed() {
             return $scope.resources.some(function (i) {
                 return i.claimed
             });
         }
 
-        get();
+        refreshClaims();
 
         $scope.orderBy = orderBy;
         $scope.newClaimsWizard = newClaimsWizard;
         $scope.getPermissionsByResource = getPermissionsByResource;
         $scope.submitClaims = submitClaims;
-        $scope.anyResourcesClaimed = anyResourcesClaimed;
+        $scope.isAnyResourcesClaimed = isAnyResourcesClaimed;
 
     });
