@@ -64,6 +64,13 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
 
     @Override
     @Transactional
+    public List<PermissionClaim> getAllClaimedForApproval() {
+        AppUser appUser = contextUserService.getContextUser();
+        return permissionClaimDAO.findAllToBeApprovedBy(appUser);
+    }
+
+    @Override
+    @Transactional
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
         AppUser appUser = contextUserService.getContextUser();

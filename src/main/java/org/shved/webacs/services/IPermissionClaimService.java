@@ -5,6 +5,7 @@ import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.dto.PermissionDTO;
 import org.shved.webacs.dto.ResourceDTO;
 import org.shved.webacs.model.ClaimState;
+import org.shved.webacs.model.PermissionClaim;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public interface IPermissionClaimService {
     List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO);
     List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO);
     List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> permissionClaimDTOList);
+
+    List<PermissionClaim> getAllClaimedForApproval();
+
     void update(PermissionClaimDTO permissionClaimDTO);
     void delete(Long id);
     void approve(Long claimId);

@@ -78,10 +78,6 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
         return criteria.list();
     }
 
-    @Override
-    public List<PermissionClaim> findAllClaimed() {
-        return findAllByClaimState(ClaimState.CLAIMED);
-    }
 
     @Override
     public List<PermissionClaim> findAllApproved() {
@@ -101,7 +97,7 @@ public class PermissionClaimDAOImpl extends AbstractDao<Long, PermissionClaim> i
     @Override
     public List<PermissionClaim> findAllToBeApprovedBy(AppUser appUser) {
         Criteria criteria = getSession().createCriteria(PermissionClaim.class)
-                .add(Restrictions.eq("claimState.id", 0))
+                .add(Restrictions.eq("claimState", ClaimState.CLAIMED))
                 .createAlias("permission", "p")
                 .createAlias("p.resource", "r")
                 .createAlias("r.ownerPermission", "op")

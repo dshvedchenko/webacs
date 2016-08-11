@@ -1,12 +1,12 @@
 package org.shved.webacs.controller;
 
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
-import org.jboss.logging.Logger;
+import org.modelmapper.ModelMapper;
 import org.shved.webacs.constants.Auth;
 import org.shved.webacs.constants.RestEndpoints;
 import org.shved.webacs.dto.CreatePermissionClaimDTO;
 import org.shved.webacs.dto.PermissionClaimDTO;
 import org.shved.webacs.model.ClaimState;
+import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.response.ResponseData;
 import org.shved.webacs.services.IPermissionClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author dshvedchenko on 6/26/16.
@@ -24,7 +25,8 @@ import java.util.List;
 @RequestMapping(value = RestEndpoints.API_V1_CLAIMS)
 public class RestPermissionClaimController extends AbstractAPIV1Controller {
 
-    Logger logger = LoggerFactory.logger(RestPermissionClaimController.class);
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private IPermissionClaimService permissionClaimService;
@@ -141,7 +143,15 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<PermissionClaimDTO> getAllClaimed(
     ) {
-        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.CLAIMED);
-        return new ResponseData(list);
+        List<PermissionClaim> list = permissionClaimService.getAllClaimedForApproval();
+        List<PermissionClaimDTO> claims = convertListPermissionClaimsToPermissionClaimDTO(list);
+        return new ResponseData(claims);
+    }
+
+    private List<PermissionClaimDTO> convertListPermissionClaimsToPermissionClaimDTO(List<PermissionClaim> permissionClaimList) {
+        if (permissionClaimList != null) {
+            List<PermissionClaimDTO> permissions = permissionClaimList.stream().map(item -> modelMapper.map(item, PermissionClaimDTO.class)).collect(Collectors.toList());
+            return permissions;
+        } else return null;
     }
 }
