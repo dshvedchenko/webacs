@@ -92,6 +92,14 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
         permissionClaimService.revoke(id);
     }
 
+    @RequestMapping(value = "/{id}/decline", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void declinePermissionClaim(
+            @PathVariable("id") Long id
+    ) {
+        permissionClaimService.decline(id);
+    }
+
     @PreAuthorize(Auth.hasAdminAutority)
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -135,6 +143,15 @@ public class RestPermissionClaimController extends AbstractAPIV1Controller {
     public ResponseData<PermissionClaimDTO> getAllRevoked(
     ) {
         List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.REVOKED);
+        return new ResponseData(list);
+    }
+
+    @PreAuthorize(Auth.hasAdminAutority)
+    @RequestMapping(value = "/declined", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseData<PermissionClaimDTO> getAllDeclined(
+    ) {
+        List<PermissionClaimDTO> list = permissionClaimService.getAllByState(ClaimState.DECLINED);
         return new ResponseData(list);
     }
 

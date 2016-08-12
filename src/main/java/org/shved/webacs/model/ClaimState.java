@@ -19,6 +19,7 @@ public class ClaimState {
     public static ClaimState APPROVED;
     public static ClaimState GRANTED;
     public static ClaimState REVOKED;
+    public static ClaimState DECLINED;
 
     static {
         CLAIMED = new ClaimState();
@@ -29,6 +30,8 @@ public class ClaimState {
         GRANTED.setId(2);
         REVOKED = new ClaimState();
         REVOKED.setId(3);
+        DECLINED = new ClaimState();
+        DECLINED.setId(4);
     }
 
     @Id

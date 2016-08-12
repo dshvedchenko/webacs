@@ -33,7 +33,15 @@ app.config(function ($routeProvider) {
         })
         .when("/claims/revoke", {
             templateUrl: "views/claims/list_revoke.html",
+            controller: "revokeClaimController"
+        })
+        .when("/claims/revoked", {
+            templateUrl: "views/claims/list_revoked.html",
             controller: "claimController"
+        })
+        .when("/claims/declined", {
+            templateUrl: "views/claims/list_declined.html",
+            controller: "declinedClaimController"
         })
         .when("/claims/approve", {
             templateUrl: "views/claims/list_approve.html",

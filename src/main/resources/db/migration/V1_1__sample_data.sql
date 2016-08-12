@@ -100,7 +100,7 @@ WHERE res.id = rr.resource_id AND rr.description = 'owners';
 INSERT INTO app.claim_state (
   id
   , name
-) VALUES (0, 'CLAIMED'), (1, 'APPROVED'), (2, 'GRANTED'), (3, 'REVOKED');
+) VALUES (0, 'CLAIMED'), (1, 'APPROVED'), (2, 'GRANTED'), (3, 'REVOKED'), (4, 'DECLINED');
 
 
 INSERT INTO app.permission_claim

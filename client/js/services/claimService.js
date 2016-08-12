@@ -109,6 +109,18 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
             )
     }
 
+    service.getAllDeclined = function () {
+        return $http.get(ENDPOINT_URI + path + "/declined")
+            .then(
+                function ok(response) {
+                    return response.data;
+                },
+                function err(error) {
+                    errorService.setError(error)
+                }
+            )
+    }
+
     service.getAllResourcesForClaim = function () {
         return resourcesService.getAll()
             .then(function (resp) {

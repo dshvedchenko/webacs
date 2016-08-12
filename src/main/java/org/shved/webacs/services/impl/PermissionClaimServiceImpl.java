@@ -164,18 +164,34 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         if (permissionClaim.getClaimState() != ClaimState.CLAIMED)
             throw new AppException("Wrong Claim state for Approval");
 
-        if (resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser)) {
+        boolean isOwner = resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser);
+        if (isOwner) {
             permissionClaim.setApprovedAt(new Date());
             permissionClaim.setClaimState(ClaimState.APPROVED);
             permissionClaim.setApprover(contextUser);
-            UserPermission userPermission = new UserPermission();
-            userPermission.setClaim(permissionClaim);
-            userPermissionDAO.save(userPermission);
             permissionClaimDAO.save(permissionClaim);
         } else {
             throw new AppException("Can not approve");
         }
+    }
 
+    @Override
+    @Transactional
+    public void decline(Long claimId) {
+        AppUser contextUser = contextUserService.getContextUser();
+        PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
+
+        if (permissionClaim.getClaimState() != ClaimState.CLAIMED)
+            throw new AppException("Wrong Claim state for Approval");
+
+        boolean isOwner = resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser);
+        if (isOwner) {
+            permissionClaim.setClaimState(ClaimState.DECLINED);
+            permissionClaim.setApprover(contextUser);
+            permissionClaimDAO.save(permissionClaim);
+        } else {
+            throw new AppException("Can not approve");
+        }
     }
 
     @Override
@@ -184,13 +200,15 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
         if (permissionClaim.getClaimState() != ClaimState.APPROVED)
-            throw new AppException("Wrong Claim staet for GRANTING");
+            throw new AppException("Wrong Claim state for GRANTING");
 
-            permissionClaim.setGrantedAt(new Date());
-            permissionClaim.setClaimState(ClaimState.GRANTED);
+        permissionClaim.setGrantedAt(new Date());
+        permissionClaim.setClaimState(ClaimState.GRANTED);
         permissionClaim.setGranter(contextUser);
-            userPermissionDAO.deleteByClaim(permissionClaim);
-            permissionClaimDAO.save(permissionClaim);
+        UserPermission userPermission = new UserPermission();
+        userPermission.setClaim(permissionClaim);
+        userPermissionDAO.save(userPermission);
+        permissionClaimDAO.save(permissionClaim);
     }
 
     @Override

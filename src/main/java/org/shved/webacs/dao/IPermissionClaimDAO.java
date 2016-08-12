@@ -27,6 +27,8 @@ public interface IPermissionClaimDAO {
 
     List<PermissionClaim> findAllRevoked();
 
+    List<PermissionClaim> findAllDeclined();
+
     List<PermissionClaim> findAllToBeApprovedBy(AppUser appUser);
 
     PermissionClaim findById(Long id);

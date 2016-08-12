@@ -30,4 +30,6 @@ public interface IPermissionClaimService {
     void grant(Long claimId);
     void revoke(Long claimId);
 
+    void decline(Long claimId);
+
 }
