@@ -28,29 +28,30 @@ app.config(function ($routeProvider) {
             controller: "claimController"
         })
         .when("/claims/grant", {
-            templateUrl: "views/claims/list_grant.html",
+            templateUrl: "views/claims/grant.html",
             controller: "grantClaimController"
         })
         .when("/claims/revoke", {
-            templateUrl: "views/claims/list_revoke.html",
+            templateUrl: "views/claims/revoke.html",
             controller: "revokeClaimController"
         })
         .when("/claims/revoked", {
-            templateUrl: "views/claims/list_revoked.html",
+            templateUrl: "views/claims/revoked.html",
             controller: "claimController"
         })
         .when("/claims/declined", {
-            templateUrl: "views/claims/list_declined.html",
+            templateUrl: "views/claims/declined.html",
             controller: "declinedClaimController"
         })
         .when("/claims/approve", {
-            templateUrl: "views/claims/list_approve.html",
+            templateUrl: "views/claims/approve.html",
             controller: "approveClaimController"
         })
         .when("/claims/myclaims", {
             templateUrl: "views/claims/myclaims.html",
             controller: "userClaimController"
         })
+
         // admin UI
 
         .when("/admin/users", {

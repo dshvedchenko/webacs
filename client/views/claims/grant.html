@@ -1,14 +1,11 @@
 <div ng-include="'views/claims/header.html'"></div>
-<h2>LIST OF ALL GRANTED CLAIMS</h2>
+<h2>LIST OF ALL CLAIMS READY FOR GRANT</h2>
 <p><label for="userFilter">Filter by username : </label><input id="userFilter" type="text" ng-model="usernameFilter">
 </p>
 <table class="animate-container">
     <tr>
         <th>
             id
-        </th>
-        <th ng-click="orderBy('claimState.name')">
-            username
         </th>
         <th ng-click="orderBy('user.username')">
             username
@@ -24,7 +21,6 @@
         class="animate-repeat"
         ng-click="setEditedItem(item)">
         <td>{{ item.id }}</td>
-        <td>{{ item.claimState.name }}</td>
         <td>{{ item.user.username }}</td>
         <td>{{ item.permission.title }}</td>
         <td>{{ item.permission.resource.name }}</td>

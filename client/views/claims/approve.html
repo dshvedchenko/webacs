@@ -7,9 +7,6 @@
         <th>
             id
         </th>
-        <th ng-click="orderBy('claimState.name')">
-            state
-        </th>
         <th ng-click="orderBy('user.username')">
             username
         </th>
@@ -19,14 +16,20 @@
         <th ng-click="orderBy('permission.resource.name')">
             resource
         </th>
+        <th>
+            Actions
+        </th>
     </tr>
     <tr ng-repeat="item in claims  | filter : { user: {username: usernameFilter } } | orderBy:claimOrderBy"
         class="animate-repeat"
         ng-click="setEditedItem(item)">
         <td>{{ item.id }}</td>
-        <td>{{ item.claimState.name }}</td>
         <td>{{ item.user.username }}</td>
         <td>{{ item.permission.title }}</td>
         <td>{{ item.permission.resource.name }}</td>
+        <td>
+            <img src="img/approve.png" ng-click="approve(item)"/>
+            <img src="img/decline.png" ng-click="decline(item)"/>
+        </td>
     </tr>
 </table>

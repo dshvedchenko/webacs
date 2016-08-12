@@ -17,19 +17,23 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
             )
     }
 
-    function updateClaim(data) {
+    service.updateClaim = function (data) {
         console.log(data);
     }
 
-    function approveClaim(claimId) {
+    service.approveClaim = function (claimId) {
         console.log(claimId);
     }
 
-    function grantClaim(claimId) {
+    service.grantClaim = function (claimId) {
         console.log(claimId);
     }
 
-    function revokeClaim(claimId) {
+    service.revokeClaim = function (claimId) {
+        console.log(claimId);
+    }
+
+    service.declineClaim = function (claimId) {
         console.log(claimId);
     }
 
