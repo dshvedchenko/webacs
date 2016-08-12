@@ -8,8 +8,6 @@ app.controller('approveClaimController',
               authService) {
 
         $scope.claims = [];
-        $scope.isEditing = false;
-        $scope.created = '';
 
         if (!authService.isLogged()) {
             $location.path("/")
@@ -27,11 +25,27 @@ app.controller('approveClaimController',
                 )
         }
 
+        function refresh() {
+            getAllClaimed();
+        }
 
         $scope.orderBy = function (prop) {
             $scope.claimOrderBy = prop
         };
 
+        $scope.approve = function (item) {
+            claimService.approve(item.id)
+                .then(
+                    refresh()
+                )
+        }
+
+        $scope.decline = function (item) {
+            claimService.decline(item.id)
+                .then(
+                    refresh()
+                )
+        }
 
         getAllClaimed();
 

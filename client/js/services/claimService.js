@@ -5,6 +5,18 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
     var service = this,
         path = '/claims';
 
+    function workFlowAction(claimId, action) {
+        return $http.put(ENDPOINT_URI + path + "/" + claimId + "/" + action, {})
+            .then(
+                function ok(response) {
+                    return response.data;
+                },
+                function err(error) {
+                    errorService.setError(error)
+                }
+            )
+    }
+
     service.createClaims = function (data) {
         return $http.post(ENDPOINT_URI + path, data)
             .then(
@@ -17,24 +29,24 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
             )
     }
 
-    service.updateClaim = function (data) {
+    service.update = function (data) {
         console.log(data);
     }
 
-    service.approveClaim = function (claimId) {
-        console.log(claimId);
+    service.approve = function (claimId) {
+        return workFlowAction(claimId, "approve")
     }
 
-    service.grantClaim = function (claimId) {
-        console.log(claimId);
+    service.grant = function (claimId) {
+        return workFlowAction(claimId, "grant")
     }
 
-    service.revokeClaim = function (claimId) {
-        console.log(claimId);
+    service.revoke = function (claimId) {
+        return workFlowAction(claimId, "revoke")
     }
 
-    service.declineClaim = function (claimId) {
-        console.log(claimId);
+    service.decline = function (claimId) {
+        return workFlowAction(claimId, "decline")
     }
 
     service.getAllMyClaims = function () {

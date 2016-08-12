@@ -161,7 +161,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
 
-        if (permissionClaim.getClaimState() != ClaimState.CLAIMED)
+        if (!permissionClaim.getClaimState().equals(ClaimState.CLAIMED))
             throw new AppException("Wrong Claim state for Approval");
 
         boolean isOwner = resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser);
@@ -181,7 +181,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
 
-        if (permissionClaim.getClaimState() != ClaimState.CLAIMED)
+        if (!permissionClaim.getClaimState().equals(ClaimState.CLAIMED))
             throw new AppException("Wrong Claim state for Approval");
 
         boolean isOwner = resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser);
@@ -199,7 +199,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     public void grant(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
-        if (permissionClaim.getClaimState() != ClaimState.APPROVED)
+        if (!permissionClaim.getClaimState().equals(ClaimState.APPROVED))
             throw new AppException("Wrong Claim state for GRANTING");
 
         permissionClaim.setGrantedAt(new Date());
@@ -217,7 +217,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
 
-        if (permissionClaim.getClaimState() != ClaimState.GRANTED)
+        if (!permissionClaim.getClaimState().equals(ClaimState.GRANTED))
             throw new AppException("Wrong Claim staet for REVOKING");
 
         if (contextUser.getSysrole() == SysRole.ADMIN || resourceService.isOwnerOfResource(permissionClaim.getPermission().getResource(), contextUser)) {

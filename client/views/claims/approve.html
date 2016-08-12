@@ -21,8 +21,7 @@
         </th>
     </tr>
     <tr ng-repeat="item in claims  | filter : { user: {username: usernameFilter } } | orderBy:claimOrderBy"
-        class="animate-repeat"
-        ng-click="setEditedItem(item)">
+        class="animate-repeat">
         <td>{{ item.id }}</td>
         <td>{{ item.user.username }}</td>
         <td>{{ item.permission.title }}</td>
