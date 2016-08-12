@@ -27,6 +27,17 @@ app.controller('revokeClaimController',
                 )
         }
 
+        function refresh() {
+            getClaims()
+        }
+
+        $scope.revoke = function (item) {
+            claimService.revoke(item.id)
+                .then(
+                    refresh()
+                )
+        }
+
 
         $scope.orderBy = function (prop) {
             $scope.claimOrderBy = prop

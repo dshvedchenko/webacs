@@ -16,6 +16,9 @@
         <th ng-click="orderBy('permission.resource.name')">
             resource
         </th>
+        <th>
+            Action
+        </th>
     </tr>
     <tr ng-repeat="item in claims  | filter : { user: {username: usernameFilter } } | orderBy:claimOrderBy"
         class="animate-repeat">
@@ -23,5 +26,8 @@
         <td>{{ item.user.username }}</td>
         <td>{{ item.permission.title }}</td>
         <td>{{ item.permission.resource.name }}</td>
+        <td>
+            <img src="img/revoke.png" ng-click="revoke(item)"/>
+        </td>
     </tr>
 </table>

@@ -27,6 +27,23 @@ app.controller('grantClaimController',
                 )
         }
 
+        function refresh() {
+            getAllClaims();
+        }
+
+        $scope.decline = function (item) {
+            claimService.decline(item.id)
+                .then(
+                    refresh()
+                )
+        }
+
+        $scope.grant = function (item) {
+            claimService.grant(item.id)
+                .then(
+                    refresh()
+                )
+        }
 
         $scope.orderBy = function (prop) {
             $scope.claimOrderBy = prop
