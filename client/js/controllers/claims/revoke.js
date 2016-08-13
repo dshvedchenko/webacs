@@ -28,6 +28,7 @@ app.controller('revokeClaimController',
         }
 
         function refresh() {
+            $scope.claims = [];
             getClaims()
         }
 

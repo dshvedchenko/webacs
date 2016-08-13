@@ -1,17 +1,13 @@
 package org.shved.webacs.dao.impl;
 
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.shved.webacs.dao.AbstractDao;
 import org.shved.webacs.dao.IUserPermissionDAO;
 import org.shved.webacs.model.Permission;
 import org.shved.webacs.model.PermissionClaim;
 import org.shved.webacs.model.UserPermission;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -57,7 +53,10 @@ public class UserPermissionDAOImpl extends AbstractDao<Long, UserPermission> imp
     }
     @Override
     public void deleteByClaim(PermissionClaim claim) {
-        getSession().delete(findByClaim(claim));
+        UserPermission userPermission = findByClaim(claim);
+        if (userPermission != null) {
+            getSession().delete(userPermission);
+        }
     }
 
     @Override
