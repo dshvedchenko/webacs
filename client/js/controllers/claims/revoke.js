@@ -28,15 +28,12 @@ app.controller('revokeClaimController',
         }
 
         function refresh() {
-            $scope.claims = [];
             getClaims()
         }
 
         $scope.revoke = function (item) {
             claimService.revoke(item.id)
-                .then(
-                    refresh()
-                )
+                .then(refresh)
         }
 
 

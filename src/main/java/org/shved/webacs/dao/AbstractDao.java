@@ -32,7 +32,6 @@ public abstract class AbstractDao<PK extends Serializable, T> {
     protected void persist(T entity) {
         Session session = getSession();
         session.persist(entity);
-        session.flush();
     }
 
     public void delete(T entity) {

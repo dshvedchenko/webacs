@@ -25,7 +25,8 @@ app.config(function ($routeProvider) {
 
         .when("/claims/list", {
             templateUrl: "views/claims/list.html",
-            controller: "claimController"
+            controller: "claimController",
+            stateFilter: "all"
         })
         .when("/claims/grant", {
             templateUrl: "views/claims/grant.html",
@@ -36,12 +37,14 @@ app.config(function ($routeProvider) {
             controller: "revokeClaimController"
         })
         .when("/claims/revoked", {
-            templateUrl: "views/claims/revoked.html",
-            controller: "claimController"
+            templateUrl: "views/claims/list.html",
+            controller: "claimController",
+            stateFilter: "revoked"
         })
         .when("/claims/declined", {
-            templateUrl: "views/claims/declined.html",
-            controller: "declinedClaimController"
+            templateUrl: "views/claims/list.html",
+            controller: "claimController",
+            stateFilter: "declined"
         })
         .when("/claims/approve", {
             templateUrl: "views/claims/approve.html",

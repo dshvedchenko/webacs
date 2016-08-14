@@ -5,18 +5,24 @@ app.controller('claimController',
               $location,
               errorService,
               claimService,
-              authService) {
+              authService,
+              $route) {
 
         $scope.claims = [];
         $scope.isEditing = false;
         $scope.created = '';
+        $scope.stateFilter = $route.current.stateFilter
 
         if (!authService.isLogged()) {
             $location.path("/")
         }
 
-        function getAllClaims() {
-            claimService.getAllClaims()
+        function getClaims() {
+            if ($scope.stateFilter === 'all') var func = claimService.getAllClaims;
+            if ($scope.stateFilter === 'revoked') var func = claimService.getAllRevoked;
+            if ($scope.stateFilter === 'declined') var func = claimService.getAllDeclined;
+
+            func()
                 .then(
                     function (data) {
                         $scope.claims = data.data;
@@ -33,6 +39,6 @@ app.controller('claimController',
         };
 
 
-        getAllClaims();
+        getClaims();
 
     });

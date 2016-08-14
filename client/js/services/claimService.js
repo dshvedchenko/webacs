@@ -65,56 +65,8 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
         console.log(userId)
     }
 
-    service.getAllClaims = function () {
-        return $http.get(ENDPOINT_URI + path)
-            .then(
-                function ok(response) {
-                    return response.data;
-                },
-                function err(error) {
-                    errorService.setError(error)
-                }
-            )
-    };
-
-    service.getAllClaimed = function () {
-        return $http.get(ENDPOINT_URI + path + "/claimed")
-            .then(
-                function ok(response) {
-                    return response.data;
-                },
-                function err(error) {
-                    errorService.setError(error)
-                }
-            )
-    };
-
-    service.getAllApproved = function () {
-        return $http.get(ENDPOINT_URI + path + "/approved")
-            .then(
-                function ok(response) {
-                    return response.data;
-                },
-                function err(error) {
-                    errorService.setError(error)
-                }
-            )
-    };
-
-    service.getAllGranted = function () {
-        return $http.get(ENDPOINT_URI + path + "/granted")
-            .then(
-                function ok(response) {
-                    return response.data;
-                },
-                function err(error) {
-                    errorService.setError(error)
-                }
-            )
-    };
-
-    service.getAllRevoked = function () {
-        return $http.get(ENDPOINT_URI + path + "/revoked")
+    function getClaimsByState(state) {
+        return $http.get(ENDPOINT_URI + path + (state.length > 0 ? "/" + state : ''))
             .then(
                 function ok(response) {
                     return response.data;
@@ -125,16 +77,28 @@ app.service('claimService', function ($rootScope, $http, ENDPOINT_URI, errorServ
             )
     }
 
+    service.getAllClaims = function () {
+        return getClaimsByState('')
+    };
+
+    service.getAllClaimed = function () {
+        return getClaimsByState('claimed')
+    };
+
+    service.getAllApproved = function () {
+        return getClaimsByState('approved')
+    };
+
+    service.getAllGranted = function () {
+        return getClaimsByState('granted')
+    };
+
+    service.getAllRevoked = function () {
+        return getClaimsByState('revoked')
+    }
+
     service.getAllDeclined = function () {
-        return $http.get(ENDPOINT_URI + path + "/declined")
-            .then(
-                function ok(response) {
-                    return response.data;
-                },
-                function err(error) {
-                    errorService.setError(error)
-                }
-            )
+        return getClaimsByState('declined')
     }
 
     service.getAllResourcesForClaim = function () {

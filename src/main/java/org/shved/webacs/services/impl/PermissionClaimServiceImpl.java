@@ -14,6 +14,7 @@ import org.shved.webacs.services.IPermissionClaimService;
 import org.shved.webacs.services.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -43,34 +44,34 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     private IContextUserService contextUserService;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> getAll() {
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllPermissionClaim();
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> getAllOwn() {
         List<PermissionClaim> permissionClaimList = permissionClaimDAO.findAllByUser(contextUserService.getContextUser());
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimList);
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> getAllByState(ClaimState claimState) {
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByClaimState(claimState));
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaim> getAllClaimedForApproval() {
         AppUser appUser = contextUserService.getContextUser();
         return permissionClaimDAO.findAllToBeApprovedBy(appUser);
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public PermissionClaimDTO getById(Long id) {
         PermissionClaim claim = permissionClaimDAO.findById(id);
         AppUser appUser = contextUserService.getContextUser();
@@ -83,20 +84,21 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> getAllByResource(ResourceDTO resourceDTO) {
         Resource resource = modelMapper.map(resourceDTO, Resource.class);
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByResource(resource));
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> getAllByPermission(PermissionDTO permissionDTO) {
         Permission permission = modelMapper.map(permissionDTO, Permission.class);
         return convertListPermissionClaimsToPermissionClaimDTO(permissionClaimDAO.findAllByPermission(permission));
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<PermissionClaimDTO> create(List<CreatePermissionClaimDTO> createClaims) {
 
         List<Permission> newClaimedPermissionList = createClaims.stream()
@@ -125,7 +127,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(PermissionClaimDTO permissionClaimDTO) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = modelMapper.map(permissionClaimDTO, PermissionClaim.class);
@@ -142,7 +144,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void delete(Long id) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim currentPermissionClaim = permissionClaimDAO.findById(id);
@@ -156,7 +158,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void approve(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
@@ -176,7 +178,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void decline(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
@@ -195,7 +197,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void grant(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
@@ -212,7 +214,7 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void revoke(Long claimId) {
         AppUser contextUser = contextUserService.getContextUser();
         PermissionClaim permissionClaim = permissionClaimDAO.findById(claimId);
@@ -224,8 +226,8 @@ public class PermissionClaimServiceImpl implements IPermissionClaimService {
             permissionClaim.setRevokedAt(new Date());
             permissionClaim.setClaimState(ClaimState.REVOKED);
             permissionClaim.setRevoker(contextUser);
-            userPermissionDAO.deleteByClaim(permissionClaim);
             permissionClaimDAO.save(permissionClaim);
+            userPermissionDAO.deleteByClaim(permissionClaim);
         }
 
     }

@@ -33,16 +33,12 @@ app.controller('grantClaimController',
 
         $scope.decline = function (item) {
             claimService.decline(item.id)
-                .then(
-                    refresh()
-                )
+                .then(refresh)
         }
 
         $scope.grant = function (item) {
             claimService.grant(item.id)
-                .then(
-                    refresh()
-                )
+                .then(refresh)
         }
 
         $scope.orderBy = function (prop) {
