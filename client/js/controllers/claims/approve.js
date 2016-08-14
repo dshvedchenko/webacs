@@ -35,16 +35,12 @@ app.controller('approveClaimController',
 
         $scope.approve = function (item) {
             claimService.approve(item.id)
-                .then(
-                    refresh()
-                )
+                .then(refresh)
         }
 
         $scope.decline = function (item) {
             claimService.decline(item.id)
-                .then(
-                    refresh()
-                )
+                .then(refresh)
         }
 
         getAllClaimed();
